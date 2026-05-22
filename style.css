@@ -8,7 +8,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{width:100vw;height:100vh;overflow:hidden;font-family:'Nunito',sans-serif;color:var(--text-white);background:var(--bg);}
 
-.bg-layer{position:fixed;top:0;left:0;width:100vw;height:100vh;background-image:url('images/bg.png');background-size:cover;background-position:center top;z-index:0;}
+.bg-layer{position:fixed;top:0;left:0;width:100vw;height:100vh;background-image:url('image/bg.png');background-size:cover;background-position:center top;z-index:0;}
 .bg-overlay-home{position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(to bottom,rgba(10,5,0,0.55) 0%,rgba(10,5,0,0.05) 40%,rgba(10,5,0,0.1) 65%,rgba(10,5,0,0.72) 100%);z-index:1;transition:opacity 0.3s;}
 .bg-overlay-dark{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(10,5,0,0.82);z-index:1;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 .bg-overlay-dark.active{opacity:1;pointer-events:auto;}
