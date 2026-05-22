@@ -1,10 +1,8 @@
 // ============================================================
 // PACKOO — DATA.JS
-// Toutes les données du jeu : raretés, coûts, chiens, NFT
-// Ne modifier que les valeurs, jamais la structure
+// Toutes les données du jeu : raretés, chiens, coûts, NFT
 // ============================================================
 
-// ===== RARETÉS =====
 const RARITY = {
   COMMON:    { label:'COMMUN',     color:'#9D9D9D', baseProduction:50   },
   UNCOMMON:  { label:'PEU COMMUN', color:'#27AE60', baseProduction:130  },
@@ -13,7 +11,6 @@ const RARITY = {
   LEGENDARY: { label:'LÉGENDAIRE', color:'#E67E22', baseProduction:3000 },
 };
 
-// ===== COÛTS PAR NIVEAU (1→50) pour chaque rareté =====
 const LEVEL_COSTS = {
   COMMON: [
     3097,3269,3441,3613,3785,3957,4129,4301,4473,4645,
@@ -52,62 +49,52 @@ const LEVEL_COSTS = {
   ],
 };
 
-// ===== CHIENS =====
-// unlockCost: null = drop NFT uniquement (pas achetable avec des Bones)
 const ALL_DOGS = [
-  // --- COMMUNS ---
-  { id:'spot',   emoji:'🐩', name:'Spot',   rarity:'COMMON',    unlockCost:500     },
-  { id:'buddy',  emoji:'🐕', name:'Buddy',  rarity:'COMMON',    unlockCost:1000    },
-  { id:'bella',  emoji:'🐕', name:'Bella',  rarity:'COMMON',    unlockCost:2000    },
-  { id:'coco',   emoji:'🦴', name:'Coco',   rarity:'COMMON',    unlockCost:3500    },
-  { id:'moka',   emoji:'🐕', name:'Moka',   rarity:'COMMON',    unlockCost:5000    },
-  // --- PEU COMMUNS ---
-  { id:'rex',    emoji:'🦮', name:'Rex',    rarity:'UNCOMMON',  unlockCost:10000   },
-  { id:'thor',   emoji:'🐕', name:'Thor',   rarity:'UNCOMMON',  unlockCost:15000   },
-  { id:'zeus',   emoji:'🐕', name:'Zeus',   rarity:'UNCOMMON',  unlockCost:25000   },
-  { id:'nala',   emoji:'🦴', name:'Nala',   rarity:'UNCOMMON',  unlockCost:35000   },
-  { id:'duke',   emoji:'🐕', name:'Duke',   rarity:'UNCOMMON',  unlockCost:45000   },
-  { id:'milo',   emoji:'🐶', name:'Milo',   rarity:'UNCOMMON',  unlockCost:50000   },
-  // --- RARES ---
-  { id:'rocky',  emoji:'🦮', name:'Rocky',  rarity:'RARE',      unlockCost:100000  },
-  { id:'max',    emoji:'🐕', name:'Max',    rarity:'RARE',      unlockCost:150000  },
-  { id:'atlas',  emoji:'🦮', name:'Atlas',  rarity:'RARE',      unlockCost:200000  },
-  { id:'titan',  emoji:'🐕', name:'Titan',  rarity:'RARE',      unlockCost:300000  },
-  { id:'storm',  emoji:'🌊', name:'Storm',  rarity:'RARE',      unlockCost:300000  },
-  // --- ÉPIQUES ---
-  { id:'paco',   emoji:'🐶', name:'Paco',   rarity:'EPIC',      unlockCost:0       }, // gratuit, de base
-  { id:'king',   emoji:'👑', name:'King',   rarity:'EPIC',      unlockCost:500000  },
-  { id:'shadow', emoji:'🌑', name:'Shadow', rarity:'EPIC',      unlockCost:1000000 },
-  { id:'blaze',  emoji:'🔥', name:'Blaze',  rarity:'EPIC',      unlockCost:1500000 },
-  // --- LÉGENDAIRE (drop uniquement) ---
-  { id:'luna',   emoji:'🌙', name:'Luna',   rarity:'LEGENDARY', unlockCost:null    },
+  { id:'paco',   emoji:'🐶', name:'Paco',   rarity:'EPIC',      unlockCost:0,       unlocked:true,  active:true,  level:1, xp:0 },
+  { id:'spot',   emoji:'🐩', name:'Spot',   rarity:'COMMON',    unlockCost:500,     unlocked:false, active:false, level:1, xp:0 },
+  { id:'buddy',  emoji:'🐕', name:'Buddy',  rarity:'COMMON',    unlockCost:1000,    unlocked:false, active:false, level:1, xp:0 },
+  { id:'bella',  emoji:'🐕', name:'Bella',  rarity:'COMMON',    unlockCost:2000,    unlocked:false, active:false, level:1, xp:0 },
+  { id:'coco',   emoji:'🦴', name:'Coco',   rarity:'COMMON',    unlockCost:3500,    unlocked:false, active:false, level:1, xp:0 },
+  { id:'moka',   emoji:'🐕', name:'Moka',   rarity:'COMMON',    unlockCost:5000,    unlocked:false, active:false, level:1, xp:0 },
+  { id:'rex',    emoji:'🦮', name:'Rex',    rarity:'UNCOMMON',  unlockCost:10000,   unlocked:false, active:false, level:1, xp:0 },
+  { id:'thor',   emoji:'🐕', name:'Thor',   rarity:'UNCOMMON',  unlockCost:15000,   unlocked:false, active:false, level:1, xp:0 },
+  { id:'zeus',   emoji:'🐕', name:'Zeus',   rarity:'UNCOMMON',  unlockCost:25000,   unlocked:false, active:false, level:1, xp:0 },
+  { id:'nala',   emoji:'🦴', name:'Nala',   rarity:'UNCOMMON',  unlockCost:35000,   unlocked:false, active:false, level:1, xp:0 },
+  { id:'duke',   emoji:'🐕', name:'Duke',   rarity:'UNCOMMON',  unlockCost:45000,   unlocked:false, active:false, level:1, xp:0 },
+  { id:'milo',   emoji:'🐶', name:'Milo',   rarity:'UNCOMMON',  unlockCost:50000,   unlocked:false, active:false, level:1, xp:0 },
+  { id:'rocky',  emoji:'🦮', name:'Rocky',  rarity:'RARE',      unlockCost:100000,  unlocked:false, active:false, level:1, xp:0 },
+  { id:'max',    emoji:'🐕', name:'Max',    rarity:'RARE',      unlockCost:150000,  unlocked:false, active:false, level:1, xp:0 },
+  { id:'atlas',  emoji:'🦮', name:'Atlas',  rarity:'RARE',      unlockCost:200000,  unlocked:false, active:false, level:1, xp:0 },
+  { id:'titan',  emoji:'🐕', name:'Titan',  rarity:'RARE',      unlockCost:300000,  unlocked:false, active:false, level:1, xp:0 },
+  { id:'storm',  emoji:'🌊', name:'Storm',  rarity:'RARE',      unlockCost:300000,  unlocked:false, active:false, level:1, xp:0 },
+  { id:'king',   emoji:'👑', name:'King',   rarity:'EPIC',      unlockCost:500000,  unlocked:false, active:false, level:1, xp:0 },
+  { id:'shadow', emoji:'🌑', name:'Shadow', rarity:'EPIC',      unlockCost:1000000, unlocked:false, active:false, level:1, xp:0 },
+  { id:'blaze',  emoji:'🔥', name:'Blaze',  rarity:'EPIC',      unlockCost:1500000, unlocked:false, active:false, level:1, xp:0 },
+  { id:'luna',   emoji:'🌙', name:'Luna',   rarity:'LEGENDARY', unlockCost:null,    unlocked:false, active:false, level:1, xp:0 },
 ];
 
-// ===== POOL NFT =====
-const NFT_POOL = [
-  // Saisonniers
-  { name:'Flame Paco #042',    rarity:'🟣 Épique · Saisonnier',     pityKey:'EPIC',      chance:0.003  },
-  { name:'Ocean Buddy #156',   rarity:'🔵 Rare · Saisonnier',       pityKey:'RARE',      chance:0.007  },
-  { name:'Storm Rocky #018',   rarity:'🟣 Épique · Saisonnier',     pityKey:'EPIC',      chance:0.003  },
-  { name:'Clover Spot #312',   rarity:'🟢 Peu Commun · Saisonnier', pityKey:'UNCOMMON',  chance:0.01   },
-  // Thématiques
-  { name:'Phantom Mask #T01',  rarity:'🔵 Rare · Thématique',       pityKey:'RARE',      chance:0.002  },
-  { name:'Halloween Bully #T05',rarity:'🟣 Épique · Thématique',    pityKey:'EPIC',      chance:0.001  },
-  // Genesis
-  { name:'Snow Paco #003',     rarity:'🟠 Légendaire · Genesis',    pityKey:'LEGENDARY', chance:0.0001 },
-  { name:'Moonlight Luna #012',rarity:'🟠 Légendaire · Genesis',    pityKey:'LEGENDARY', chance:0.0001 },
-  { name:'Alpha Paco #001',    rarity:'🟠 Légendaire · Genesis',    pityKey:'LEGENDARY', chance:0.0001 },
-];
+const MAX_LEVEL  = 50;
+const MAX_ACTIVE = 6;
 
-// Seuils pity (nb de taps sans drop avant drop garanti)
-const PITY_LIMITS = {
-  COMMON:    100,
-  UNCOMMON:  300,
-  RARE:      600,
-  EPIC:      1500,
-  LEGENDARY: 5000,
+const NFT_POOLS = {
+  SEASONAL: [
+    { name:'Flame Paco #042',      rarity:'🟣 Épique · Saisonnier',     pityKey:'EPIC',      chance:0.003  },
+    { name:'Ocean Buddy #156',     rarity:'🔵 Rare · Saisonnier',       pityKey:'RARE',      chance:0.007  },
+    { name:'Forest Nala #203',     rarity:'🔵 Rare · Saisonnier',       pityKey:'RARE',      chance:0.007  },
+    { name:'Storm Rocky #018',     rarity:'🟣 Épique · Saisonnier',     pityKey:'EPIC',      chance:0.003  },
+    { name:'Clover Spot #312',     rarity:'🟢 Peu Commun · Saisonnier', pityKey:'UNCOMMON',  chance:0.01   },
+  ],
+  THEMATIC: [
+    { name:'Phantom Mask #T01',    rarity:'🔵 Rare · Thématique',       pityKey:'RARE',      chance:0.002  },
+    { name:'Halloween Bully #T05', rarity:'🟣 Épique · Thématique',     pityKey:'EPIC',      chance:0.001  },
+  ],
+  GENESIS: [
+    { name:'Alpha Paco #001',      rarity:'🟠 Légendaire · Genesis',    pityKey:'LEGENDARY', chance:0.0001 },
+    { name:'Moonlight Luna #012',  rarity:'🟠 Légendaire · Genesis',    pityKey:'LEGENDARY', chance:0.0001 },
+    { name:'Snow Paco #003',       rarity:'🟠 Légendaire · Genesis',    pityKey:'LEGENDARY', chance:0.0001 },
+  ],
 };
 
-// ===== CONSTANTES =====
-const MAX_LEVEL  = 50;
-const MAX_ACTIVE = 6;   // max chiens actifs simultanément
+const PITY_LIMITS = {
+  COMMON:100, UNCOMMON:300, RARE:600, EPIC:1500, LEGENDARY:5000
+};
