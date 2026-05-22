@@ -1,9 +1,9 @@
 // ============================================================
 // PACKOO — GAME.JS
-// Toute la logique du jeu : état, sauvegarde, tap, NFT, etc.
+// Toute la logique du jeu
 // ============================================================
 
-// ===== ÉTAT DU JEU =====
+// ===== ÉTAT =====
 let state = {
   bones: 0,
   diamonds: 0,
@@ -16,80 +16,67 @@ let state = {
   pityCounters: { COMMON:0, UNCOMMON:0, RARE:0, EPIC:0, LEGENDARY:0 },
   boostActive: false,
   boostEnd: 0,
-  // État des chiens : id → { unlocked, active, level, xp }
-  dogs: {},
+  questsDaily: {
+    tap50:  { progress:0, done:false },
+    tap200: { progress:0, done:false },
+    unlock: { done:false },
+    login:  { done:true  },
+  },
 };
 
 let currentScreen = 'home';
-let dropLocked = false;
-let dogFilter = 'all';
-
-// ===== INIT CHIENS =====
-// Appelé au démarrage pour initialiser l'état des chiens depuis ALL_DOGS
-function initDogs() {
-  ALL_DOGS.forEach(dog => {
-    if (!state.dogs[dog.id]) {
-      state.dogs[dog.id] = {
-        unlocked: dog.unlockCost === 0, // Paco débloqué par défaut
-        active:   dog.unlockCost === 0,
-        level:    1,
-        xp:       0,
-      };
-    }
-  });
-}
+let dropLocked    = false;
+let dogFilter     = 'all';
 
 // ===== SAUVEGARDE =====
 function saveState() {
   try {
-    localStorage.setItem('packoo_v1', JSON.stringify(state));
+    const save = Object.assign({}, state, {
+      bones: Math.floor(state.bones),
+      dogs: ALL_DOGS.map(d => ({ id:d.id, unlocked:d.unlocked, active:d.active, level:d.level, xp:d.xp }))
+    });
+    localStorage.setItem('packoo_save', JSON.stringify(save));
   } catch(e) {}
 }
 
 function loadState() {
   try {
-    const raw = localStorage.getItem('packoo_v1');
+    const raw = localStorage.getItem('packoo_save');
     if (!raw) return;
-    const saved = JSON.parse(raw);
-    Object.assign(state, saved);
-    checkStreak();
+    const s = JSON.parse(raw);
+    Object.assign(state, s);
+    // Restaurer les chiens
+    if (s.dogs) {
+      s.dogs.forEach(sd => {
+        const dog = ALL_DOGS.find(d => d.id === sd.id);
+        if (dog) Object.assign(dog, { unlocked:sd.unlocked, active:sd.active, level:sd.level, xp:sd.xp });
+      });
+    }
+    // Streak
+    const today     = new Date().toDateString();
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    if (state.lastLoginDate !== today) {
+      state.streak = (state.lastLoginDate === yesterday) ? state.streak + 1 : 1;
+      state.lastLoginDate = today;
+      // Reset quêtes quotidiennes
+      state.questsDaily = { tap50:{progress:0,done:false}, tap200:{progress:0,done:false}, unlock:{done:false}, login:{done:true} };
+    }
   } catch(e) {}
 }
 
-function checkStreak() {
-  const today     = new Date().toDateString();
-  const yesterday = new Date(Date.now() - 86400000).toDateString();
-  if (state.lastLoginDate === today) return;
-  if (state.lastLoginDate === yesterday) {
-    state.streak++;
-    showToast('🔥 Streak ' + state.streak + ' jours ! Bonus activé !');
-  } else {
-    state.streak = 1;
-  }
-  state.lastLoginDate = today;
-}
-
-// ===== CALCULS =====
+// ===== FORMULES =====
 function getProduction(rarity, level) {
   return Math.round(RARITY[rarity].baseProduction * Math.pow(1.08, level - 1));
 }
-
 function getLevelCost(rarity, level) {
   if (level >= MAX_LEVEL) return null;
   return LEVEL_COSTS[rarity][level - 1];
 }
-
 function getTotalProduction() {
-  let total = 0;
-  ALL_DOGS.forEach(dog => {
-    const d = state.dogs[dog.id];
-    if (d && d.unlocked && d.active) {
-      total += getProduction(dog.rarity, d.level);
-    }
-  });
-  return total;
+  return ALL_DOGS
+    .filter(d => d.unlocked && d.active)
+    .reduce((sum, d) => sum + getProduction(d.rarity, d.level), 0);
 }
-
 function getTapBones() {
   const days = state.totalTaps / 500;
   if (days < 15) return 15;
@@ -98,7 +85,6 @@ function getTapBones() {
   if (days < 60) return 300;
   return 500;
 }
-
 function getStreakMult() {
   if (state.streak >= 30) return 2.0;
   if (state.streak >= 14) return 1.5;
@@ -106,22 +92,59 @@ function getStreakMult() {
   if (state.streak >= 3)  return 1.1;
   return 1.0;
 }
-
-// ===== FORMAT =====
 function fmt(n) {
   n = Math.floor(n);
-  if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
-  if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+  if (n >= 1e6) return (n/1e6).toFixed(2) + 'M';
+  if (n >= 1e3) return (n/1e3).toFixed(1) + 'K';
   return n.toLocaleString('fr-FR');
 }
+
+// ===== MISE À JOUR UI =====
+function updateUI() {
+  // Bones + production
+  const el = document.getElementById('bonesDisplay');
+  if (el) el.textContent = fmt(state.bones);
+  const prod = Math.round(getTotalProduction() * getStreakMult());
+  const elProd = document.querySelector('.prod-card-val');
+  if (elProd) elProd.innerHTML = '🦴 ' + fmt(prod) + ' <span style="font-size:10px;color:var(--text-muted)">/h</span>';
+  // Diamants
+  const gemVal = document.getElementById('diamondsDisplay');
+  if (gemVal) gemVal.textContent = fmt(state.diamonds);
+  // Niveau joueur
+  const xpMax = state.playerLevel * 100;
+  const pct   = Math.round((state.playerXP / xpMax) * 100);
+  const lvlTag   = document.getElementById('playerLvlTag');
+  const lvlBar   = document.getElementById('playerLvlBar');
+  const lvlTxt   = document.getElementById('playerLvlTxt');
+  const lvlBadge = document.getElementById('playerLvlBadge');
+  if (lvlTag)   lvlTag.textContent   = 'NIVEAU ' + state.playerLevel;
+  if (lvlBar)   lvlBar.style.width   = pct + '%';
+  if (lvlTxt)   lvlTxt.textContent   = state.playerXP + ' / ' + xpMax;
+  if (lvlBadge) lvlBadge.textContent = state.playerLevel;
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(245,166,35,0.97);color:#1A0F00;font-weight:900;font-size:13px;padding:10px 20px;border-radius:20px;z-index:9999;white-space:nowrap;box-shadow:0 4px 20px rgba(245,166,35,0.4);';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// ===== PRODUCTION PASSIVE =====
+setInterval(() => {
+  const prod = getTotalProduction() * getStreakMult();
+  if (prod > 0) { state.bones += prod / 3600; updateUI(); }
+}, 1000);
+setInterval(saveState, 30000);
 
 // ===== TAP PACO =====
 function tapPaco(e) {
   if (currentScreen !== 'home') return;
-  const base   = getTapBones();
-  const streak = getStreakMult();
-  const boost  = (state.boostActive && Date.now() < state.boostEnd) ? 2 : 1;
-  const gain   = Math.round((base + Math.floor(Math.random() * 6)) * streak * boost);
+  const base  = getTapBones();
+  const boost = (state.boostActive && Date.now() < state.boostEnd) ? 2 : 1;
+  const gain  = Math.round((base + Math.floor(Math.random() * 6)) * getStreakMult() * boost);
 
   state.bones      += gain;
   state.totalTaps  ++;
@@ -129,7 +152,11 @@ function tapPaco(e) {
   state.playerXP   += 2;
   Object.keys(state.pityCounters).forEach(r => state.pityCounters[r]++);
 
-  // Montée de niveau joueur
+  // Quêtes tap
+  if (!state.questsDaily.tap50.done)  state.questsDaily.tap50.progress  = Math.min(state.questsDaily.tap50.progress  + 1, 50);
+  if (!state.questsDaily.tap200.done) state.questsDaily.tap200.progress = Math.min(state.questsDaily.tap200.progress + 1, 200);
+
+  // Niveau joueur
   const xpMax = state.playerLevel * 100;
   if (state.playerXP >= xpMax) {
     state.playerXP  -= xpMax;
@@ -139,11 +166,9 @@ function tapPaco(e) {
 
   // Animation float
   const float = document.createElement('div');
-  float.className = 'bone-float';
+  float.className  = 'bone-float';
   float.textContent = '+' + gain + ' 🦴';
-  const cx = e && e.clientX ? e.clientX : window.innerWidth / 2;
-  const cy = e && e.clientY ? e.clientY : window.innerHeight / 2;
-  float.style.cssText = 'left:' + (cx - 20) + 'px;top:' + (cy - 20) + 'px';
+  float.style.cssText = 'left:' + ((e&&e.clientX?e.clientX:window.innerWidth/2)-20) + 'px;top:' + ((e&&e.clientY?e.clientY:window.innerHeight/2)-20) + 'px';
   document.body.appendChild(float);
   setTimeout(() => float.remove(), 900);
 
@@ -152,419 +177,274 @@ function tapPaco(e) {
   if (p) { p.style.transform = 'scale(0.88)'; setTimeout(() => p.style.transform = '', 110); }
 
   updateUI();
-  checkNFTDrop();
+  checkDrop();
   if (state.totalTaps % 50 === 0) saveState();
 }
 
-// ===== PRODUCTION PASSIVE =====
-setInterval(() => {
-  const prod = getTotalProduction();
-  if (prod > 0) {
-    state.bones += (prod * getStreakMult()) / 3600;
-    updateUI();
-  }
-}, 1000);
-
-setInterval(saveState, 30000);
-
-// ===== DROP NFT =====
-function checkNFTDrop() {
+// ===== NFT DROP =====
+function checkDrop() {
   if (dropLocked) return;
-  const mult = 1 + state.chanceScore / 8000;
-  for (const nft of NFT_POOL) {
-    const pityReady = state.pityCounters[nft.pityKey] >= PITY_LIMITS[nft.pityKey];
-    if (pityReady || Math.random() < nft.chance * mult) {
-      state.pityCounters[nft.pityKey] = 0;
+  const m = 1 + state.chanceScore / 8000;
+  const allNFT = [...NFT_POOLS.GENESIS, ...NFT_POOLS.THEMATIC, ...NFT_POOLS.SEASONAL];
+  for (const n of allNFT) {
+    const pityReady = state.pityCounters[n.pityKey] >= PITY_LIMITS[n.pityKey];
+    if (pityReady || Math.random() < n.chance * m) {
+      state.pityCounters[n.pityKey] = 0;
       dropLocked = true;
-      triggerNFT(nft);
+      triggerNFT(n);
       setTimeout(() => { dropLocked = false; }, 5000);
       break;
     }
   }
 }
-
 function triggerNFT(nft) {
   document.getElementById('nftName').textContent   = nft.name;
   document.getElementById('nftRarity').textContent = nft.rarity;
   const c = document.getElementById('sparklesCont');
-  c.innerHTML = '';
-  for (let i = 0; i < 40; i++) {
-    const s = document.createElement('div');
-    s.className = 'sparkle';
-    s.style.cssText =
-      'left:'   + Math.random() * 100 + '%;' +
-      'top:'    + Math.random() * 100 + '%;' +
-      '--tx:'   + ((Math.random() - .5) * 250) + 'px;' +
-      '--ty:'   + ((Math.random() - .5) * 250) + 'px;' +
-      'animation-delay:' + Math.random() * 0.6 + 's';
-    c.appendChild(s);
+  if (c) {
+    c.innerHTML = '';
+    for (let i = 0; i < 40; i++) {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.style.cssText = 'left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;--tx:'+((Math.random()-.5)*250)+'px;--ty:'+((Math.random()-.5)*250)+'px;animation-delay:'+Math.random()*0.6+'s';
+      c.appendChild(s);
+    }
   }
   document.getElementById('nftOverlay').classList.add('show');
   saveState();
 }
-
 function closeNFT() {
   document.getElementById('nftOverlay').classList.remove('show');
   state.chanceScore = Math.max(0, state.chanceScore - 600);
 }
 
-// ===== CHIENS — ACTIONS =====
+// ===== CHIENS — DÉBLOQUER / AMÉLIORER =====
 function unlockDog(dogId) {
   const dog = ALL_DOGS.find(d => d.id === dogId);
-  if (!dog || dog.unlockCost === null) return;
-  const d = state.dogs[dogId];
-  if (d.unlocked) return;
-  if (state.bones < dog.unlockCost) {
-    showToast('🦴 Il te faut ' + fmt(dog.unlockCost) + ' Bones !');
-    return;
-  }
-  state.bones     -= dog.unlockCost;
-  d.unlocked       = true;
-  const activeCount = Object.values(state.dogs).filter(x => x.active).length;
-  if (activeCount < MAX_ACTIVE) d.active = true;
+  if (!dog || dog.unlocked || dog.unlockCost === null) return;
+  if (state.bones < dog.unlockCost) { showToast('🦴 Il te faut ' + fmt(dog.unlockCost) + ' Bones !'); return; }
+  state.bones -= dog.unlockCost;
+  dog.unlocked = true;
+  const activeCount = ALL_DOGS.filter(d => d.active).length;
+  if (activeCount < MAX_ACTIVE) dog.active = true;
+  state.questsDaily.unlock.done = true;
   state.pityCounters.UNCOMMON += 20;
   state.pityCounters.RARE     += 10;
-  updateUI();
-  renderDogsScreen();
   showToast('🎉 ' + dog.emoji + ' ' + dog.name + ' débloqué !');
+  updateUI();
+  renderDogCards();
   saveState();
 }
-
 function upgradeDog(dogId) {
   const dog = ALL_DOGS.find(d => d.id === dogId);
-  if (!dog) return;
-  const d = state.dogs[dogId];
-  if (!d.unlocked || d.level >= MAX_LEVEL) return;
-  const cost = getLevelCost(dog.rarity, d.level);
+  if (!dog || !dog.unlocked || dog.level >= MAX_LEVEL) return;
+  const cost = getLevelCost(dog.rarity, dog.level);
   if (!cost) return;
-  if (state.bones < cost) {
-    showToast('🦴 Il te faut ' + fmt(cost) + ' Bones !');
-    return;
-  }
+  if (state.bones < cost) { showToast('🦴 Il te faut ' + fmt(cost) + ' Bones !'); return; }
   state.bones -= cost;
-  d.level++;
-  d.xp = Math.min(d.xp + 10, d.level * 10);
+  dog.level++;
+  dog.xp = Math.min(dog.xp + 10, dog.level * 10);
+  if (dog.level % 10 === 0) showToast('🔥 ' + dog.name + ' niveau ' + dog.level + ' !');
   updateUI();
-  renderDogsScreen();
-  if (d.level % 10 === 0) showToast('🔥 ' + dog.name + ' niveau ' + d.level + ' !');
+  renderDogCards();
   saveState();
 }
-
 function upgradeAll() {
-  let count = 0;
-  ALL_DOGS.forEach(dog => {
-    const d = state.dogs[dog.id];
-    if (!d || !d.unlocked || d.level >= MAX_LEVEL) return;
-    const cost = getLevelCost(dog.rarity, d.level);
-    if (cost && state.bones >= cost) {
-      state.bones -= cost;
-      d.level++;
-      count++;
-    }
+  let n = 0;
+  ALL_DOGS.filter(d => d.unlocked && d.level < MAX_LEVEL).forEach(dog => {
+    const cost = getLevelCost(dog.rarity, dog.level);
+    if (cost && state.bones >= cost) { state.bones -= cost; dog.level++; n++; }
   });
-  if (count === 0) { showToast('Pas assez de Bones !'); return; }
-  updateUI();
-  renderDogsScreen();
-  showToast('⬆️ ' + count + ' chien' + (count > 1 ? 's améliorés' : ' amélioré') + ' !');
-  saveState();
+  if (n === 0) { showToast('Pas assez de Bones !'); return; }
+  showToast('⬆️ ' + n + ' chien' + (n > 1 ? 's améliorés' : ' amélioré') + ' !');
+  updateUI(); renderDogCards(); saveState();
 }
-
 function toggleActive(dogId) {
   const dog = ALL_DOGS.find(d => d.id === dogId);
-  if (!dog) return;
-  const d = state.dogs[dogId];
-  if (!d || !d.unlocked) return;
-  if (d.active) {
-    if (dogId === 'paco') { showToast('Paco ne peut pas être désactivé !'); return; }
-    d.active = false;
+  if (!dog || !dog.unlocked) return;
+  if (dog.active) {
+    if (dog.id === 'paco') { showToast('Paco ne peut pas être désactivé !'); return; }
+    dog.active = false;
   } else {
-    const activeCount = Object.values(state.dogs).filter(x => x.active).length;
-    if (activeCount >= MAX_ACTIVE) { showToast('Équipe pleine ! (' + MAX_ACTIVE + ' max)'); return; }
-    d.active = true;
+    if (ALL_DOGS.filter(d => d.active).length >= MAX_ACTIVE) { showToast('Équipe pleine !'); return; }
+    dog.active = true;
   }
-  updateUI();
-  renderDogsScreen();
-  saveState();
+  showToast(dog.emoji + ' ' + dog.name + (dog.active ? ' activé !' : ' en réserve'));
+  updateUI(); renderDogCards(); saveState();
 }
-
 function setDogFilter(filter) {
   dogFilter = filter;
-  document.querySelectorAll('#screen-chiens .tab').forEach((t, i) => {
+  document.querySelectorAll('#screen-chiens .filter-tabs .tab').forEach((t, i) => {
     t.classList.toggle('active', ['all','active','nft','rarity'][i] === filter);
   });
-  renderDogsScreen();
+  renderDogCards();
 }
 
-// ===== SHOP =====
-function buyChest(type) {
-  const costs = {
-    COMMON:    { bones:2000,  diamonds:0   },
-    RARE:      { bones:0,     diamonds:200 },
-    LEGENDARY: { bones:0,     diamonds:500 },
-  };
-  const c = costs[type];
-  if (c.bones    > 0 && state.bones    < c.bones)    { showToast('Pas assez de Bones ! 🦴');    return; }
-  if (c.diamonds > 0 && state.diamonds < c.diamonds) { showToast('Pas assez de Diamants ! 💎'); return; }
-  state.bones    -= c.bones;
-  state.diamonds -= c.diamonds;
-
-  const bonusMap = { COMMON:1000, UNCOMMON:3000, RARE:8000, EPIC:25000, LEGENDARY:80000 };
-  const chances  = {
-    COMMON:    { COMMON:0.6, UNCOMMON:0.3, RARE:0.1 },
-    RARE:      { UNCOMMON:0.3, RARE:0.5, EPIC:0.2   },
-    LEGENDARY: { RARE:0.2, EPIC:0.5, LEGENDARY:0.3  },
-  };
-  let r = Math.random(), cumul = 0, won = 'COMMON';
-  for (const [rarity, prob] of Object.entries(chances[type])) {
-    cumul += prob;
-    if (r < cumul) { won = rarity; break; }
-  }
-  state.bones += bonusMap[won];
-  updateUI();
-  saveState();
-  showToast('🎲 ' + RARITY[won].label + ' — 🦴 +' + fmt(bonusMap[won]) + ' !');
-}
-
-function buyBoost(type) {
-  const costs = { production:150, chance:200 };
-  if (state.diamonds < costs[type]) { showToast('Pas assez de Diamants ! 💎'); return; }
-  state.diamonds -= costs[type];
-  state.boostActive = true;
-  state.boostEnd    = Date.now() + (type === 'production' ? 7200000 : 3600000);
-  if (type === 'chance') Object.keys(state.pityCounters).forEach(r => state.pityCounters[r] += 50);
-  updateUI();
-  saveState();
-  showToast(type === 'production' ? '⚡ Boost x2 activé 2h !' : '🍀 Chance NFT x3 activé 1h !');
-}
-
-// ===== UPDATE UI =====
-function updateUI() {
-  // Bones
-  const elB = document.getElementById('bonesDisplay');
-  if (elB) elB.textContent = fmt(state.bones);
-
-  // Diamants
-  const elD = document.getElementById('diamondsDisplay');
-  if (elD) elD.textContent = state.diamonds.toLocaleString('fr-FR');
-
-  // Production
-  const prod = getTotalProduction();
-  const effProd = Math.round(prod * getStreakMult());
-  const elProd = document.getElementById('prodDisplay');
-  if (elProd) elProd.textContent = fmt(effProd);
-  const elTopProd = document.getElementById('topbarProd');
-  if (elTopProd) elTopProd.textContent = '+' + fmt(effProd) + '/h';
-
-  // Niveau joueur
-  const xpMax = state.playerLevel * 100;
-  const pct   = Math.round((state.playerXP / xpMax) * 100);
-  const elLvl = document.getElementById('playerLevel');
-  if (elLvl) elLvl.textContent = state.playerLevel;
-  const elBar = document.getElementById('playerLvlBar');
-  if (elBar) elBar.style.width = pct + '%';
-  const elPct = document.getElementById('playerLvlPct');
-  if (elPct) elPct.textContent = pct + '%';
-  const elLvlTag = document.getElementById('levelTag');
-  if (elLvlTag) elLvlTag.textContent = 'NIVEAU ' + state.playerLevel;
-  const elLvlBar2 = document.getElementById('levelBarInner');
-  if (elLvlBar2) elLvlBar2.style.width = pct + '%';
-  const elLvlTxt = document.getElementById('levelBarTxt');
-  if (elLvlTxt) elLvlTxt.textContent = state.playerXP + ' / ' + xpMax;
-
-  // Shop
-  const elSB = document.getElementById('shopBones');
-  if (elSB) elSB.textContent = fmt(state.bones);
-  const elSD = document.getElementById('shopDiamonds');
-  if (elSD) elSD.textContent = state.diamonds.toLocaleString('fr-FR');
-
-  // Chiens actifs
-  const activeCount = Object.values(state.dogs).filter(x => x.active).length;
-  const elAct = document.getElementById('dogActiveCount');
-  if (elAct) elAct.textContent = activeCount + '/' + MAX_ACTIVE;
-  const elDProd = document.getElementById('dogProdTotal');
-  if (elDProd) elDProd.textContent = fmt(effProd) + ' /h';
-}
-
-// ===== RENDERS =====
-function renderDogsScreen() {
+// ===== RENDU ÉCRAN CHIENS =====
+function renderDogCards() {
   const container = document.getElementById('dogCardsContainer');
   if (!container) return;
 
-  let dogs = ALL_DOGS.filter(dog => state.dogs[dog.id] && state.dogs[dog.id].unlocked);
-  if (dogFilter === 'active')  dogs = dogs.filter(dog => state.dogs[dog.id].active);
-  if (dogFilter === 'nft')     dogs = dogs.filter(dog => dog.rarity === 'LEGENDARY');
-  if (dogFilter === 'rarity') {
-    const order = ['LEGENDARY','EPIC','RARE','UNCOMMON','COMMON'];
-    dogs = [...dogs].sort((a,b) => order.indexOf(a.rarity) - order.indexOf(b.rarity));
-  }
+  let dogs = ALL_DOGS.filter(d => d.unlocked);
+  if (dogFilter === 'active')  dogs = dogs.filter(d => d.active);
+  if (dogFilter === 'nft')     dogs = dogs.filter(d => d.rarity === 'LEGENDARY');
+  if (dogFilter === 'rarity')  dogs = [...dogs].sort((a,b) => ['LEGENDARY','EPIC','RARE','UNCOMMON','COMMON'].indexOf(a.rarity) - ['LEGENDARY','EPIC','RARE','UNCOMMON','COMMON'].indexOf(b.rarity));
 
-  const locked = ALL_DOGS.filter(dog => {
-    const d = state.dogs[dog.id];
-    return d && !d.unlocked && dog.unlockCost !== null;
-  });
-
+  const locked = ALL_DOGS.filter(d => !d.unlocked && d.unlockCost !== null);
   let html = '';
 
+  // Chiens débloqués
   dogs.forEach(dog => {
-    const d    = state.dogs[dog.id];
     const r    = RARITY[dog.rarity];
-    const prod = getProduction(dog.rarity, d.level);
-    const cost = getLevelCost(dog.rarity, d.level);
-    const xpPct = Math.min(100, Math.round((d.xp / (d.level * 10)) * 100));
-    const activeTxt = d.active
-      ? '<div class="actif-badge"><div class="actif-dot"></div>ACTIF</div>'
-      : '<div class="actif-badge reserve"><div class="actif-dot grey"></div>RÉSERVE</div>';
-
+    const prod = getProduction(dog.rarity, dog.level);
+    const cost = getLevelCost(dog.rarity, dog.level);
+    const xpPct = Math.min(100, Math.round((dog.xp / (dog.level * 10)) * 100));
     html += `
     <div class="dog-card">
       <div class="dog-card-img">
         <div class="rarity-badge" style="background:${r.color}">${r.label}</div>
-        <div class="niv-badge">Niv. ${d.level}</div>
-        <span class="dog-emoji">${dog.emoji}</span>
+        <div class="niv-badge">Niv. ${dog.level}</div>
+        <div style="display:flex;align-items:center;justify-content:center;font-size:3em;width:100%;height:100%;">${dog.emoji}</div>
       </div>
       <div class="dog-card-info">
         <div class="dog-card-header">
-          <div class="dog-card-name">${dog.name}${dog.id === 'paco' ? ' ⭐' : ''}</div>
-          <div onclick="toggleActive('${dog.id}')" style="cursor:pointer">${activeTxt}</div>
+          <div class="dog-card-name">${dog.name}</div>
+          <div class="actif-badge" onclick="toggleActive('${dog.id}')" style="${dog.active?'':'background:rgba(255,255,255,0.05);color:var(--text-muted);'}">
+            <div class="actif-dot" style="${dog.active?'':'background:#666;'}"></div>${dog.active?'ACTIF':'RÉSERVE'}
+          </div>
         </div>
-        <div class="prod-label">Production</div>
-        <div class="prod-val">🦴 +${fmt(prod)} /h</div>
-        <div class="xp-bar-wrap">
-          <div class="xp-bar-outer"><div class="xp-bar-inner" style="width:${xpPct}%"></div></div>
-          <div class="xp-txt">Niv. ${d.level} / ${MAX_LEVEL}</div>
-        </div>
+        <div><div class="prod-label">Production</div><div class="prod-val">🦴 +${fmt(prod)} /h</div></div>
+        <div class="xp-bar-wrap"><div class="xp-bar-outer"><div class="xp-bar-inner" style="width:${xpPct}%"></div></div><div class="xp-txt">Niv.${dog.level} / ${MAX_LEVEL}</div></div>
         <div class="dog-card-btns">
-          ${cost
-            ? `<button class="btn-ameliorer" onclick="upgradeDog('${dog.id}')">⬆️ ${fmt(cost)} 🦴</button>`
-            : `<button class="btn-ameliorer disabled">NIVEAU MAX</button>`}
+          ${cost ? `<button class="btn-ameliorer" onclick="upgradeDog('${dog.id}')">⬆️ ${fmt(cost)} 🦴</button>` : '<button class="btn-ameliorer" style="opacity:0.5;cursor:default;">NIVEAU MAX</button>'}
           <button class="btn-details">Détails</button>
         </div>
       </div>
     </div>`;
   });
 
-  // Chiens verrouillés (les 5 prochains à débloquer)
-  locked.slice(0, 5).forEach(dog => {
-    const r          = RARITY[dog.rarity];
-    const canAfford  = state.bones >= dog.unlockCost;
-    html += `
-    <div class="dog-card locked-card">
-      <div class="dog-card-img locked-img">
-        <span class="dog-emoji" style="opacity:0.5">${dog.emoji}</span>
-      </div>
-      <div class="dog-card-info">
-        <div class="rarity-badge inline" style="background:${r.color}">${r.label}</div>
-        <div class="dog-card-name">${dog.name}</div>
-        <div class="prod-label">Production de base</div>
-        <div class="prod-val">🦴 +${fmt(RARITY[dog.rarity].baseProduction)} /h</div>
-        <button onclick="unlockDog('${dog.id}')"
-          class="btn-ameliorer${canAfford ? '' : ' disabled'}">
-          ${canAfford ? '🔓 ' : '🔒 '}${fmt(dog.unlockCost)} 🦴
-        </button>
-      </div>
-    </div>`;
-  });
+  // Chiens verrouillés (si filtre "tous")
+  if (dogFilter === 'all') {
+    locked.forEach(dog => {
+      const r   = RARITY[dog.rarity];
+      const can = state.bones >= dog.unlockCost;
+      html += `
+      <div class="dog-card" style="opacity:${can?1:0.7}">
+        <div class="dog-card-img" style="filter:grayscale(${can?0:0.5})">
+          <div class="rarity-badge" style="background:${r.color}">${r.label}</div>
+          <div style="display:flex;align-items:center;justify-content:center;font-size:3em;width:100%;height:100%;">🔒</div>
+        </div>
+        <div class="dog-card-info">
+          <div class="dog-card-name">${dog.name}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin:4px 0;">Production de base : +${fmt(RARITY[dog.rarity].baseProduction)}/h</div>
+          <button class="${can?'btn-ameliorer':'btn-verrouille'}" onclick="${can?`unlockDog('${dog.id}')`:''}" style="${can?'':'cursor:default;'}">
+            ${can?'🔓':'🔒'} ${fmt(dog.unlockCost)} 🦴
+          </button>
+        </div>
+      </div>`;
+    });
+    // Luna (drop uniquement)
+    const luna = ALL_DOGS.find(d => d.id === 'luna');
+    if (luna && !luna.unlocked) {
+      html += `
+      <div class="dog-card" style="opacity:0.6">
+        <div class="dog-card-img" style="filter:grayscale(0.7)">
+          <div class="rarity-badge" style="background:#E67E22">LÉGENDAIRE</div>
+          <div style="display:flex;align-items:center;justify-content:center;font-size:3em;width:100%;height:100%;">❓</div>
+        </div>
+        <div class="dog-card-info">
+          <div class="dog-card-name">Luna</div>
+          <div style="font-size:11px;color:var(--text-muted);margin:4px 0;">Drop uniquement — joue pour l'obtenir !</div>
+          <button class="btn-verrouille" style="cursor:default;">🎲 Drop aléatoire</button>
+        </div>
+      </div>`;
+    }
+  }
 
   container.innerHTML = html;
+
+  // Mettre à jour les stats en haut
+  const activeDogs = ALL_DOGS.filter(d => d.active);
+  const totalProd  = Math.round(getTotalProduction() * getStreakMult());
+  const elActive = document.getElementById('dogActiveCount');
+  const elProd   = document.getElementById('dogProdTotal');
+  if (elActive) elActive.textContent = '🦴 ' + activeDogs.length + '/' + MAX_ACTIVE;
+  if (elProd)   elProd.textContent   = '🦴 ' + fmt(totalProd) + ' /h';
 }
 
-function renderCollection() {
-  const unlocked = ALL_DOGS.filter(dog => state.dogs[dog.id] && state.dogs[dog.id].unlocked);
-  const el = document.getElementById('collDiscovered');
-  if (el) el.textContent = unlocked.length + ' / ' + ALL_DOGS.length;
-
-  const grid = document.getElementById('collGrid');
-  if (!grid) return;
-  let html = '';
-  ALL_DOGS.forEach(dog => {
-    const d = state.dogs[dog.id];
-    const r = RARITY[dog.rarity];
-    if (d && d.unlocked) {
-      const prod = getProduction(dog.rarity, d.level);
-      html += `<div class="coll-card" style="border-color:${r.color}">
-        <span style="font-size:36px">${dog.emoji}</span>
-        <div class="coll-rarity" style="color:${r.color}">${r.label}</div>
-        <div class="coll-name">${dog.name}</div>
-        <div class="coll-prod">+${fmt(prod)}/h</div>
-        <div class="coll-lvl">Niv.${d.level}</div>
-      </div>`;
-    } else if (dog.unlockCost === null) {
-      html += `<div class="coll-card secret">
-        <span style="font-size:30px">🌑</span>
-        <div class="coll-rarity" style="color:#E67E22">Drop uniquement</div>
-        <div class="coll-name">???</div>
-      </div>`;
-    } else {
-      html += `<div class="coll-card locked"><span style="font-size:30px">🔒</span><div class="coll-name">???</div></div>`;
-    }
-  });
-  grid.innerHTML = html;
-}
-
+// ===== QUÊTES =====
 function renderQuests() {
-  const container = document.getElementById('questsDailyContent');
+  const container = document.getElementById('quetes-daily-content');
   if (!container) return;
-  const tap50done  = state.totalTaps >= 50;
-  const tap200done = state.totalTaps >= 200;
+  const q = state.questsDaily;
+
+  const midnight = new Date(); midnight.setHours(24,0,0,0);
+  const diff = midnight - Date.now();
+  const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000);
+  const timer = h + 'h ' + m + 'm';
+
   container.innerHTML = `
-    ${questCard('🐾', 'Taper 50 fois',    'Tape sur Paco 50 fois.',      Math.min(state.totalTaps,50),  50,  '🦴 2,000', tap50done,  'tap50')}
-    ${questCard('🏆', 'Taper 200 fois',   'Deviens un vrai DogMaster !', Math.min(state.totalTaps,200), 200, '💎 15',    tap200done, 'tap200')}
-    ${questCard('📅', 'Connexion du jour', 'Tu es connecté !',            1, 1, '🦴 1,000', false, 'login')}
+    <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:10px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+      <span>⏱️</span><span style="font-size:11px;color:var(--text-muted);">NOUVELLES QUÊTES DANS :</span>
+      <span style="font-size:12px;font-weight:900;color:var(--gold);">${timer}</span>
+    </div>
+    ${questCard('🐾','Taper 50 fois','Tape sur Paco 50 fois.',q.tap50.progress,50,'🦴 2,000',q.tap50.done,'tap50')}
+    ${questCard('🏆','Taper 200 fois','Deviens un vrai DogMaster !',q.tap200.progress,200,'💎 15',q.tap200.done,'tap200')}
+    ${questCard('🔓','Débloquer un chien','Ajoute un nouveau chien.',q.unlock.done?1:0,1,'🦴 5,000 + 💎 5',q.unlock.done,'unlock')}
+    ${questCard('📅','Connexion du jour','Tu es là — bien joué !',1,1,'🦴 1,000',false,'login')}
   `;
 }
-
-function questCard(icon, title, desc, prog, max, reward, done, key) {
-  const pct = Math.round((prog / max) * 100);
+function questCard(icon,title,desc,prog,max,reward,done,key) {
+  const pct = Math.round((prog/max)*100);
   const complete = prog >= max;
-  let btn = '';
-  if (done) {
-    btn = '<span style="font-size:22px">✅</span>';
-  } else if (complete) {
-    btn = `<button onclick="collectQuest('${key}')" class="btn-ameliorer">RÉCLAMER !</button>`;
-  } else {
-    btn = `<button class="btn-ameliorer disabled">EN COURS</button>`;
-  }
+  let btn = done
+    ? '<div style="font-size:22px;color:#2ECC71;">✅</div>'
+    : complete
+      ? `<button onclick="collectQuest('${key}')" style="background:linear-gradient(135deg,#27AE60,#2ECC71);border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:900;color:white;cursor:pointer;">RÉCLAMER !</button>`
+      : '<span style="font-size:11px;color:var(--text-muted);">En cours…</span>';
   return `
-  <div class="quest-card">
-    <div class="quest-icon">${icon}</div>
-    <div class="quest-info">
-      <div class="quest-title">${title}</div>
-      <div class="quest-desc">${desc}</div>
-      <div class="quest-bar-outer"><div class="quest-bar-inner" style="width:${pct}%"></div></div>
-      <div class="quest-prog">${prog} / ${max}</div>
+  <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;${done?'opacity:0.7':''}">
+    <div style="width:48px;height:48px;background:linear-gradient(135deg,#3a1500,#6a3000);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">${icon}</div>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:13px;font-weight:900;">${title}</div>
+      <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${desc}</div>
+      <div style="height:6px;background:rgba(255,255,255,0.07);border-radius:3px;margin-top:6px;overflow:hidden;">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${complete?'#27AE60,#2ECC71':'var(--gold-dark),var(--gold-light)'});border-radius:3px;"></div>
+      </div>
+      <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">${prog} / ${max}</div>
     </div>
-    <div class="quest-reward">
-      <div class="quest-reward-label">RÉCOMPENSE</div>
-      <div class="quest-reward-val">${reward}</div>
-      <div style="margin-top:4px">${btn}</div>
+    <div style="text-align:right;flex-shrink:0;">
+      <div style="font-size:9px;color:var(--text-muted);">RÉCOMPENSE</div>
+      <div style="font-size:12px;font-weight:900;color:var(--gold-light);">${reward}</div>
+      <div style="margin-top:4px;">${btn}</div>
     </div>
   </div>`;
 }
-
+const QUEST_REWARDS = {
+  tap50:  { bones:2000,  diamonds:0  },
+  tap200: { bones:0,     diamonds:15 },
+  unlock: { bones:5000,  diamonds:5  },
+  login:  { bones:1000,  diamonds:0  },
+};
 function collectQuest(key) {
-  const rewards = {
-    tap50:  { bones:2000,  diamonds:0  },
-    tap200: { bones:0,     diamonds:15 },
-    login:  { bones:1000,  diamonds:0  },
-  };
-  const r = rewards[key];
-  if (!r) return;
+  const q = state.questsDaily[key];
+  if (!q || q.done) return;
+  q.done = true;
+  const r = QUEST_REWARDS[key];
   state.bones    += r.bones;
   state.diamonds += r.diamonds;
-  updateUI();
-  renderQuests();
-  let msg = [];
-  if (r.bones    > 0) msg.push('🦴 +' + fmt(r.bones));
-  if (r.diamonds > 0) msg.push('💎 +' + r.diamonds);
+  const msg = [];
+  if (r.bones)    msg.push('🦴 +' + fmt(r.bones));
+  if (r.diamonds) msg.push('💎 +' + r.diamonds);
   showToast(msg.join(' ') + ' réclamés !');
-  saveState();
+  updateUI(); renderQuests(); saveState();
 }
 
 // ===== NAVIGATION =====
 function navigate(screen) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active','slide-in'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active', 'slide-in');
+  document.getElementById('screen-' + screen).classList.add('active','slide-in');
   const nav = document.getElementById('nav-' + screen);
   if (nav) nav.classList.add('active');
   currentScreen = screen;
@@ -573,26 +453,23 @@ function navigate(screen) {
   document.getElementById('bgDark').classList.toggle('active', !isHome);
   document.getElementById('topbar').className = 'topbar ' + (isHome ? 'home-bar' : 'dark-bar');
   closeDogsPanel();
-  // Render à l'ouverture de l'écran
-  if (screen === 'chiens')     renderDogsScreen();
-  if (screen === 'collection') renderCollection();
-  if (screen === 'quetes')     renderQuests();
-  updateUI();
+  // Render selon écran
+  if (screen === 'chiens')    renderDogCards();
+  if (screen === 'quetes')    renderQuests();
 }
 
 function switchQueteTab(tab) {
   ['daily','weekly','defis'].forEach(t => {
-    const el = document.getElementById('quetes-' + t);
-    if (el) el.style.display = t === tab ? 'block' : 'none';
-    const btn = document.getElementById('qtab-' + t);
-    if (btn) btn.classList.toggle('active', t === tab);
+    document.getElementById('quetes-' + t).style.display = t === tab ? 'block' : 'none';
   });
-  const sub = document.getElementById('quetesSubtitle');
-  if (sub) sub.textContent = {daily:'QUOTIDIENNES', weekly:'HEBDOMADAIRES', defis:'DÉFIS'}[tab];
+  document.querySelectorAll('#screen-quetes .tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('qtab-' + tab).classList.add('active');
+  const labels = { daily:'QUOTIDIENNES', weekly:'HEBDOMADAIRES', defis:'DÉFIS' };
+  document.getElementById('quetesSubtitle').textContent = labels[tab];
   if (tab === 'daily') renderQuests();
 }
 
-function openDogsPanel() {
+function openDogsPanel()  {
   document.getElementById('dogsPanel').classList.add('open');
   document.getElementById('panelBackdrop').classList.add('open');
 }
@@ -601,17 +478,10 @@ function closeDogsPanel() {
   document.getElementById('panelBackdrop').classList.remove('open');
 }
 
-// ===== TOAST =====
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2500);
-}
-
-// ===== DÉMARRAGE =====
+// ===== INIT =====
 loadState();
-initDogs();
 updateUI();
-renderDogsScreen();
+
+// Render initial
+renderDogCards();
+renderQuests();
