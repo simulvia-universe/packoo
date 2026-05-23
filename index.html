@@ -361,24 +361,13 @@
     <!-- ===== SHOP ===== -->
     <div class="screen" id="screen-shop">
       <div class="scroll-content">
-
         <div class="page-title">🏪 SHOP</div>
 
-        <!-- Soldes spéciales -->
-        <div style="background:linear-gradient(135deg,rgba(180,30,30,0.3),rgba(120,10,10,0.5));border:1px solid rgba(255,80,80,0.3);border-radius:14px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
-          <div style="font-size:28px">🔥</div>
-          <div style="flex:1;">
-            <div style="font-size:13px;font-weight:900;color:#FF6B6B;">OFFRE LIMITÉE — 23h 14m</div>
-            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Pack Starter — Première fois seulement</div>
-          </div>
-          <div style="background:linear-gradient(135deg,#FF4444,#CC0000);border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:900;color:white;cursor:pointer;">Voir →</div>
-        </div>
-
-        <!-- Mes monnaies -->
+        <!-- Mes ressources -->
         <div style="display:flex;gap:8px;margin-bottom:16px;">
           <div style="flex:1;background:var(--bg-card);border:1px solid rgba(245,166,35,0.28);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:8px;">
             <span style="font-size:24px">🦴</span>
-            <div><div style="font-size:10px;color:var(--text-muted);font-weight:700;">MES BONES</div><div style="font-size:18px;font-weight:900;color:var(--gold-light);" id="shopBones">12.45M</div></div>
+            <div><div style="font-size:10px;color:var(--text-muted);font-weight:700;">MES BONES</div><div style="font-size:18px;font-weight:900;color:var(--gold-light);" id="shopBones">0</div></div>
           </div>
           <div style="flex:1;background:var(--bg-card);border:1px solid rgba(74,158,232,0.35);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:8px;">
             <span style="font-size:24px">💎</span>
@@ -386,114 +375,106 @@
           </div>
         </div>
 
-        <!-- SECTION : COFFRES -->
-        <div style="font-size:12px;font-weight:900;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">📦 COFFRES</div>
-        <div style="display:flex;gap:8px;margin-bottom:16px;">
-
-          <!-- Coffre Commun -->
-          <div style="flex:1;background:var(--bg-card);border:1px solid rgba(157,157,157,0.3);border-radius:14px;padding:10px;text-align:center;">
-            <div style="font-size:36px;margin-bottom:4px;">🧰</div>
-            <div style="font-size:11px;font-weight:900;color:#9D9D9D;">COMMUN</div>
-            <div style="font-size:9px;color:var(--text-muted);margin:4px 0;line-height:1.4;">Bones · Chien<br>Commun/Rare</div>
-            <div style="background:linear-gradient(135deg,rgba(157,157,157,0.2),rgba(100,100,100,0.2));border:1px solid rgba(157,157,157,0.3);border-radius:8px;padding:6px;margin-top:6px;cursor:pointer;font-size:12px;font-weight:900;color:#9D9D9D;">
-              🦴 2,000
+        <!-- 1. OFFRE ÉVÉNEMENTIELLE -->
+        <div style="background:linear-gradient(135deg,#3D0A00,#6B1500);border:2px solid #E74C3C;border-radius:16px;padding:14px;margin-bottom:16px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:8px;left:8px;background:#E74C3C;color:white;font-size:9px;font-weight:900;padding:3px 8px;border-radius:6px;">LIMITED</div>
+          <div style="position:absolute;top:8px;right:8px;color:#FF6B6B;font-size:11px;font-weight:900;">⏱️ 23h 14m</div>
+          <div style="margin-top:20px;display:flex;align-items:center;gap:12px;">
+            <div style="font-size:42px;">🎁</div>
+            <div style="flex:1;">
+              <div style="font-size:15px;font-weight:900;color:#FF6B6B;">CHASSE NFT x3</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px;">Triple ta chance d'obtenir des NFT !</div>
+              <div style="display:flex;flex-direction:column;gap:2px;margin-top:6px;">
+                <div style="font-size:10px;color:rgba(255,255,255,0.8);">🏆 3 Coffres Légendaires</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.8);">🍀 Chance NFT x3 pendant 24h</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.8);">💎 500 Diamants</div>
+              </div>
             </div>
           </div>
-
-          <!-- Coffre Rare -->
-          <div style="flex:1;background:var(--bg-card);border:1px solid rgba(52,152,219,0.4);border-radius:14px;padding:10px;text-align:center;position:relative;">
-            <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#3498DB,#2980B9);border-radius:10px;padding:2px 10px;font-size:9px;font-weight:900;color:white;white-space:nowrap;">POPULAIRE</div>
-            <div style="font-size:36px;margin-bottom:4px;">💼</div>
-            <div style="font-size:11px;font-weight:900;color:#3498DB;">RARE</div>
-            <div style="font-size:9px;color:var(--text-muted);margin:4px 0;line-height:1.4;">Chien Rare/Épique<br>+ Bones bonus</div>
-            <div style="background:linear-gradient(135deg,rgba(52,152,219,0.2),rgba(41,128,185,0.2));border:1px solid rgba(52,152,219,0.4);border-radius:8px;padding:6px;margin-top:6px;cursor:pointer;font-size:12px;font-weight:900;color:#7DD4FC;">
-              💎 200
-            </div>
-          </div>
-
-          <!-- Coffre Légendaire -->
-          <div style="flex:1;background:linear-gradient(135deg,rgba(60,30,0,0.9),rgba(40,20,0,0.95));border:1px solid rgba(245,166,35,0.5);border-radius:14px;padding:10px;text-align:center;position:relative;">
-            <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;padding:2px 10px;font-size:9px;font-weight:900;color:#1A0F00;white-space:nowrap;">✨ BEST</div>
-            <div style="font-size:36px;margin-bottom:4px;">👑</div>
-            <div style="font-size:11px;font-weight:900;color:var(--gold);">LÉGENDAIRE</div>
-            <div style="font-size:9px;color:var(--text-muted);margin:4px 0;line-height:1.4;">Chance NFT<br>Épique/Légendaire</div>
-            <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:8px;padding:6px;margin-top:6px;cursor:pointer;font-size:12px;font-weight:900;color:#1A0F00;">
-              💎 500
-            </div>
-          </div>
-
+          <button onclick="buySpecialOffer()" style="width:100%;margin-top:12px;background:linear-gradient(135deg,#E74C3C,#C0392B);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">Voir l'offre →</button>
         </div>
 
-        <div style="font-size:12px;font-weight:900;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">💎 ACHETER DES DIAMANTS</div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;">
-
-          <div style="background:var(--bg-card);border:1px solid rgba(74,158,232,0.25);border-radius:14px;padding:12px;text-align:center;">
-            <div style="font-size:30px;margin-bottom:4px;">💎</div>
-            <div style="font-size:18px;font-weight:900;color:#7DD4FC;">250</div>
-            <div style="font-size:10px;color:var(--text-muted);margin:4px 0;">Diamants</div>
-            <div style="background:linear-gradient(135deg,#2980B9,#3498DB);border:none;border-radius:8px;padding:7px;margin-top:6px;cursor:pointer;font-size:12px;font-weight:900;color:white;">1,99 €</div>
+        <!-- 2. PASS SAISON -->
+        <div style="background:linear-gradient(135deg,#1A0A3D,#2D1060);border:2px solid rgba(155,89,182,0.6);border-radius:16px;padding:14px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <span style="font-size:22px;">👑</span>
+            <div>
+              <div style="font-size:15px;font-weight:900;color:#C39BD3;">PASS SAISON 1</div>
+              <div style="font-size:10px;color:rgba(200,150,255,0.7);">Récompenses exclusives toute la saison !</div>
+            </div>
+            <div style="margin-left:auto;font-size:32px;">🛡️</div>
           </div>
-
-          <div style="background:var(--bg-card);border:1px solid rgba(74,158,232,0.3);border-radius:14px;padding:12px;text-align:center;position:relative;">
-            <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#E74C3C;border-radius:10px;padding:2px 8px;font-size:9px;font-weight:900;color:white;white-space:nowrap;">+25% BONUS</div>
-            <div style="font-size:30px;margin-bottom:4px;">💎💎</div>
-            <div style="font-size:18px;font-weight:900;color:#7DD4FC;">750</div>
-            <div style="font-size:10px;color:var(--text-muted);margin:4px 0;">Diamants</div>
-            <div style="background:linear-gradient(135deg,#2980B9,#3498DB);border:none;border-radius:8px;padding:7px;margin-top:6px;cursor:pointer;font-size:12px;font-weight:900;color:white;">4,99 €</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px;">
+            <div style="flex:1;text-align:center;font-size:9px;color:rgba(200,150,255,0.8);"><div style="font-size:20px;">🐶</div>Chiens exclusifs</div>
+            <div style="flex:1;text-align:center;font-size:9px;color:rgba(200,150,255,0.8);"><div style="font-size:20px;">📦</div>Coffres bonus</div>
+            <div style="flex:1;text-align:center;font-size:9px;color:rgba(200,150,255,0.8);"><div style="font-size:20px;">⚡</div>Boosts</div>
+            <div style="flex:1;text-align:center;font-size:9px;color:rgba(200,150,255,0.8);"><div style="font-size:20px;">✨</div>Cosmétiques</div>
           </div>
-
-          <div style="background:var(--bg-card);border:1px solid rgba(74,158,232,0.35);border-radius:14px;padding:12px;text-align:center;position:relative;">
-            <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#E74C3C;border-radius:10px;padding:2px 8px;font-size:9px;font-weight:900;color:white;white-space:nowrap;">+40% BONUS</div>
-            <div style="font-size:30px;margin-bottom:4px;">💎💎💎</div>
-            <div style="font-size:18px;font-weight:900;color:#7DD4FC;">1,750</div>
-            <div style="font-size:10px;color:var(--text-muted);margin:4px 0;">Diamants</div>
-            <div style="background:linear-gradient(135deg,#2980B9,#3498DB);border:none;border-radius:8px;padding:7px;margin-top:6px;cursor:pointer;font-size:12px;font-weight:900;color:white;">9,99 €</div>
-          </div>
-
-          <div style="background:linear-gradient(135deg,rgba(40,20,60,0.9),rgba(25,10,40,0.95));border:1px solid rgba(155,89,182,0.5);border-radius:14px;padding:12px;text-align:center;position:relative;">
-            <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;padding:2px 8px;font-size:9px;font-weight:900;color:#1A0F00;white-space:nowrap;">MEILLEURE OFFRE</div>
-            <div style="font-size:30px;margin-bottom:4px;">💎✨</div>
-            <div style="font-size:18px;font-weight:900;color:#7DD4FC;">5,000</div>
-            <div style="font-size:10px;color:var(--text-muted);margin:4px 0;">Diamants</div>
-            <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:8px;padding:7px;margin-top:6px;cursor:pointer;font-size:12px;font-weight:900;color:#1A0F00;">24,99 €</div>
-          </div>
-
+          <button onclick="navigate('pass')" style="width:100%;background:linear-gradient(135deg,#7D3C98,#9B59B6);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">Voir le Pass 👑</button>
         </div>
 
-        <!-- SECTION : BOOSTS -->
+        <!-- 3. BOOSTS -->
         <div style="font-size:12px;font-weight:900;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">⚡ BOOSTS</div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+        <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.15);border-radius:16px;padding:12px;margin-bottom:16px;display:flex;gap:8px;">
 
-          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.22);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
-            <div style="width:44px;height:44px;background:linear-gradient(135deg,rgba(245,166,35,0.2),rgba(196,125,14,0.2));border:1px solid rgba(245,166,35,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">⚡</div>
-            <div style="flex:1;"><div style="font-size:13px;font-weight:900;">Boost Production x2</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Double ta production pendant 2h</div></div>
-            <button style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;">💎 150</button>
+          <div onclick="buyBoost('production')" style="flex:1;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:10px;text-align:center;cursor:pointer;">
+            <div style="font-size:28px;margin-bottom:4px;">⚡</div>
+            <div style="font-size:11px;font-weight:900;color:var(--gold);">Production x2</div>
+            <div style="font-size:9px;color:var(--text-muted);margin:3px 0;">Double pendant 2h</div>
+            <div style="background:linear-gradient(135deg,#2A7FB8,#3498DB);border-radius:8px;padding:5px;margin-top:6px;font-size:11px;font-weight:900;color:white;">💎 150</div>
           </div>
 
-          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.22);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
-            <div style="width:44px;height:44px;background:linear-gradient(135deg,rgba(52,152,219,0.2),rgba(41,128,185,0.2));border:1px solid rgba(52,152,219,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🍀</div>
-            <div style="flex:1;"><div style="font-size:13px;font-weight:900;">Boost Chance NFT x3</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Triple ta chance de drop pendant 1h</div></div>
-            <button style="background:linear-gradient(135deg,#2980B9,#3498DB);border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;">💎 200</button>
+          <div onclick="buyBoost('chance')" style="flex:1;background:rgba(39,174,96,0.08);border:1px solid rgba(39,174,96,0.2);border-radius:12px;padding:10px;text-align:center;cursor:pointer;">
+            <div style="font-size:28px;margin-bottom:4px;">🍀</div>
+            <div style="font-size:11px;font-weight:900;color:#2ECC71;">Chance NFT x3</div>
+            <div style="font-size:9px;color:var(--text-muted);margin:3px 0;">Triple drop 1h</div>
+            <div style="background:linear-gradient(135deg,#1E8449,#27AE60);border-radius:8px;padding:5px;margin-top:6px;font-size:11px;font-weight:900;color:white;">💎 200</div>
           </div>
 
-          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.22);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
-            <div style="width:44px;height:44px;background:linear-gradient(135deg,rgba(39,174,96,0.2),rgba(30,130,76,0.2));border:1px solid rgba(39,174,96,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🦴</div>
-            <div style="flex:1;"><div style="font-size:13px;font-weight:900;">Pack Bones x500,000</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Recharge immédiate en Bones</div></div>
-            <button style="background:linear-gradient(135deg,#27AE60,#2ECC71);border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;">💎 100</button>
+          <div onclick="buyBones()" style="flex:1;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:10px;text-align:center;cursor:pointer;">
+            <div style="font-size:28px;margin-bottom:4px;">🦴</div>
+            <div style="font-size:11px;font-weight:900;color:var(--gold);">Pack Bones</div>
+            <div style="font-size:9px;color:var(--text-muted);margin:3px 0;">x500,000 Bones</div>
+            <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:8px;padding:5px;margin-top:6px;font-size:11px;font-weight:900;color:#1A0F00;">💎 100</div>
           </div>
 
         </div>
 
-        <!-- SECTION : COSMÉTIQUES -->
+        <!-- 4. PACKS -->
+        <div style="font-size:12px;font-weight:900;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">📦 PACKS</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+
+          <div onclick="buyPack('starter')" style="background:var(--bg-card);border:2px solid rgba(245,166,35,0.4);border-radius:14px;padding:12px;cursor:pointer;position:relative;">
+            <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1A0F00;font-size:9px;font-weight:900;padding:2px 10px;border-radius:6px;">BEST</div>
+            <div style="font-size:11px;font-weight:900;margin-bottom:6px;margin-top:4px;">Pack Starter</div>
+            <div style="font-size:9px;color:var(--text-muted);line-height:1.6;">💎 500<br>🦴 100K Bones<br>📦 1 Coffre Rare<br>⚡ Boost x2 (24h)</div>
+            <div style="background:linear-gradient(135deg,#27AE60,#2ECC71);border-radius:8px;padding:7px;margin-top:8px;font-size:12px;font-weight:900;color:white;text-align:center;">4,99 €</div>
+          </div>
+
+          <div onclick="buyPack('progression')" style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.18);border-radius:14px;padding:12px;cursor:pointer;">
+            <div style="font-size:11px;font-weight:900;margin-bottom:6px;">Pack Progression</div>
+            <div style="font-size:9px;color:var(--text-muted);line-height:1.6;">💎 1,200<br>🦴 250K Bones<br>📦 3 Coffres Rares<br>⚡ Boost x2 (2h)</div>
+            <div style="background:linear-gradient(135deg,#2A7FB8,#3498DB);border-radius:8px;padding:7px;margin-top:8px;font-size:12px;font-weight:900;color:white;text-align:center;">9,99 €</div>
+          </div>
+
+          <div onclick="buyPack('bones')" style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.18);border-radius:14px;padding:12px;cursor:pointer;">
+            <div style="font-size:11px;font-weight:900;margin-bottom:6px;">Pack Bones</div>
+            <div style="font-size:9px;color:var(--text-muted);line-height:1.6;">🦴 1,000,000 Bones<br><br><br></div>
+            <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:8px;padding:7px;margin-top:8px;font-size:12px;font-weight:900;color:#1A0F00;text-align:center;">4,99 €</div>
+          </div>
+
+          <div onclick="buyPack('diamonds')" style="background:var(--bg-card);border:1px solid rgba(74,158,232,0.35);border-radius:14px;padding:12px;cursor:pointer;position:relative;">
+            <div style="position:absolute;top:-8px;right:10px;background:#3498DB;color:white;font-size:9px;font-weight:900;padding:2px 8px;border-radius:6px;">+40%</div>
+            <div style="font-size:11px;font-weight:900;margin-bottom:6px;margin-top:4px;">Pack Diamants</div>
+            <div style="font-size:9px;color:var(--text-muted);line-height:1.6;">💎 1,750<br>+40% bonus<br><br></div>
+            <div style="background:linear-gradient(135deg,#2A7FB8,#3498DB);border-radius:8px;padding:7px;margin-top:8px;font-size:12px;font-weight:900;color:white;text-align:center;">9,99 €</div>
+          </div>
+
+        </div>
+
+        <!-- 5. COSMÉTIQUES -->
         <div style="font-size:12px;font-weight:900;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">🎨 COSMÉTIQUES</div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
-
-          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.22);border-radius:14px;padding:10px;text-align:center;">
-            <div style="font-size:28px;margin-bottom:4px;">⛓️</div>
-            <div style="font-size:10px;font-weight:800;">Chaîne Or</div>
-            <div style="font-size:9px;color:var(--text-muted);margin:3px 0;">Collier</div>
-            <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:7px;padding:5px;margin-top:5px;cursor:pointer;font-size:10px;font-weight:900;color:#1A0F00;">💎 80</div>
-          </div>
 
           <div style="background:var(--bg-card);border:1px solid rgba(155,89,182,0.3);border-radius:14px;padding:10px;text-align:center;">
             <div style="font-size:28px;margin-bottom:4px;">✨</div>
@@ -509,6 +490,13 @@
             <div style="background:linear-gradient(135deg,#2980B9,#3498DB);border:none;border-radius:7px;padding:5px;margin-top:5px;cursor:pointer;font-size:10px;font-weight:900;color:white;">💎 60</div>
           </div>
 
+          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.22);border-radius:14px;padding:10px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:4px;">🪩</div>
+            <div style="font-size:10px;font-weight:800;">Tapis Néon</div>
+            <div style="font-size:9px;color:var(--text-muted);margin:3px 0;">Décor profil</div>
+            <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:7px;padding:5px;margin-top:5px;cursor:pointer;font-size:10px;font-weight:900;color:#1A0F00;">💎 200</div>
+          </div>
+
           <div style="background:linear-gradient(135deg,rgba(60,30,0,0.9),rgba(40,20,0,0.95));border:1px solid rgba(245,166,35,0.4);border-radius:14px;padding:10px;text-align:center;">
             <div style="font-size:28px;margin-bottom:4px;">🌟</div>
             <div style="font-size:10px;font-weight:800;">Aura Dorée</div>
@@ -520,8 +508,8 @@
 
       </div>
     </div>
-    <!-- ===== CLASSEMENT ===== -->
-    <div class="screen" id="screen-classement">
+
+        <div class="screen" id="screen-classement">
       <div class="scroll-content">
         <div class="page-title">🏆 CLASSEMENT</div>
         <div class="filter-tabs">
