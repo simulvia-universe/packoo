@@ -105,8 +105,9 @@ function updateUI() {
   const el = document.getElementById('bonesDisplay');
   if (el) el.textContent = fmt(state.bones);
   const prod = Math.round(getTotalProduction() * getStreakMult());
-  const elProd = document.querySelector('.prod-card-val');
-  if (elProd) elProd.innerHTML = '🦴 ' + fmt(prod) + ' <span style="font-size:10px;color:var(--text-muted)">/h</span>';
+  // Bouton central nav
+  const navProd = document.getElementById('navProdDisplay');
+  if (navProd) navProd.textContent = '🦴 ' + fmt(prod) + '/h';
   // Diamants
   const gemVal = document.getElementById('diamondsDisplay');
   if (gemVal) gemVal.textContent = fmt(state.diamonds);
