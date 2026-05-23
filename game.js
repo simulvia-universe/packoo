@@ -23,6 +23,18 @@ let state = {
     unlock: { done:false },
     login:  { done:true  },
   },
+  questsWeekly: {
+    tap1000: { progress:0, done:false },
+    tap5000: { progress:0, done:false },
+    unlock3: { progress:0, done:false },
+  },
+  lastWeeklyReset: '',
+  defis: {
+    reach10: { done:false }, // atteindre niveau 10
+    unlock5: { done:false }, // débloquer 5 chiens
+    earn100k: { done:false }, // gagner 100k bones total
+  },
+  totalBonesEarned: 0,
 };
 
 let currentScreen = 'home';
@@ -155,8 +167,13 @@ function tapPaco(e) {
   Object.keys(state.pityCounters).forEach(r => state.pityCounters[r]++);
 
   // Quêtes tap
-  if (!state.questsDaily.tap50.done)  state.questsDaily.tap50.progress  = Math.min(state.questsDaily.tap50.progress  + 1, 50);
-  if (!state.questsDaily.tap200.done) state.questsDaily.tap200.progress = Math.min(state.questsDaily.tap200.progress + 1, 200);
+  if (!state.questsDaily.tap50.done)   state.questsDaily.tap50.progress  = Math.min(state.questsDaily.tap50.progress  + 1, 50);
+  if (!state.questsDaily.tap200.done)  state.questsDaily.tap200.progress = Math.min(state.questsDaily.tap200.progress + 1, 200);
+  if (!state.questsWeekly.tap1000.done) state.questsWeekly.tap1000.progress = Math.min(state.questsWeekly.tap1000.progress + 1, 1000);
+  if (!state.questsWeekly.tap5000.done) state.questsWeekly.tap5000.progress = Math.min(state.questsWeekly.tap5000.progress + 1, 5000);
+  // Défis
+  if (!state.defis.reach10.done && state.playerLevel >= 10) state.defis.reach10.done = false; // claimable
+  if (!state.defis.earn100k.done) state.totalBonesEarned = (state.totalBonesEarned||0) + gain;
 
   // Niveau joueur
   const xpMax = state.playerLevel * 100;
@@ -389,24 +406,68 @@ function renderDogCards() {
 
 // ===== QUÊTES =====
 function renderQuests() {
+  const tab = document.getElementById('qtab-weekly')?.classList.contains('active') ? 'weekly'
+            : document.getElementById('qtab-defis')?.classList.contains('active')  ? 'defis'
+            : 'daily';
+
+  if (tab === 'daily')  renderQuestsDaily();
+  if (tab === 'weekly') renderQuestsWeekly();
+  if (tab === 'defis')  renderQuestsDefis();
+}
+
+function renderQuestsDaily() {
   const container = document.getElementById('quetes-daily-content');
   if (!container) return;
   const q = state.questsDaily;
-
   const midnight = new Date(); midnight.setHours(24,0,0,0);
   const diff = midnight - Date.now();
   const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000);
-  const timer = h + 'h ' + m + 'm';
-
   container.innerHTML = `
     <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:10px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
       <span>⏱️</span><span style="font-size:11px;color:var(--text-muted);">NOUVELLES QUÊTES DANS :</span>
-      <span style="font-size:12px;font-weight:900;color:var(--gold);">${timer}</span>
+      <span style="font-size:12px;font-weight:900;color:var(--gold);">${h}h ${m}m</span>
     </div>
     ${questCard('🐾','Taper 50 fois','Tape sur Paco 50 fois.',q.tap50.progress,50,'🦴 2,000',q.tap50.done,'tap50')}
     ${questCard('🏆','Taper 200 fois','Deviens un vrai DogMaster !',q.tap200.progress,200,'💎 15',q.tap200.done,'tap200')}
     ${questCard('🔓','Débloquer un chien','Ajoute un nouveau chien.',q.unlock.done?1:0,1,'🦴 5,000 + 💎 5',q.unlock.done,'unlock')}
-    ${questCard('📅','Connexion du jour','Tu es là — bien joué !',1,1,'🦴 1,000',false,'login')}
+    ${questCard('📅','Connexion du jour','Tu es là — bien joué !',1,1,'🦴 1,000',q.login?.done||false,'login')}
+  `;
+}
+
+function renderQuestsWeekly() {
+  const container = document.getElementById('quetes-weekly-content');
+  if (!container) return;
+  const q = state.questsWeekly;
+  // Reset hebdo le lundi
+  const now = new Date();
+  const monday = new Date(now); monday.setDate(now.getDate() - now.getDay() + 1); monday.setHours(0,0,0,0);
+  const nextMonday = new Date(monday); nextMonday.setDate(monday.getDate() + 7);
+  const diff = nextMonday - now;
+  const days = Math.floor(diff/86400000);
+  const hrs  = Math.floor((diff%86400000)/3600000);
+  container.innerHTML = `
+    <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:10px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+      <span>📅</span><span style="font-size:11px;color:var(--text-muted);">RESET DANS :</span>
+      <span style="font-size:12px;font-weight:900;color:var(--gold);">${days}j ${hrs}h</span>
+    </div>
+    ${questCard('🐾','Taper 1 000 fois','Tape Paco 1000 fois cette semaine.',q.tap1000.progress,1000,'🦴 20,000 + 💎 50',q.tap1000.done,'w_tap1000')}
+    ${questCard('🏆','Taper 5 000 fois','Un vrai champion du tap !',q.tap5000.progress,5000,'💎 150',q.tap5000.done,'w_tap5000')}
+    ${questCard('🔓','Débloquer 3 chiens','Agrandis ta meute cette semaine.',q.unlock3.progress,3,'🦴 30,000 + 💎 30',q.unlock3.done,'w_unlock3')}
+  `;
+}
+
+function renderQuestsDefis() {
+  const container = document.getElementById('quetes-defis-content');
+  if (!container) return;
+  const d = state.defis;
+  const unlockedCount = ALL_DOGS.filter(dog => dog.unlocked).length;
+  container.innerHTML = `
+    <div style="background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);border-radius:10px;padding:8px 12px;margin-bottom:10px;">
+      <span style="font-size:11px;color:#C39BD3;font-weight:800;">🏅 DÉFIS — Permanents, à compléter une seule fois</span>
+    </div>
+    ${questCard('🎯','Atteindre le niveau 10','Monte jusqu\'au niveau 10 joueur.',Math.min(state.playerLevel,10),10,'💎 100',d.reach10.done,'d_reach10')}
+    ${questCard('🐕','Débloquer 5 chiens','Constitue une vraie meute.',Math.min(unlockedCount,5),5,'💎 200 + 🦴 50,000',d.unlock5.done,'d_unlock5')}
+    ${questCard('💰','Gagner 100 000 Bones','Accumule 100 000 Bones au total.',Math.min(state.totalBonesEarned||0,100000),100000,'💎 300',d.earn100k.done,'d_earn100k')}
   `;
 }
 function questCard(icon,title,desc,prog,max,reward,done,key) {
@@ -436,16 +497,29 @@ function questCard(icon,title,desc,prog,max,reward,done,key) {
   </div>`;
 }
 const QUEST_REWARDS = {
-  tap50:  { bones:2000,  diamonds:0  },
-  tap200: { bones:0,     diamonds:15 },
-  unlock: { bones:5000,  diamonds:5  },
-  login:  { bones:1000,  diamonds:0  },
+  // Quotidiennes
+  tap50:     { bones:2000,  diamonds:0   },
+  tap200:    { bones:0,     diamonds:15  },
+  unlock:    { bones:5000,  diamonds:5   },
+  login:     { bones:1000,  diamonds:0   },
+  // Hebdomadaires
+  w_tap1000: { bones:20000, diamonds:50  },
+  w_tap5000: { bones:0,     diamonds:150 },
+  w_unlock3: { bones:30000, diamonds:30  },
+  // Défis
+  d_reach10: { bones:0,     diamonds:100 },
+  d_unlock5: { bones:50000, diamonds:200 },
+  d_earn100k:{ bones:0,     diamonds:300 },
 };
 function collectQuest(key) {
-  const q = state.questsDaily[key];
+  let q;
+  if (key.startsWith('w_')) q = state.questsWeekly[key.slice(2)];
+  else if (key.startsWith('d_')) q = state.defis[key.slice(2)];
+  else q = state.questsDaily[key];
   if (!q || q.done) return;
   q.done = true;
   const r = QUEST_REWARDS[key];
+  if (!r) return;
   state.bones    += r.bones;
   state.diamonds += r.diamonds;
   const msg = [];
@@ -547,13 +621,16 @@ function navigate(screen) {
 
 function switchQueteTab(tab) {
   ['daily','weekly','defis'].forEach(t => {
-    document.getElementById('quetes-' + t).style.display = t === tab ? 'block' : 'none';
+    const el = document.getElementById('quetes-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
   });
   document.querySelectorAll('#screen-quetes .tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('qtab-' + tab).classList.add('active');
+  const tabEl = document.getElementById('qtab-' + tab);
+  if (tabEl) tabEl.classList.add('active');
   const labels = { daily:'QUOTIDIENNES', weekly:'HEBDOMADAIRES', defis:'DÉFIS' };
-  document.getElementById('quetesSubtitle').textContent = labels[tab];
-  if (tab === 'daily') renderQuests();
+  const sub = document.getElementById('quetesSubtitle');
+  if (sub) sub.textContent = labels[tab];
+  renderQuests();
 }
 
 function openDogsPanel()  {
