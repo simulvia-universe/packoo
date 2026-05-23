@@ -92,7 +92,7 @@ html,body{width:100vw;height:100vh;overflow:hidden;font-family:'Nunito',sans-ser
 /* HOME */
 .home-middle{flex:1;position:relative;overflow:hidden;width:100%;}
 .game-title{position:absolute;top:4px;left:0;right:0;text-align:center;z-index:10;pointer-events:none;}
-.game-title h1{font-family:'Fredoka One',cursive;font-size:42px;color:var(--gold);text-shadow:0 0 30px var(--shadow-gold),0 4px 8px rgba(0,0,0,0.9);letter-spacing:2px;line-height:1;}
+.game-title h1{font-family:'Fredoka One',cursive;font-size:42px;color:#fff;text-shadow:0 0 10px #4af,0 0 20px #4af,0 0 40px #4af,0 4px 8px rgba(0,0,0,0.9);letter-spacing:4px;line-height:1;}
 .game-subtitle{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:4px;text-transform:uppercase;margin-top:1px;}
 .side-buttons-left{position:absolute;left:8px;top:68px;display:flex;flex-direction:column;gap:6px;z-index:10;}
 .side-btn{width:52px;background:var(--bg-card2);border:1px solid rgba(245,166,35,0.28);border-radius:12px;padding:6px 3px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;transition:transform 0.15s;}
@@ -111,7 +111,7 @@ html,body{width:100vw;height:100vh;overflow:hidden;font-family:'Nunito',sans-ser
 .cb-badge{position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;font-size:8px;font-weight:900;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(0,0,0,0.7);}
 .paco-glow-ring{position:absolute;bottom:115px;left:50%;transform:translateX(-50%);width:55vw;height:60px;background:radial-gradient(ellipse,rgba(245,166,35,0.2) 0%,transparent 70%);border-radius:50%;animation:glow 2.5s ease-in-out infinite;pointer-events:none;z-index:4;}
 @keyframes glow{0%,100%{opacity:0.5;transform:translateX(-50%) scale(1);}50%{opacity:1;transform:translateX(-50%) scale(1.12);}}
-.paco-tap-area{position:absolute;bottom:95px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:5;user-select:none;}
+.paco-tap-area{position:absolute;bottom:55px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:5;user-select:none;}
 .paco-img{width:75vw;max-width:320px;filter:drop-shadow(0 6px 20px rgba(0,0,0,0.7)) drop-shadow(0 0 14px rgba(245,166,35,0.2));transition:transform 0.12s ease;display:block;-webkit-user-drag:none;}
 .paco-tap-area:active .paco-img{transform:scale(0.88);}
 .tap-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);text-align:center;margin-top:4px;}
