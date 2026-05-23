@@ -6,15 +6,15 @@
   --epic:#9B59B6;--legendary:#E67E22;--rare:#3498DB;--uncommon:#27AE60;--common:#9D9D9D;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{width:100vw;height:100vh;overflow:hidden;font-family:'Nunito',sans-serif;color:var(--text-white);background:var(--bg);}
+html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#000;font-family:'Nunito',sans-serif;color:var(--text-white);}
 
-.bg-layer{position:fixed;top:0;left:0;width:100vw;height:100vh;background-image:url('image/bg.png');background-size:cover;background-position:center center;z-index:0;}
-.bg-overlay-home{position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(to bottom,rgba(10,5,0,0.55) 0%,rgba(10,5,0,0.05) 40%,rgba(10,5,0,0.1) 65%,rgba(10,5,0,0.72) 100%);z-index:1;transition:opacity 0.3s;}
-.bg-overlay-dark{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(10,5,0,0.82);z-index:1;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+.bg-layer{position:absolute;top:0;left:0;width:100%;height:100%;background-image:url('image/bg.png');background-size:cover;background-position:center center;z-index:0;}
+.bg-overlay-home{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,rgba(10,5,0,0.55) 0%,rgba(10,5,0,0.05) 40%,rgba(10,5,0,0.1) 65%,rgba(10,5,0,0.72) 100%);z-index:1;transition:opacity 0.3s;}
+.bg-overlay-dark{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(10,5,0,0.82);z-index:1;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 .bg-overlay-dark.active{opacity:1;pointer-events:auto;}
 .bg-overlay-home.dimmed{opacity:0;pointer-events:none;}
 
-.app{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2;display:flex;flex-direction:column;}
+.app{position:absolute;top:0;left:0;width:390px;height:844px;z-index:2;display:flex;flex-direction:column;}
 
 /* TOPBAR */
 .topbar{display:flex;align-items:center;gap:5px;padding:10px 8px 8px;backdrop-filter:blur(8px);flex-shrink:0;width:100%;transition:background 0.3s;}
@@ -109,10 +109,10 @@ html,body{width:100vw;height:100vh;overflow:hidden;font-family:'Nunito',sans-ser
 .cadeau-btn{width:50px;height:50px;background:var(--bg-card2);border:1px solid rgba(245,166,35,0.28);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:1px;position:relative;transition:transform 0.15s;}
 .cadeau-btn:active{transform:scale(0.92);}
 .cb-badge{position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;font-size:8px;font-weight:900;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(0,0,0,0.7);}
-.paco-glow-ring{position:absolute;bottom:25%;left:50%;transform:translateX(-50%);width:55vw;height:60px;background:radial-gradient(ellipse,rgba(245,166,35,0.2) 0%,transparent 70%);border-radius:50%;animation:glow 2.5s ease-in-out infinite;pointer-events:none;z-index:4;}
+.paco-glow-ring{position:absolute;bottom:185px;left:50%;transform:translateX(-50%);width:240px;height:60px;background:radial-gradient(ellipse,rgba(245,166,35,0.2) 0%,transparent 70%);border-radius:50%;animation:glow 2.5s ease-in-out infinite;pointer-events:none;z-index:4;}
 @keyframes glow{0%,100%{opacity:0.5;transform:translateX(-50%) scale(1);}50%{opacity:1;transform:translateX(-50%) scale(1.12);}}
-.paco-tap-area{position:absolute;bottom:22%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:5;user-select:none;}
-.paco-img{width:75vw;max-width:320px;filter:drop-shadow(0 6px 20px rgba(0,0,0,0.7)) drop-shadow(0 0 14px rgba(245,166,35,0.2));transition:transform 0.12s ease;display:block;-webkit-user-drag:none;}
+.paco-tap-area{position:absolute;bottom:155px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:5;user-select:none;}
+.paco-img{width:280px;max-width:280px;filter:drop-shadow(0 6px 20px rgba(0,0,0,0.7)) drop-shadow(0 0 14px rgba(245,166,35,0.2));transition:transform 0.12s ease;display:block;-webkit-user-drag:none;}
 .paco-tap-area:active .paco-img{transform:scale(0.88);}
 .tap-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);text-align:center;margin-top:4px;}
 .tap-subtitle{font-size:10px;color:var(--text-muted);font-weight:600;text-align:center;margin-top:1px;}
@@ -176,9 +176,9 @@ html,body{width:100vw;height:100vh;overflow:hidden;font-family:'Nunito',sans-ser
 .nav-tap .nav-label{color:var(--gold);font-size:10px;font-weight:700;}
 
 /* FLOATING BONE / NFT */
-.bone-float{position:fixed;pointer-events:none;font-size:16px;font-weight:900;color:var(--gold-light);text-shadow:0 2px 4px rgba(0,0,0,0.6);animation:floatUp 0.9s ease-out forwards;z-index:999;}
+.bone-float{position:absolute;pointer-events:none;font-size:16px;font-weight:900;color:var(--gold-light);text-shadow:0 2px 4px rgba(0,0,0,0.6);animation:floatUp 0.9s ease-out forwards;z-index:999;}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-80px) scale(1.3);}}
-.nft-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;display:none;align-items:center;justify-content:center;flex-direction:column;}
+.nft-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.9);z-index:500;display:none;align-items:center;justify-content:center;flex-direction:column;}
 .nft-overlay.show{display:flex;animation:fdIn 0.3s ease;}
 @keyframes fdIn{from{opacity:0;}to{opacity:1;}}
 .nft-win-card{background:linear-gradient(135deg,#2A1A08,#3D2510);border:2px solid var(--gold);border-radius:24px;padding:28px 22px;text-align:center;box-shadow:0 0 60px rgba(245,166,35,0.5);max-width:80vw;animation:cardIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);}
