@@ -706,6 +706,35 @@ function renderClassement() {
 }
 
 // ===== SHOP =====
+function navigateShopSection(section) {
+  navigate('shop');
+  setTimeout(() => {
+    const el = document.getElementById('shop-section-' + section);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 150);
+}
+
+function buyChest(type) {
+  const costs = { COMMON:{ bones:2000, diamonds:0 }, RARE:{ bones:0, diamonds:200 }, LEGENDARY:{ bones:0, diamonds:500 } };
+  const c = costs[type];
+  if (c.bones > 0 && state.bones < c.bones) { showToast('Pas assez de Bones ! 🦴'); return; }
+  if (c.diamonds > 0 && state.diamonds < c.diamonds) { showToast('Pas assez de Diamants ! 💎'); return; }
+  state.bones -= c.bones;
+  state.diamonds -= c.diamonds;
+  const bonusMap = { COMMON:1000, UNCOMMON:3000, RARE:8000, EPIC:25000, LEGENDARY:80000 };
+  const chances = {
+    COMMON:    { COMMON:0.6, UNCOMMON:0.3, RARE:0.1 },
+    RARE:      { UNCOMMON:0.3, RARE:0.5, EPIC:0.2 },
+    LEGENDARY: { RARE:0.2, EPIC:0.5, LEGENDARY:0.3 },
+  };
+  let r = Math.random(), cumul = 0, won = 'COMMON';
+  for (const [rarity, prob] of Object.entries(chances[type])) { cumul += prob; if (r < cumul) { won = rarity; break; } }
+  state.bones += bonusMap[won];
+  const labels = { COMMON:'Commun', UNCOMMON:'Peu Commun', RARE:'Rare', EPIC:'Épique', LEGENDARY:'Légendaire' };
+  updateUI(); saveState();
+  showToast('🎲 ' + labels[won] + ' — 🦴 +' + fmt(bonusMap[won]) + ' !');
+}
+
 function buyBoost(type) {
   const costs = { production:150, chance:200 };
   if (state.diamonds < costs[type]) { showToast('Pas assez de Diamants ! 💎'); return; }
