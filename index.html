@@ -513,7 +513,7 @@
       <div class="scroll-content">
         <div class="page-title">🏆 CLASSEMENT</div>
         <div class="filter-tabs">
-          <div class="tab active">🌍 Global</div><div class="tab">👥 Amis</div><div class="tab">🛡️ Guildes</div>
+          <div class="tab active">🌍 Global</div><div class="tab">👥 Amis</div>
         </div>
         <!-- Promo -->
         <div style="background:linear-gradient(135deg,rgba(60,35,0,0.9),rgba(40,20,0,0.95));border:1px solid rgba(245,166,35,0.3);border-radius:14px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:12px;">
@@ -523,10 +523,10 @@
         </div>
         <!-- Ma position -->
         <div style="background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(196,125,14,0.1));border:1px solid rgba(245,166,35,0.4);border-radius:14px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">
-          <div style="font-size:22px;font-weight:900;color:var(--gold);min-width:40px;">215</div>
+          <div style="font-size:22px;font-weight:900;color:var(--gold);min-width:40px;" id="playerRank">—</div>
           <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#8B4513,#D2691E);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🐕</div>
-          <div style="flex:1;"><div style="font-size:14px;font-weight:900;">DogMaster</div><div style="display:flex;align-items:center;gap:4px;margin-top:2px;"><div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;padding:1px 6px;font-size:10px;font-weight:900;color:#1A0F00;">25</div><div style="flex:1;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;"><div style="height:100%;width:68%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:3px;"></div></div></div></div>
-          <div style="font-size:14px;font-weight:900;color:var(--gold-light);">12.45M 🦴</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:900;">DogMaster</div><div style="display:flex;align-items:center;gap:4px;margin-top:2px;"><div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;padding:1px 6px;font-size:10px;font-weight:900;color:#1A0F00;" id="playerLvlBadge">1</div><div style="flex:1;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;"><div style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:3px;" id="playerLvlBar"></div></div></div></div>
+          <div style="font-size:14px;font-weight:900;color:var(--gold-light);" id="playerScore">0 🦴</div>
         </div>
         <!-- Leaderboard -->
         <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
