@@ -91,7 +91,7 @@
           <div class="side-btn" onclick="navigate('shop')"><span class="sb-icon">🏪</span><span class="sb-label">Shop</span></div>
           <div class="side-btn" onclick="navigateShopSection('coffres')"><span class="sb-icon">📦</span><span class="sb-label">Coffres</span></div>
           <div class="side-btn" onclick="navigateShopSection('cosmetiques')"><span class="sb-icon">✨</span><span class="sb-label">Cosmétiques</span></div>
-          <div class="side-btn"><span class="nouveau-tag">NOUVEAU</span><span class="sb-icon">🎉</span><span class="sb-label">Événements</span></div>
+          <div class="side-btn" onclick="navigate('evenements')"><span class="nouveau-tag">NOUVEAU</span><span class="sb-icon">🎉</span><span class="sb-label">Événements</span></div>
         </div>
         <div class="right-col">
 
@@ -607,6 +607,88 @@
             <div style="flex:1;background:rgba(157,157,157,0.1);border:1px solid rgba(157,157,157,0.2);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:9px;font-weight:900;color:#9D9D9D;">TOP 1000</div><div style="font-size:9px;color:var(--text-muted);margin-bottom:4px;">Commun</div><div style="font-size:22px;">🃏</div><div style="font-size:10px;font-weight:900;color:#7DD4FC;margin-top:4px;">💎 +200</div></div>
           </div>
         </div>
+      </div>
+    </div>
+
+
+    <!-- ===== ÉVÉNEMENTS ===== -->
+    <div class="screen" id="screen-evenements">
+      <div class="scroll-content">
+        <div class="page-title">🎉 ÉVÉNEMENTS</div>
+        <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-bottom:16px;">Participez et gagnez des récompenses exclusives !</div>
+
+        <!-- ÉVÉNEMENT EN COURS -->
+        <div style="background:linear-gradient(135deg,#1A0030,#3D0060);border:2px solid rgba(155,89,182,0.6);border-radius:16px;padding:14px;margin-bottom:20px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:8px;left:8px;background:#9B59B6;color:white;font-size:9px;font-weight:900;padding:3px 10px;border-radius:6px;">ÉVÉNEMENT EN COURS</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:24px;">
+            <div style="font-size:56px;">🎃</div>
+            <div style="flex:1;">
+              <div style="font-size:20px;font-weight:900;color:#FF6B35;">HALLOWEEN NIGHT</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:4px;">Gagnez des NFT exclusifs Halloween !</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+                <span style="font-size:12px;">⏱️</span>
+                <span style="font-size:12px;font-weight:900;color:#FFB347;">Fin dans : <span id="eventCountdown">6j 14h 32m</span></span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px;margin-bottom:12px;">
+            <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px;text-align:center;">
+              <div style="font-size:18px;">🪙</div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.7);margin-top:2px;">NFT Halloween</div>
+            </div>
+            <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px;text-align:center;">
+              <div style="font-size:18px;">💎</div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.7);margin-top:2px;">Diamants bonus</div>
+            </div>
+            <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:10px;padding:8px;text-align:center;">
+              <div style="font-size:18px;">🍀</div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.7);margin-top:2px;">Chance x3</div>
+            </div>
+          </div>
+          <button style="width:100%;background:linear-gradient(135deg,#7D3C98,#9B59B6);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">Voir l'événement →</button>
+        </div>
+
+        <!-- À VENIR -->
+        <div style="font-size:12px;font-weight:900;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">📅 À VENIR</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+
+          <div style="background:var(--bg-card);border:1px solid rgba(74,158,232,0.3);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px;">
+            <div style="font-size:40px;">🌙</div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:900;color:#7DD4FC;">NEON RUSH</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Collection Cyber spéciale</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">⏱️ Débute dans : <span style="color:#7DD4FC;font-weight:900;">2j 10h</span></div>
+            </div>
+            <div style="background:rgba(74,158,232,0.15);border:1px solid rgba(74,158,232,0.3);border-radius:10px;padding:6px 10px;font-size:11px;font-weight:900;color:#7DD4FC;">Aperçu</div>
+          </div>
+
+          <div style="background:var(--bg-card);border:1px solid rgba(39,174,96,0.3);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px;">
+            <div style="font-size:40px;">❄️</div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:900;color:#2ECC71;">WINTER FEST</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Saison hivernale Packoo</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">⏱️ Débute dans : <span style="color:#2ECC71;font-weight:900;">6j 10h</span></div>
+            </div>
+            <div style="background:rgba(39,174,96,0.15);border:1px solid rgba(39,174,96,0.3);border-radius:10px;padding:6px 10px;font-size:11px;font-weight:900;color:#2ECC71;">Aperçu</div>
+          </div>
+
+          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.3);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px;">
+            <div style="font-size:40px;">🏆</div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:900;color:var(--gold);">GOLDEN HUNT</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Chasse aux NFT Légendaires</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">⏱️ Débute dans : <span style="color:var(--gold);font-weight:900;">13j 10h</span></div>
+            </div>
+            <div style="background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);border-radius:10px;padding:6px 10px;font-size:11px;font-weight:900;color:var(--gold);">Aperçu</div>
+          </div>
+
+        </div>
+
+        <!-- INFO -->
+        <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:12px;text-align:center;">
+          <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">🔔 Active les notifications pour ne jamais rater un événement !</div>
+        </div>
+
       </div>
     </div>
 
