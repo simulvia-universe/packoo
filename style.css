@@ -112,8 +112,16 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#
 .paco-glow-ring{position:absolute;bottom:185px;left:50%;transform:translateX(-50%);width:240px;height:60px;background:radial-gradient(ellipse,rgba(245,166,35,0.2) 0%,transparent 70%);border-radius:50%;animation:glow 2.5s ease-in-out infinite;pointer-events:none;z-index:4;}
 @keyframes glow{0%,100%{opacity:0.5;transform:translateX(-50%) scale(1);}50%{opacity:1;transform:translateX(-50%) scale(1.12);}}
 .paco-tap-area{position:absolute;bottom:155px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:5;user-select:none;}
-.paco-img{width:280px;max-width:280px;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.8)) drop-shadow(0 0 8px rgba(245,166,35,0.1));transition:transform 0.12s ease;display:block;-webkit-user-drag:none;}
-.paco-tap-area:active .paco-img{transform:scale(0.88);}
+.paco-img{width:280px;max-width:280px;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.8)) drop-shadow(0 0 8px rgba(245,166,35,0.1));transition:transform 0.15s cubic-bezier(0.36,0.07,0.19,0.97);display:block;-webkit-user-drag:none;transform-origin:bottom center;}
+.paco-img.tapped{animation:pacoTap 0.4s cubic-bezier(0.36,0.07,0.19,0.97);}
+@keyframes pacoTap{
+  0%  {transform:scale(1) rotate(0deg);}
+  15% {transform:scale(0.85) rotate(-3deg);}
+  35% {transform:scale(0.92) rotate(2deg);}
+  55% {transform:scale(0.97) rotate(-1deg);}
+  75% {transform:scale(1.03) rotate(0.5deg);}
+  100%{transform:scale(1) rotate(0deg);}
+}
 .tap-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);text-align:center;margin-top:4px;}
 .tap-subtitle{font-size:10px;color:var(--text-muted);font-weight:600;text-align:center;margin-top:1px;}
 .level-section{position:absolute;bottom:6px;left:8px;right:8px;background:rgba(12,5,0,0.87);border:1px solid rgba(245,166,35,0.22);border-radius:12px;padding:7px 12px;display:flex;align-items:center;gap:9px;z-index:10;}
