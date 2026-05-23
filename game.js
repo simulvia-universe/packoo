@@ -138,6 +138,23 @@ function updateUI() {
   if (lvlBar)   lvlBar.style.width   = pct + '%';
   if (lvlTxt)   lvlTxt.textContent   = state.playerXP + ' / ' + xpMax;
   if (lvlBadge) lvlBadge.textContent = state.playerLevel;
+  // Badge quêtes
+  updateQuestBadge();
+}
+
+function updateQuestBadge() {
+  const q = state.questsDaily;
+  let count = 0;
+  // Compter quêtes complètes mais pas encore réclamées
+  if (q.login  && !q.login.claimed)  count++;
+  if (q.tap50  && q.tap50.progress  >= 50  && !q.tap50.claimed)  count++;
+  if (q.tap200 && q.tap200.progress >= 200 && !q.tap200.claimed) count++;
+  if (q.unlock && q.unlock.done && !q.unlock.claimed) count++;
+  const badge = document.getElementById('questBadge');
+  if (badge) {
+    badge.style.display = count > 0 ? 'flex' : 'none';
+    badge.textContent = count;
+  }
 }
 
 // ===== TOAST =====
