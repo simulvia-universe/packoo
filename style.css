@@ -170,8 +170,8 @@ html,body{width:100vw;height:100vh;overflow:hidden;font-family:'Nunito',sans-ser
 .nav-label{font-size:10px;font-weight:700;color:var(--text-muted);}
 .nav-item.active .nav-label{color:var(--gold);}
 .nav-item.active .nav-icon{filter:drop-shadow(0 0 6px var(--shadow-gold));}
-.nav-tap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;margin-top:-18px;}
-.nav-tap-btn{width:58px;height:58px;background:radial-gradient(circle at 40% 35%,#C47D0E,#8B5500);border-radius:50%;border:3px solid rgba(245,166,35,0.55);box-shadow:0 0 18px rgba(245,166,35,0.4),0 4px 12px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;font-size:26px;transition:transform 0.1s;}
+.nav-tap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;margin-top:-28px;}
+.nav-tap-btn{width:68px;height:68px;background:radial-gradient(circle at 40% 35%,#C47D0E,#8B5500);border-radius:50%;border:3px solid rgba(245,166,35,0.55);box-shadow:0 0 18px rgba(245,166,35,0.4),0 4px 12px rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:900;transition:transform 0.1s;line-height:1.2;color:#1A0F00;}
 .nav-tap:active .nav-tap-btn{transform:scale(0.91);}
 .nav-tap .nav-label{color:var(--gold);font-size:10px;font-weight:700;}
 
