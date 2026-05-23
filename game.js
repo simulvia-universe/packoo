@@ -23,8 +23,8 @@ let state = {
   questsDaily: {
     tap50:  { progress:0, done:false },
     tap200: { progress:0, done:false },
-    unlock: { done:false },
-    login:  { done:true  },
+    unlock: { done:false, claimed:false },
+    login:  { done:true,  claimed:false },
   },
   questsWeekly: {
     tap1000: { progress:0, done:false },
@@ -75,7 +75,7 @@ function loadState() {
       state.streak = (state.lastLoginDate === yesterday) ? state.streak + 1 : 1;
       state.lastLoginDate = today;
       // Reset quêtes quotidiennes
-      state.questsDaily = { tap50:{progress:0,done:false}, tap200:{progress:0,done:false}, unlock:{done:false}, login:{done:true} };
+      state.questsDaily = { tap50:{progress:0,done:false,claimed:false}, tap200:{progress:0,done:false,claimed:false}, unlock:{done:false,claimed:false}, login:{done:true,claimed:false} };
     }
   } catch(e) {}
 }
@@ -436,10 +436,10 @@ function renderQuestsDaily() {
       <span>⏱️</span><span style="font-size:11px;color:var(--text-muted);">NOUVELLES QUÊTES DANS :</span>
       <span style="font-size:12px;font-weight:900;color:var(--gold);">${h}h ${m}m</span>
     </div>
-    ${questCard('🐾','Taper 50 fois','Tape sur Paco 50 fois.',q.tap50.progress,50,'🦴 2,000',q.tap50.done,'tap50')}
-    ${questCard('🏆','Taper 200 fois','Deviens un vrai DogMaster !',q.tap200.progress,200,'💎 15',q.tap200.done,'tap200')}
-    ${questCard('🔓','Débloquer un chien','Ajoute un nouveau chien.',q.unlock.done?1:0,1,'🦴 5,000 + 💎 5',q.unlock.done,'unlock')}
-    ${questCard('📅','Connexion du jour','Tu es là — bien joué !',1,1,'🦴 1,000',q.login?.done||false,'login')}
+    ${questCard('🐾','Taper 50 fois','Tape sur Paco 50 fois.',q.tap50.progress,50,'🦴 2,000',q.tap50.claimed||false,'tap50')}
+    ${questCard('🏆','Taper 200 fois','Deviens un vrai DogMaster !',q.tap200.progress,200,'💎 15',q.tap200.claimed||false,'tap200')}
+    ${questCard('🔓','Débloquer un chien','Ajoute un nouveau chien.',q.unlock.done?1:0,1,'🦴 5,000 + 💎 5',q.unlock.claimed||false,'unlock')}
+    ${questCard('📅','Connexion du jour','Tu es là — bien joué !',1,1,'🦴 1,000',q.login?.claimed||false,'login')}
   `;
 }
 
@@ -525,7 +525,12 @@ function collectQuest(key) {
   if (key.startsWith('w_')) q = state.questsWeekly[key.slice(2)];
   else if (key.startsWith('d_')) q = state.defis[key.slice(2)];
   else q = state.questsDaily[key];
-  if (!q || q.done) return;
+  if (!q) return;
+  // Vérifier que la quête est complète et pas encore réclamée
+  if (q.claimed) return;
+  const isDone = key === 'login' ? true : (q.done || (q.progress !== undefined && q.progress >= (key === 'tap50' ? 50 : key === 'tap200' ? 200 : 1)));
+  if (!isDone) return;
+  q.claimed = true;
   q.done = true;
   const r = QUEST_REWARDS[key];
   if (!r) return;
