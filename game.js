@@ -138,6 +138,11 @@ function updateUI() {
   if (lvlBar)   lvlBar.style.width   = pct + '%';
   if (lvlTxt)   lvlTxt.textContent   = state.playerXP + ' / ' + xpMax;
   if (lvlBadge) lvlBadge.textContent = state.playerLevel;
+  // Shop
+  const shopB = document.getElementById('shopBones');
+  if (shopB) shopB.textContent = fmt(state.bones);
+  const shopD = document.getElementById('shopDiamonds');
+  if (shopD) shopD.textContent = state.diamonds.toLocaleString('fr-FR');
   // Badge quêtes
   updateQuestBadge();
 }
