@@ -16,6 +16,7 @@ let state = {
   pityCounters: { COMMON:0, UNCOMMON:0, RARE:0, EPIC:0, LEGENDARY:0 },
   boostActive: false,
   boostEnd: 0,
+  wonNFTs: [], // NFT gagnés : { name, rarity, collection, date }
   questsDaily: {
     tap50:  { progress:0, done:false },
     tap200: { progress:0, done:false },
@@ -199,6 +200,19 @@ function checkDrop() {
   }
 }
 function triggerNFT(nft) {
+  // Déterminer la collection
+  let collection = 'Saison 1';
+  if (NFT_POOLS.GENESIS.find(n => n.name === nft.name)) collection = 'Genesis';
+  else if (NFT_POOLS.THEMATIC.find(n => n.name === nft.name)) collection = 'Thématique';
+
+  // Sauvegarder le NFT gagné
+  state.wonNFTs.push({
+    name: nft.name,
+    rarity: nft.rarity,
+    collection: collection,
+    date: new Date().toLocaleDateString('fr-FR'),
+  });
+
   document.getElementById('nftName').textContent   = nft.name;
   document.getElementById('nftRarity').textContent = nft.rarity;
   const c = document.getElementById('sparklesCont');
@@ -442,6 +456,77 @@ function collectQuest(key) {
 }
 
 // ===== NAVIGATION =====
+// ===== COLLECTION NFT =====
+function renderCollection() {
+  const container = document.getElementById('collectionContent');
+  const counter   = document.getElementById('nftCount');
+  if (!container) return;
+
+  const total = state.wonNFTs.length;
+  if (counter) counter.textContent = total + (total > 1 ? ' NFT' : ' NFT');
+
+  if (total === 0) {
+    container.innerHTML = `
+    <div style="text-align:center;padding:40px 20px;">
+      <div style="font-size:48px;margin-bottom:12px;">🎲</div>
+      <div style="font-size:16px;font-weight:900;color:var(--gold);margin-bottom:8px;">Aucun NFT pour l'instant</div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Continue à taper sur Paco —<br>un NFT peut tomber à tout moment !</div>
+    </div>`;
+    return;
+  }
+
+  // Grouper par collection
+  const collections = {};
+  state.wonNFTs.forEach(nft => {
+    if (!collections[nft.collection]) collections[nft.collection] = [];
+    collections[nft.collection].push(nft);
+  });
+
+  // Couleurs par rareté
+  const rarityColor = {
+    'LEGENDARY': '#E67E22',
+    'EPIC':      '#9B59B6',
+    'RARE':      '#3498DB',
+    'UNCOMMON':  '#27AE60',
+    'COMMON':    '#9D9D9D',
+  };
+
+  let html = '';
+  const collOrder = ['Genesis', 'Saison 1', 'Thématique'];
+  collOrder.forEach(collName => {
+    const nfts = collections[collName];
+    if (!nfts || nfts.length === 0) return;
+
+    html += `<div style="margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">
+        ${collName === 'Genesis' ? '⭐' : collName === 'Saison 1' ? '🏆' : '🎭'} ${collName}
+        <span style="font-size:10px;color:var(--text-muted);font-weight:700;margin-left:6px;">${nfts.length} NFT</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">`;
+
+    nfts.forEach(nft => {
+      // Extraire la clé de rareté depuis la string
+      let color = '#9D9D9D';
+      if (nft.rarity.includes('Légendaire')) color = '#E67E22';
+      else if (nft.rarity.includes('Épique'))    color = '#9B59B6';
+      else if (nft.rarity.includes('Rare'))       color = '#3498DB';
+      else if (nft.rarity.includes('Commun'))     color = '#27AE60';
+
+      html += `
+        <div style="background:var(--bg-card);border:2px solid ${color};border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;">
+          <div style="font-size:36px;">🐶</div>
+          <div style="font-size:10px;font-weight:900;color:${color};text-align:center;">${nft.rarity.split('·')[0].trim()}</div>
+          <div style="font-size:12px;font-weight:900;text-align:center;line-height:1.3;">${nft.name}</div>
+          <div style="font-size:9px;color:var(--text-muted);">Gagné le ${nft.date}</div>
+        </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
 function navigate(screen) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active','slide-in'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -455,8 +540,9 @@ function navigate(screen) {
   document.getElementById('topbar').className = 'topbar ' + (isHome ? 'home-bar' : 'dark-bar');
   closeDogsPanel();
   // Render selon écran
-  if (screen === 'chiens')    renderDogCards();
-  if (screen === 'quetes')    renderQuests();
+  if (screen === 'chiens')     renderDogCards();
+  if (screen === 'quetes')     renderQuests();
+  if (screen === 'collection') renderCollection();
 }
 
 function switchQueteTab(tab) {
