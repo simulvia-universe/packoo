@@ -720,6 +720,7 @@ function closeDogsPanel() {
 loadState();
 updateUI();
 updatePass();
+setTimeout(() => updateQuestBadge(), 200);
 
 // Render initial
 renderDogCards();
