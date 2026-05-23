@@ -92,7 +92,7 @@ html,body{width:100vw;height:100vh;overflow:hidden;font-family:'Nunito',sans-ser
 /* HOME */
 .home-middle{flex:1;position:relative;overflow:hidden;width:100%;}
 .game-title{position:absolute;top:4px;left:0;right:0;text-align:center;z-index:10;pointer-events:none;}
-.game-title h1{font-family:'Fredoka One',cursive;font-size:42px;color:#fff;text-shadow:0 0 10px #4af,0 0 20px #4af,0 0 40px #4af,0 4px 8px rgba(0,0,0,0.9);letter-spacing:4px;line-height:1;}
+.game-title h1{font-family:'Pacifico',cursive;font-size:42px;color:#fff;text-shadow:0 4px 8px rgba(0,0,0,0.9);letter-spacing:2px;line-height:1;}
 .game-subtitle{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:4px;text-transform:uppercase;margin-top:1px;}
 .side-buttons-left{position:absolute;left:8px;top:68px;display:flex;flex-direction:column;gap:6px;z-index:10;}
 .side-btn{width:52px;background:var(--bg-card2);border:1px solid rgba(245,166,35,0.28);border-radius:12px;padding:6px 3px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;transition:transform 0.15s;}
