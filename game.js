@@ -17,6 +17,9 @@ let state = {
   boostActive: false,
   boostEnd: 0,
   wonNFTs: [], // NFT gagnés : { name, rarity, collection, date }
+  passPoints: 0,
+  passLevel: 1,
+  passActivated: false,
   questsDaily: {
     tap50:  { progress:0, done:false },
     tap200: { progress:0, done:false },
@@ -164,6 +167,12 @@ function tapPaco(e) {
   state.totalTaps  ++;
   state.chanceScore++;
   state.playerXP   += 2;
+  state.passPoints = (state.passPoints || 0) + 1;
+  // Montée niveau pass
+  if (state.passPoints >= state.passLevel * 100) {
+    state.passLevel++;
+    showToast('👑 Pass niveau ' + state.passLevel + ' !');
+  }
   Object.keys(state.pityCounters).forEach(r => state.pityCounters[r]++);
 
   // Quêtes tap
@@ -617,6 +626,7 @@ function navigate(screen) {
   if (screen === 'chiens')     renderDogCards();
   if (screen === 'quetes')     renderQuests();
   if (screen === 'collection') renderCollection();
+  if (screen === 'pass')       updatePass();
 }
 
 function switchQueteTab(tab) {
@@ -633,6 +643,48 @@ function switchQueteTab(tab) {
   renderQuests();
 }
 
+// ===== RESET JEU =====
+function resetGame() {
+  if (!confirm('Réinitialiser toute ta progression ? Cette action est irréversible.')) return;
+  localStorage.removeItem('packoo_save');
+  location.reload();
+}
+
+// ===== MENU HAMBURGER =====
+function toggleMenu() {
+  const panel = document.getElementById('menuPanel');
+  if (panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+// ===== PASS SAISON =====
+function activatePass() {
+  if (state.passActivated) { showToast('Pass déjà activé !'); return; }
+  if (state.diamonds < 499) { showToast('Pas assez de Diamants ! 💎'); return; }
+  state.diamonds -= 499;
+  state.passActivated = true;
+  updateUI();
+  saveState();
+  showToast('👑 Pass Saison activé !');
+  updatePass();
+}
+
+function updatePass() {
+  const el = document.getElementById('passLevelDisplay');
+  if (el) el.textContent = state.passLevel;
+  const elPts = document.getElementById('passPointsDisplay');
+  if (elPts) elPts.textContent = state.passPoints;
+  const elBar = document.getElementById('passLevelBar');
+  const ptsForNextLevel = 100;
+  const pct = Math.min(100, Math.round((state.passPoints % ptsForNextLevel) / ptsForNextLevel * 100));
+  if (elBar) elBar.style.width = pct + '%';
+  const elBtn = document.getElementById('passActivateBtn');
+  if (elBtn) {
+    elBtn.textContent = state.passActivated ? '✅ Pass activé' : 'ACTIVER LE PASS 💎 499';
+    elBtn.style.opacity = state.passActivated ? '0.6' : '1';
+    elBtn.style.cursor = state.passActivated ? 'default' : 'pointer';
+  }
+}
+
 function openDogsPanel()  {
   document.getElementById('dogsPanel').classList.add('open');
   document.getElementById('panelBackdrop').classList.add('open');
@@ -645,6 +697,7 @@ function closeDogsPanel() {
 // ===== INIT =====
 loadState();
 updateUI();
+updatePass();
 
 // Render initial
 renderDogCards();
