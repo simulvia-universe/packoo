@@ -650,10 +650,11 @@ function navigate(screen) {
   document.getElementById('topbar').className = 'topbar ' + (isHome ? 'home-bar' : 'dark-bar');
   closeDogsPanel();
   // Render selon écran
-  if (screen === 'chiens')     renderDogCards();
-  if (screen === 'quetes')     renderQuests();
-  if (screen === 'collection') renderCollection();
-  if (screen === 'pass')       updatePass();
+  if (screen === 'chiens')      renderDogCards();
+  if (screen === 'quetes')      renderQuests();
+  if (screen === 'collection')  renderCollection();
+  if (screen === 'pass')        updatePass();
+  if (screen === 'classement')  renderClassement();
 }
 
 function switchQueteTab(tab) {
@@ -671,6 +672,34 @@ function switchQueteTab(tab) {
 }
 
 // ===== RESET JEU =====
+// ===== CLASSEMENT =====
+const FAKE_PLAYERS = [
+  { name:'AlphaKing',    score:98750000, badge:'🛡️ Légende' },
+  { name:'BoneCollector',score:76320000, badge:'🛡️ Maître'  },
+  { name:'PacoLover',    score:64180000, badge:'🛡️ Maître'  },
+  { name:'DogWhisperer', score:52900000, badge:'🛡️ Légende' },
+  { name:'LunaFan',      score:48210000, badge:'🛡️ Maître'  },
+  { name:'PuppyLegend',  score:41770000, badge:'🛡️ Maître'  },
+  { name:'BullyBoss',    score:37450000, badge:'🛡️ Maître'  },
+  { name:'SnowPup',      score:35120000, badge:'🛡️ Légende' },
+];
+
+function renderClassement() {
+  const myScore = Math.floor(state.bones);
+  // Calculer mon rang parmi les fictifs
+  const rank = FAKE_PLAYERS.filter(p => p.score > myScore).length + 1;
+  const xpPct = Math.round((state.playerXP / (state.playerLevel * 100)) * 100);
+
+  const elRank  = document.getElementById('playerRank');
+  const elScore = document.getElementById('playerScore');
+  const elLvl   = document.getElementById('playerLvlBadge');
+  const elBar   = document.getElementById('playerLvlBar');
+  if (elRank)  elRank.textContent  = rank;
+  if (elScore) elScore.textContent = fmt(myScore) + ' 🦴';
+  if (elLvl)   elLvl.textContent   = state.playerLevel;
+  if (elBar)   elBar.style.width   = xpPct + '%';
+}
+
 // ===== SHOP =====
 function buyBoost(type) {
   const costs = { production:150, chance:200 };
