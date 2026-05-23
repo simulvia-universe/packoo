@@ -659,7 +659,8 @@ function navigate(screen) {
   if (screen === 'quetes')      renderQuests();
   if (screen === 'collection')  renderCollection();
   if (screen === 'pass')        updatePass();
-  if (screen === 'classement')  renderClassement();
+  if (screen === 'classement')   renderClassement();
+  if (screen === 'evenements')   startEventCountdown();
 }
 
 function switchQueteTab(tab) {
@@ -688,6 +689,30 @@ const FAKE_PLAYERS = [
   { name:'BullyBoss',    score:37450000, badge:'🛡️ Maître'  },
   { name:'SnowPup',      score:35120000, badge:'🛡️ Légende' },
 ];
+
+// ===== ÉVÉNEMENTS =====
+let eventCountdownInterval = null;
+function startEventCountdown() {
+  // Date de fin de l'événement Halloween (exemple : 6 jours à partir d'aujourd'hui)
+  const endDate = new Date();
+  endDate.setDate(endDate.getDate() + 6);
+  endDate.setHours(endDate.getHours() + 14);
+  endDate.setMinutes(endDate.getMinutes() + 32);
+
+  if (eventCountdownInterval) clearInterval(eventCountdownInterval);
+  function update() {
+    const now = Date.now();
+    const diff = endDate - now;
+    if (diff <= 0) { clearInterval(eventCountdownInterval); return; }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const el = document.getElementById('eventCountdown');
+    if (el) el.textContent = d + 'j ' + h + 'h ' + m + 'm';
+  }
+  update();
+  eventCountdownInterval = setInterval(update, 60000);
+}
 
 function renderClassement() {
   const myScore = Math.floor(state.bones);
