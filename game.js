@@ -224,7 +224,12 @@ function tapPaco(e) {
 
   // Bounce Paco
   const p = document.querySelector('.paco-img');
-  if (p) { p.style.transform = 'scale(0.88)'; setTimeout(() => p.style.transform = '', 110); }
+  if (p) {
+    p.classList.remove('tapped');
+    void p.offsetWidth; // force reflow pour relancer l'animation
+    p.classList.add('tapped');
+    setTimeout(() => p.classList.remove('tapped'), 400);
+  }
 
   updateUI();
   checkDrop();
