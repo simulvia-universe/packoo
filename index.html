@@ -2,10 +2,33 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Packoo</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pacifico&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+<script>
+// Scaling automatique — le jeu se zoom pour s'adapter à l'écran
+(function() {
+  const BASE_W = 390;
+  const BASE_H = 844;
+  function scale() {
+    const scaleX = window.innerWidth  / BASE_W;
+    const scaleY = window.innerHeight / BASE_H;
+    const s = Math.min(scaleX, scaleY);
+    const app = document.getElementById('app-wrapper');
+    if (!app) return;
+    app.style.transform = 'scale(' + s + ')';
+    app.style.transformOrigin = 'top left';
+    app.style.width  = BASE_W + 'px';
+    app.style.height = BASE_H + 'px';
+    app.style.position = 'absolute';
+    app.style.left = ((window.innerWidth  - BASE_W * s) / 2) + 'px';
+    app.style.top  = ((window.innerHeight - BASE_H * s) / 2) + 'px';
+  }
+  window.addEventListener('resize', scale);
+  window.addEventListener('load', scale);
+})();
+</script>
 </head>
 <body>
 <div class="bg-layer"></div>
@@ -25,7 +48,7 @@
   </div>
 </div>
 
-<div class="app">
+<div class="app" id="app-wrapper">
   <!-- TOPBAR -->
   <div class="topbar home-bar" id="topbar">
     <div class="player-avatar">🐕</div>
