@@ -44,11 +44,11 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#
 @keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
 
 /* SCROLLABLE CONTENT */
-.scroll-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:12px 10px 90px;scrollbar-width:none;}
+.scroll-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 12px 90px;scrollbar-width:none;}
 .scroll-content::-webkit-scrollbar{display:none;}
 
 /* PAGE TITLE */
-.page-title{text-align:center;margin-bottom:12px;font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);display:flex;align-items:center;justify-content:center;gap:8px;}
+.page-title{text-align:center;margin-bottom:18px;font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);display:flex;align-items:center;justify-content:center;gap:8px;}
 
 /* FILTER TABS */
 .filter-tabs{display:flex;gap:6px;margin-bottom:12px;}
@@ -60,7 +60,7 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#
 .dimg{object-fit:contain;display:block;}
 
 /* DOG CARDS */
-.dog-card{background:var(--bg-card);border:1px solid rgba(245,166,35,0.18);border-radius:16px;margin-bottom:10px;display:flex;overflow:hidden;}
+.dog-card{background:var(--bg-card);border:1px solid rgba(245,166,35,0.18);border-radius:16px;margin-bottom:14px;display:flex;overflow:hidden;}
 .dog-card-img{width:120px;flex-shrink:0;background:linear-gradient(135deg,#2a1500,#4a2800);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:140px;}
 .dog-card-img .dimg{width:120px;height:140px;}
 .rarity-badge{position:absolute;top:8px;left:8px;padding:3px 8px;border-radius:6px;font-size:9px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:0.5px;z-index:2;}
@@ -112,7 +112,7 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#
 .paco-glow-ring{position:absolute;bottom:185px;left:50%;transform:translateX(-50%);width:240px;height:60px;background:radial-gradient(ellipse,rgba(245,166,35,0.2) 0%,transparent 70%);border-radius:50%;animation:glow 2.5s ease-in-out infinite;pointer-events:none;z-index:4;}
 @keyframes glow{0%,100%{opacity:0.5;transform:translateX(-50%) scale(1);}50%{opacity:1;transform:translateX(-50%) scale(1.12);}}
 .paco-tap-area{position:absolute;bottom:155px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:5;user-select:none;}
-.paco-img{width:280px;max-width:280px;filter:drop-shadow(0 6px 20px rgba(0,0,0,0.7)) drop-shadow(0 0 14px rgba(245,166,35,0.2));transition:transform 0.12s ease;display:block;-webkit-user-drag:none;}
+.paco-img{width:280px;max-width:280px;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.8)) drop-shadow(0 0 8px rgba(245,166,35,0.1));transition:transform 0.12s ease;display:block;-webkit-user-drag:none;}
 .paco-tap-area:active .paco-img{transform:scale(0.88);}
 .tap-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);text-align:center;margin-top:4px;}
 .tap-subtitle{font-size:10px;color:var(--text-muted);font-weight:600;text-align:center;margin-top:1px;}
@@ -169,9 +169,9 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#
 .nav-icon{font-size:22px;}
 .nav-label{font-size:10px;font-weight:700;color:var(--text-muted);}
 .nav-item.active .nav-label{color:var(--gold);}
-.nav-item.active .nav-icon{filter:drop-shadow(0 0 6px var(--shadow-gold));}
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 4px var(--shadow-gold));}
 .nav-tap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;margin-top:-28px;}
-.nav-tap-btn{width:68px;height:68px;background:radial-gradient(circle at 40% 35%,#C47D0E,#8B5500);border-radius:50%;border:3px solid rgba(245,166,35,0.55);box-shadow:0 0 18px rgba(245,166,35,0.4),0 4px 12px rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:900;transition:transform 0.1s;line-height:1.2;color:#1A0F00;}
+.nav-tap-btn{width:68px;height:68px;background:radial-gradient(circle at 40% 35%,#C47D0E,#8B5500);border-radius:50%;border:3px solid rgba(245,166,35,0.55);box-shadow:0 0 12px rgba(245,166,35,0.3),0 4px 12px rgba(0,0,0,0.6);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:900;transition:transform 0.1s;line-height:1.2;color:#1A0F00;}
 .nav-tap:active .nav-tap-btn{transform:scale(0.91);}
 .nav-tap .nav-label{color:var(--gold);font-size:10px;font-weight:700;}
 
@@ -181,7 +181,7 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#
 .nft-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.9);z-index:500;display:none;align-items:center;justify-content:center;flex-direction:column;}
 .nft-overlay.show{display:flex;animation:fdIn 0.3s ease;}
 @keyframes fdIn{from{opacity:0;}to{opacity:1;}}
-.nft-win-card{background:linear-gradient(135deg,#2A1A08,#3D2510);border:2px solid var(--gold);border-radius:24px;padding:28px 22px;text-align:center;box-shadow:0 0 60px rgba(245,166,35,0.5);max-width:80vw;animation:cardIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);}
+.nft-win-card{background:linear-gradient(135deg,#2A1A08,#3D2510);border:2px solid var(--gold);border-radius:24px;padding:28px 22px;text-align:center;box-shadow:0 0 80px rgba(245,166,35,0.6);max-width:80vw;animation:cardIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);}
 @keyframes cardIn{from{transform:scale(0.5) rotate(-8deg);opacity:0;}to{transform:scale(1) rotate(0);opacity:1;}}
 .btn-claim{background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:13px;padding:11px 28px;font-size:15px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;}
 .sparkle{position:absolute;width:5px;height:5px;background:var(--gold-light);border-radius:50%;animation:sparkleA 1s ease-out forwards;}
