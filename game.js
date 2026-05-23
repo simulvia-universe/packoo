@@ -107,7 +107,7 @@ function updateUI() {
   const prod = Math.round(getTotalProduction() * getStreakMult());
   // Bouton central nav
   const navProd = document.getElementById('navProdDisplay');
-  if (navProd) navProd.textContent = '🦴 ' + fmt(prod) + '/h';
+  if (navProd) navProd.textContent = fmt(prod) + '/h';
   // Diamants
   const gemVal = document.getElementById('diamondsDisplay');
   if (gemVal) gemVal.textContent = fmt(state.diamonds);
