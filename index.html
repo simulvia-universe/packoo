@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Packoo</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pacifico&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -62,10 +62,7 @@
           <div class="side-btn"><span class="nouveau-tag">NOUVEAU</span><span class="sb-icon">🎉</span><span class="sb-label">Événements</span></div>
         </div>
         <div class="right-col">
-          <div class="prod-card" onclick="openDogsPanel()">
-            <div class="prod-card-label">PRODUCTION</div>
-            <div class="prod-card-val" id="prodHomeDisplay">🦴 0 <span style="font-size:10px;color:var(--text-muted)">/h</span></div>
-          </div>
+
           <div class="cadeau-btn"><div class="cb-badge">1</div><span style="font-size:20px">🎁</span><span style="font-size:7px;font-weight:800;color:var(--text-muted)">CADEAU</span></div>
         </div>
         <div class="panel-backdrop" id="panelBackdrop" onclick="closeDogsPanel()"></div>
@@ -712,7 +709,7 @@
   <nav class="bottom-nav">
     <div class="nav-item active" id="nav-home" onclick="navigate('home')"><span class="nav-icon">🏠</span><span class="nav-label">Accueil</span></div>
     <div class="nav-item" id="nav-chiens" onclick="navigate('chiens')"><span class="nav-icon">🐾</span><span class="nav-label">Chiens</span></div>
-    <div class="nav-tap" onclick="openDogsPanel()"><div class="nav-tap-btn">⚡</div><span class="nav-label">Production</span></div>
+    <div class="nav-tap" onclick="openDogsPanel()"><div class="nav-tap-btn" style="font-size:13px;font-weight:900;" id="navProdDisplay">🦴 900/h</div></div>
     <div class="nav-item" id="nav-collection" onclick="navigate('collection')"><span class="nav-icon">🃏</span><span class="nav-label">Collection</span></div>
     <div class="nav-item" id="nav-classement" onclick="navigate('classement')"><span class="nav-icon">🏆</span><span class="nav-label">Classement</span></div>
   </nav>
