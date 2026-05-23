@@ -671,6 +671,35 @@ function switchQueteTab(tab) {
 }
 
 // ===== RESET JEU =====
+// ===== SHOP =====
+function buyBoost(type) {
+  const costs = { production:150, chance:200 };
+  if (state.diamonds < costs[type]) { showToast('Pas assez de Diamants ! 💎'); return; }
+  state.diamonds -= costs[type];
+  state.boostActive = true;
+  state.boostEnd = Date.now() + (type === 'production' ? 7200000 : 3600000);
+  if (type === 'chance') Object.keys(state.pityCounters).forEach(r => state.pityCounters[r] += 100);
+  updateUI(); saveState();
+  showToast(type === 'production' ? '⚡ Production x2 activée 2h !' : '🍀 Chance NFT x3 activée 1h !');
+}
+
+function buyBones() {
+  if (state.diamonds < 100) { showToast('Pas assez de Diamants ! 💎'); return; }
+  state.diamonds -= 100;
+  state.bones += 500000;
+  updateUI(); saveState();
+  showToast('🦴 +500,000 Bones !');
+}
+
+function buyPack(type) {
+  // Les packs nécessiteront Telegram Stars — pour l'instant message info
+  showToast('💳 Paiement bientôt disponible via Telegram Stars !');
+}
+
+function buySpecialOffer() {
+  showToast('🔥 Offre spéciale bientôt disponible !');
+}
+
 function resetGame() {
   if (!confirm('Réinitialiser toute ta progression ? Cette action est irréversible.')) return;
   localStorage.removeItem('packoo_save');
