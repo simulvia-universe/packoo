@@ -20,6 +20,7 @@ let state = {
   passPoints: 0,
   passLevel: 1,
   passActivated: false,
+  passClaimedTiers: [],
   questsDaily: {
     tap50:  { progress:0, done:false },
     tap200: { progress:0, done:false },
@@ -864,6 +865,7 @@ function activatePass() {
 }
 
 function updatePass() {
+  window.state = state;
   window._state = state;
   if (typeof renderPassRewards === 'function') renderPassRewards();
   const el = document.getElementById('passLevelDisplay');
