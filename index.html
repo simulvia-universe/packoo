@@ -215,164 +215,121 @@
     </div>
     <!-- ===== PASS ===== -->
     <div class="screen" id="screen-pass">
-      <div class="scroll-content">
+      <div class="scroll-content" style="padding:0;">
 
-        <!-- Title -->
-        <div style="text-align:center;margin-bottom:12px;">
-          <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#5C3A1E,#3A2010);border:2px solid rgba(180,120,40,0.5);border-radius:16px;padding:10px 20px;">
-            <span style="font-size:28px">👑</span>
-            <div>
-              <div style="font-family:'Fredoka One',cursive;font-size:28px;color:#F5DEB3;text-shadow:0 2px 8px rgba(0,0,0,0.5);">PASS</div>
-              <div style="font-size:11px;font-weight:900;color:var(--gold);letter-spacing:1px;">SAISON 1 : FOUNDERS PACK ℹ️</div>
-            </div>
+        <!-- HERO BANNER -->
+        <div style="background:linear-gradient(160deg,#1a0a00,#2d1500,#1a0a00);border-bottom:2px solid rgba(245,166,35,0.4);padding:20px 16px 16px;text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 70% 50%,rgba(245,166,35,0.08),transparent 70%);pointer-events:none;"></div>
+          <div style="font-family:'Fredoka One',cursive;font-size:34px;color:var(--gold);text-shadow:0 2px 12px rgba(245,166,35,0.4);line-height:1;margin-bottom:2px;">PASS PACKOO</div>
+          <div style="font-size:13px;font-weight:900;color:#F5DEB3;letter-spacing:2px;margin-bottom:10px;">SAISON 1</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,0.4);border:1px solid rgba(245,166,35,0.3);border-radius:20px;padding:5px 14px;">
+            <span style="font-size:12px;">⏱️</span>
+            <span style="font-size:11px;color:var(--text-muted);">FIN DANS :</span>
+            <span id="passTimerDisplay" style="font-size:12px;font-weight:900;color:var(--gold);">37J 12H</span>
           </div>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px;">
-          <span style="font-size:14px">⏱️</span>
-          <span style="font-size:11px;color:var(--text-muted);">Se termine dans :</span>
-          <span style="font-size:12px;font-weight:900;color:var(--gold);">18j 12h</span>
+        <div style="padding:14px;">
+
+        <!-- TABS RÉCOMPENSES / QUÊTES -->
+        <div style="display:flex;gap:0;margin-bottom:14px;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;">
+          <div onclick="switchPassTab('rewards')" id="passTab-rewards" style="flex:1;text-align:center;padding:10px;font-size:12px;font-weight:900;color:var(--gold);background:rgba(245,166,35,0.15);cursor:pointer;">🎁 RÉCOMPENSES</div>
+          <div onclick="switchPassTab('quetes')" id="passTab-quetes" style="flex:1;text-align:center;padding:10px;font-size:12px;font-weight:900;color:var(--text-muted);cursor:pointer;">🔄 QUÊTES</div>
         </div>
 
-        <!-- Tabs -->
-        <div class="filter-tabs" style="margin-bottom:12px;">
-          <div class="tab active">Pass</div>
+        <!-- SECTION RÉCOMPENSES -->
+        <div id="passSection-rewards">
+
+          <!-- Débloquer Pass -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:16px;">🐾</span><span style="font-size:12px;font-weight:900;color:var(--text-muted);">GRATUIT</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:14px;">👑</span><span style="font-size:12px;font-weight:900;color:var(--gold);">PREMIUM</span>
+              <button id="passActivateBtn" onclick="activatePass()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:7px 12px;font-size:11px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">DÉBLOQUER PASS</button>
+            </div>
+          </div>
+
+          <!-- Récompenses par palier -->
+          <div id="passRewardsList"></div>
+
+          <!-- Promo Premium -->
+          <div style="background:linear-gradient(135deg,rgba(40,20,0,0.9),rgba(20,10,0,0.95));border:1px solid rgba(245,166,35,0.35);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;margin-top:4px;">
+            <div style="font-size:40px;">🐕</div>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:6px;">PACKOO PASS PREMIUM</div>
+              <div style="font-size:10px;color:var(--text-muted);line-height:1.6;">• Récompenses exclusives<br>• Progression plus rapide<br>• Quêtes spéciales<br>• Soutiens Packoo</div>
+            </div>
+            <div style="font-size:32px;">🪙</div>
+          </div>
+
         </div>
 
-        <!-- Promo pass -->
-        <div style="background:linear-gradient(135deg,rgba(60,35,0,0.9),rgba(40,20,0,0.95));border:1px solid rgba(245,166,35,0.4);border-radius:16px;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px;">
-          <span class="" style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">🐶</span>
+        <!-- SECTION QUÊTES PASS (cachée par défaut) -->
+        <div id="passSection-quetes" style="display:none;">
+          <div style="text-align:center;padding:30px 0;color:var(--text-muted);font-size:13px;">
+            <div style="font-size:32px;margin-bottom:8px;">🔄</div>
+            Quêtes Pass — Bientôt disponible
+          </div>
+        </div>
+
+        <!-- Points Pass -->
+        <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:12px;margin-top:12px;display:flex;align-items:center;gap:10px;">
+          <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="font-size:20px;">🐾</span>
+          </div>
           <div style="flex:1;">
-            <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:6px;">DÉBLOQUE DES RÉCOMPENSES EXCLUSIVES !</div>
-            <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:10px;">
-              <div style="font-size:11px;color:var(--text-muted);">🐾 Plus de récompenses</div>
-              <div style="font-size:11px;color:var(--text-muted);">⚡ Boosts exclusifs</div>
-              <div style="font-size:11px;color:var(--text-muted);">🎁 Cadeaux et apparences uniques</div>
-            </div>
-            <button id="passActivateBtn" onclick="activatePass()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:12px;padding:10px 16px;font-size:13px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">ACTIVER LE PASS 💎 499</button>
-          </div>
-        </div>
-
-        <!-- Niveau pass -->
-        <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.22);border-radius:14px;padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">
-          <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#1A0F00;flex-shrink:0;">25</div>
-          <div style="flex:1;">
-            <div style="font-size:10px;color:var(--text-muted);font-weight:800;text-transform:uppercase;letter-spacing:1px;">NIVEAU PASS</div>
-            <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:4px;margin-top:4px;overflow:hidden;"><div style="height:100%;width:82%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:4px;"></div></div>
-            <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">2,450 / 3,000 <span style="color:var(--gold);">3 🐾 / niv.</span></div>
-          </div>
-          <button style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.3);border-radius:10px;padding:8px 12px;font-size:11px;font-weight:900;color:var(--gold);cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;">ACHETER DES NIVEAUX »</button>
-        </div>
-
-        <!-- Grille récompenses -->
-        <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:12px;margin-bottom:12px;overflow:hidden;">
-          <div style="display:flex;gap:0;overflow-x:auto;scrollbar-width:none;">
-
-            <!-- Premium label -->
-            <div style="flex-shrink:0;width:70px;display:flex;flex-direction:column;gap:6px;margin-right:6px;">
-              <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:8px;padding:6px;text-align:center;font-size:10px;font-weight:900;color:#1A0F00;">PREMIUM</div>
-              <div style="height:72px;display:flex;align-items:center;justify-content:center;"><button style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">ACTIVER</button></div>
-              <div style="background:rgba(100,100,100,0.2);border:1px solid rgba(100,100,100,0.2);border-radius:8px;padding:6px;text-align:center;font-size:10px;font-weight:800;color:var(--text-muted);">GRATUIT</div>
-              <div style="height:72px;"></div>
-            </div>
-
-            <!-- Niveaux -->
-            <div style="display:flex;gap:6px;">
-              <!-- Niv 24 — débloqué premium -->
-              <div style="flex-shrink:0;width:60px;">
-                <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);border-radius:8px;padding:4px;text-align:center;font-size:9px;font-weight:800;color:var(--text-muted);margin-bottom:4px;">24</div>
-                <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);border-radius:10px;padding:8px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-                  <div style="font-size:20px">💎</div>
-                  <div style="font-size:11px;font-weight:900;color:#7DD4FC;">200</div>
-                  <div style="font-size:14px">✓</div>
-                </div>
-                <div style="background:rgba(30,30,30,0.5);border:1px solid rgba(100,100,100,0.2);border-radius:10px;padding:8px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;margin-top:4px;">
-                  <div style="font-size:20px">🦴</div>
-                  <div style="font-size:11px;font-weight:900;color:var(--gold-light);">10,000</div>
-                  <div style="font-size:14px">✓</div>
-                </div>
-              </div>
-              <!-- Niv 25 — actuel -->
-              <div style="flex-shrink:0;width:60px;">
-                <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:8px;padding:4px;text-align:center;font-size:9px;font-weight:900;color:#1A0F00;margin-bottom:4px;">25 ★</div>
-                <div style="background:linear-gradient(135deg,rgba(60,35,0,0.9),rgba(40,20,0,0.95));border:2px solid var(--gold);border-radius:10px;padding:6px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
-                  <span class="" style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">🐶</span>
-                  <div style="font-size:8px;font-weight:800;color:var(--gold);">Skin exclusif</div>
-                </div>
-                <div style="background:rgba(30,30,30,0.5);border:1px solid rgba(100,100,100,0.2);border-radius:10px;padding:8px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;margin-top:4px;">
-                  <div style="font-size:20px">💎</div>
-                  <div style="font-size:11px;font-weight:900;color:#7DD4FC;">50</div>
-                  <div style="font-size:14px">✓</div>
-                </div>
-              </div>
-              <!-- Niv 26-28 verrouillés -->
-              <div style="flex-shrink:0;width:60px;">
-                <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.15);border-radius:8px;padding:4px;text-align:center;font-size:9px;font-weight:800;color:var(--text-muted);margin-bottom:4px;">26</div>
-                <div style="background:rgba(20,10,0,0.7);border:1px solid rgba(100,100,100,0.15);border-radius:10px;padding:8px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-                  <div style="font-size:20px">⚡</div>
-                  <div style="font-size:11px;font-weight:900;color:white;">x10</div>
-                  <div style="font-size:14px;opacity:0.4">🔒</div>
-                </div>
-                <div style="background:rgba(20,10,0,0.7);border:1px solid rgba(100,100,100,0.15);border-radius:10px;padding:8px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;margin-top:4px;">
-                  <div style="font-size:20px">⚡</div>
-                  <div style="font-size:11px;font-weight:900;color:white;">x5</div>
-                  <div style="font-size:14px;opacity:0.4">🔒</div>
-                </div>
-              </div>
-              <div style="flex-shrink:0;width:60px;">
-                <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.15);border-radius:8px;padding:4px;text-align:center;font-size:9px;font-weight:800;color:var(--text-muted);margin-bottom:4px;">27</div>
-                <div style="background:rgba(20,10,0,0.7);border:1px solid rgba(100,100,100,0.15);border-radius:10px;padding:8px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-                  <div style="font-size:20px">🏠</div>
-                  <div style="font-size:11px;font-weight:900;color:white;">x1</div>
-                  <div style="font-size:14px;opacity:0.4">🔒</div>
-                </div>
-                <div style="background:rgba(20,10,0,0.7);border:1px solid rgba(100,100,100,0.15);border-radius:10px;padding:8px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;margin-top:4px;">
-                  <div style="font-size:20px">🃏</div>
-                  <div style="font-size:11px;font-weight:900;color:white;">x1</div>
-                  <div style="font-size:14px;opacity:0.4">🔒</div>
-                </div>
-              </div>
-              <div style="flex-shrink:0;width:60px;">
-                <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.15);border-radius:8px;padding:4px;text-align:center;font-size:9px;font-weight:800;color:var(--text-muted);margin-bottom:4px;">28</div>
-                <div style="background:rgba(20,10,0,0.7);border:1px solid rgba(100,100,100,0.15);border-radius:10px;padding:8px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-                  <div style="font-size:20px">🦴</div>
-                  <div style="font-size:11px;font-weight:900;color:var(--gold-light);">50,000</div>
-                  <div style="font-size:14px;opacity:0.4">🔒</div>
-                </div>
-                <div style="background:rgba(20,10,0,0.7);border:1px solid rgba(100,100,100,0.15);border-radius:10px;padding:8px;text-align:center;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;margin-top:4px;">
-                  <div style="font-size:20px">🦴</div>
-                  <div style="font-size:11px;font-weight:900;color:var(--gold-light);">20,000</div>
-                  <div style="font-size:14px;opacity:0.4">🔒</div>
-                </div>
-              </div>
+            <div style="font-size:10px;color:var(--text-muted);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">POINTS PASS</div>
+            <div style="height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;">
+              <div id="passLevelBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:3px;transition:width 0.3s;"></div>
             </div>
           </div>
-        </div>
-
-        <!-- Bottom 3 panels -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
-          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:10px;">
-            <div style="font-size:18px;margin-bottom:4px;">📋</div>
-            <div style="font-size:10px;font-weight:900;color:var(--gold);margin-bottom:4px;">MISSIONS PASS</div>
-            <div style="font-size:9px;color:var(--text-muted);line-height:1.3;margin-bottom:8px;">Accomplis des missions pour gagner des points de Pass !</div>
-            <button onclick="navigate('quetes')" style="width:100%;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);border-radius:8px;padding:6px;font-size:10px;font-weight:900;color:var(--gold);cursor:pointer;font-family:'Nunito',sans-serif;">VOIR LES MISSIONS</button>
-          </div>
-          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:10px;text-align:center;">
-            <div style="width:50px;height:50px;border:3px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><div id="passPointsDisplay" style="font-family:'Fredoka One',cursive;font-size:16px;color:var(--gold);">0</div></div>
-            <div style="font-size:9px;font-weight:900;color:var(--gold);margin-bottom:2px;">POINTS PASS</div>
-            <div style="font-size:8px;color:var(--text-muted);line-height:1.3;">Obtiens des points pour avancer dans le Pass !</div>
-          </div>
-          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:10px;">
-            <div style="font-size:10px;font-weight:900;color:var(--gold);margin-bottom:4px;">RÉCOMPENSE BONUS</div>
-            <div style="font-size:22px;margin-bottom:4px;">🎁</div>
-            <div style="font-size:8px;color:var(--text-muted);line-height:1.3;margin-bottom:6px;">Atteins le niveau 50 pour débloquer cette récompense !</div>
-            <div style="height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;"><div style="height:100%;width:50%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:2px;"></div></div>
-            <div style="font-size:8px;color:var(--text-muted);margin-top:2px;text-align:right;">25 / 50</div>
+          <div style="text-align:right;">
+            <div style="font-size:16px;font-weight:900;color:var(--gold);" id="passPointsDisplay">0</div>
+            <div style="font-size:9px;color:var(--text-muted);">pts</div>
           </div>
         </div>
 
+        </div><!-- /padding -->
       </div>
     </div>
+    <script>
+const PASS_REWARDS = [
+  { tier:1, free:{icon:'🦴', label:'50K Bones'},    premium:{icon:'🦴', label:'200K Bones'} },
+  { tier:2, free:{icon:'💎', label:'50 Diamants'},  premium:{icon:'💎', label:'150 Diamants'} },
+  { tier:3, free:{icon:'📦', label:'Coffre Rare'},   premium:{icon:'📦', label:'Coffre Épique'} },
+  { tier:4, free:{icon:'⚡', label:'Boost 1H'},     premium:{icon:'⚡', label:'Boost 3H'} },
+  { tier:5, free:{icon:'🐾', label:'100 Pts Paco'}, premium:{icon:'🐾', label:'300 Pts Paco'} },
+];
+function renderPassRewards() {
+  const el = document.getElementById('passRewardsList');
+  if (!el) return;
+  const activated = window._state ? window._state.passActivated : false;
+  el.innerHTML = PASS_REWARDS.map(r => `
+    <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
+      <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:20px;">${r.free.icon}</span>
+        <span style="font-size:12px;font-weight:900;color:var(--gold-light);">${r.free.label}</span>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#1A0F00;font-size:11px;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${r.tier}</div>
+      <div style="flex:1;background:${activated ? 'rgba(245,166,35,0.12)' : 'rgba(20,10,0,0.7)'};border:1px solid ${activated ? 'rgba(245,166,35,0.4)' : 'rgba(100,100,100,0.2)'};border-radius:12px;padding:10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:20px;">${r.premium.icon}</span>
+        <span style="font-size:12px;font-weight:900;color:${activated ? 'var(--gold-light)' : 'var(--text-muted)'};">${r.premium.label}</span>
+        <span style="margin-left:auto;font-size:14px;">${activated ? '✓' : '🔒'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+function switchPassTab(tab) {
+  document.getElementById('passSection-rewards').style.display = tab === 'rewards' ? 'block' : 'none';
+  document.getElementById('passSection-quetes').style.display  = tab === 'quetes'  ? 'block' : 'none';
+  document.getElementById('passTab-rewards').style.color = tab === 'rewards' ? 'var(--gold)' : 'var(--text-muted)';
+  document.getElementById('passTab-rewards').style.background = tab === 'rewards' ? 'rgba(245,166,35,0.15)' : 'transparent';
+  document.getElementById('passTab-quetes').style.color = tab === 'quetes' ? 'var(--gold)' : 'var(--text-muted)';
+  document.getElementById('passTab-quetes').style.background = tab === 'quetes' ? 'rgba(245,166,35,0.15)' : 'transparent';
+}
+</script>
     <!-- ===== SHOP ===== -->
     <div class="screen" id="screen-shop">
       <div class="scroll-content">
