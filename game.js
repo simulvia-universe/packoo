@@ -145,6 +145,7 @@ function fmt(n) {
 
 // ===== MISE À JOUR UI =====
 function updateUI() {
+  updateUpgradeBadge();
   // Bones + production
   const el = document.getElementById('bonesDisplay');
   if (el) el.textContent = fmt(state.bones);
@@ -377,6 +378,18 @@ function setDogFilter(filter) {
 }
 
 // ===== RENDU ÉCRAN CHIENS =====
+
+function updateUpgradeBadge() {
+  const badge = document.getElementById('upgradeBadge');
+  if (!badge) return;
+  const canUpgrade = ALL_DOGS.some(d => {
+    if (!d.unlocked || !d.active) return false;
+    const cost = getLevelCost(d.rarity, d.level, d.id);
+    return cost && state.bones >= cost;
+  });
+  badge.style.display = canUpgrade ? 'flex' : 'none';
+}
+
 function renderDogCards() {
   const container = document.getElementById('dogCardsContainer');
   if (!container) return;
