@@ -343,7 +343,7 @@ function toggleActive(dogId) {
     if (dog.id === 'paco') { showToast('Paco ne peut pas être désactivé !'); return; }
     dog.active = false;
   } else {
-    if (ALL_DOGS.filter(d => d.active).length >= MAX_ACTIVE) { showToast('Équipe pleine !'); return; }
+    if (ALL_DOGS.filter(d => d.active).length >= MAX_ACTIVE) { showToast('6 chiens actifs max — désactive un chien d\'abord !'); return; }
     dog.active = true;
   }
   showToast(dog.emoji + ' ' + dog.name + (dog.active ? ' activé !' : ' en réserve'));
