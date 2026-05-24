@@ -81,17 +81,26 @@ function loadState() {
 }
 
 // ===== FORMULES =====
-function getProduction(rarity, level) {
+function getProduction(rarity, level, dogId) {
+  // Si DOG_PRODUCTION existe (nouveau data.js), on utilise la valeur niveau 50 comme base
+  if (dogId && typeof DOG_PRODUCTION !== 'undefined' && DOG_PRODUCTION[dogId]) {
+    const maxProd = DOG_PRODUCTION[dogId];
+    return Math.round(maxProd * Math.pow(1.0 / Math.pow(1.08, 49), 1) * Math.pow(1.08, level - 1));
+  }
   return Math.round(RARITY[rarity].baseProduction * Math.pow(1.08, level - 1));
 }
-function getLevelCost(rarity, level) {
+function getLevelCost(rarity, level, dogId) {
   if (level >= MAX_LEVEL) return null;
-  return LEVEL_COSTS[rarity][level - 1];
+  // Nouveau data.js : LEVEL_COSTS indexé par id chien (en majuscules)
+  const key = dogId ? dogId.toUpperCase() : rarity;
+  const arr = LEVEL_COSTS[key] || LEVEL_COSTS[rarity];
+  if (!arr) return null;
+  return arr[level - 1];
 }
 function getTotalProduction() {
   return ALL_DOGS
     .filter(d => d.unlocked && d.active)
-    .reduce((sum, d) => sum + getProduction(d.rarity, d.level), 0);
+    .reduce((sum, d) => sum + getProduction(d.rarity, d.level, d.id), 0);
 }
 function getTapBones() {
   const days = state.totalTaps / 500;
@@ -306,7 +315,7 @@ function unlockDog(dogId) {
 function upgradeDog(dogId) {
   const dog = ALL_DOGS.find(d => d.id === dogId);
   if (!dog || !dog.unlocked || dog.level >= MAX_LEVEL) return;
-  const cost = getLevelCost(dog.rarity, dog.level);
+  const cost = getLevelCost(dog.rarity, dog.level, dog.id);
   if (!cost) return;
   if (state.bones < cost) { showToast('🦴 Il te faut ' + fmt(cost) + ' Bones !'); return; }
   state.bones -= cost;
@@ -320,7 +329,7 @@ function upgradeDog(dogId) {
 function upgradeAll() {
   let n = 0;
   ALL_DOGS.filter(d => d.unlocked && d.level < MAX_LEVEL).forEach(dog => {
-    const cost = getLevelCost(dog.rarity, dog.level);
+    const cost = getLevelCost(dog.rarity, dog.level, dog.id);
     if (cost && state.bones >= cost) { state.bones -= cost; dog.level++; n++; }
   });
   if (n === 0) { showToast('Pas assez de Bones !'); return; }
@@ -364,8 +373,8 @@ function renderDogCards() {
   // Chiens débloqués
   dogs.forEach(dog => {
     const r    = RARITY[dog.rarity];
-    const prod = getProduction(dog.rarity, dog.level);
-    const cost = getLevelCost(dog.rarity, dog.level);
+    const prod = getProduction(dog.rarity, dog.level, dog.id);
+    const cost = getLevelCost(dog.rarity, dog.level, dog.id);
     const xpPct = Math.min(100, Math.round((dog.xp / (dog.level * 10)) * 100));
     html += `
     <div class="dog-card">
