@@ -858,14 +858,18 @@ function activatePass() {
   updateUI();
   saveState();
   showToast('👑 Pass Saison activé !');
+  window._state = state;
+  if (typeof renderPassRewards === 'function') renderPassRewards();
   updatePass();
 }
 
 function updatePass() {
+  window._state = state;
+  if (typeof renderPassRewards === 'function') renderPassRewards();
   const el = document.getElementById('passLevelDisplay');
   if (el) el.textContent = state.passLevel;
   const elPts = document.getElementById('passPointsDisplay');
-  if (elPts) elPts.textContent = state.passPoints;
+  if (elPts) elPts.textContent = fmt(state.passPoints || 0);
   const elBar = document.getElementById('passLevelBar');
   const ptsForNextLevel = 100;
   const pct = Math.min(100, Math.round((state.passPoints % ptsForNextLevel) / ptsForNextLevel * 100));
