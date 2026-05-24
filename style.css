@@ -60,26 +60,26 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#
 .dimg{object-fit:contain;display:block;}
 
 /* DOG CARDS */
-.dog-card{background:var(--bg-card);border:1px solid rgba(245,166,35,0.18);border-radius:16px;margin-bottom:14px;display:flex;overflow:hidden;}
-.dog-card-img{width:120px;flex-shrink:0;background:linear-gradient(135deg,#2a1500,#4a2800);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:140px;}
-.dog-card-img .dimg{width:120px;height:140px;}
+.dog-card{background:var(--bg-card);border:1px solid rgba(245,166,35,0.18);border-radius:12px;margin-bottom:8px;display:flex;overflow:hidden;}
+.dog-card-img{width:90px;flex-shrink:0;background:linear-gradient(135deg,#2a1500,#4a2800);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:110px;}
+.dog-card-img .dimg{width:90px;height:110px;}
 .rarity-badge{position:absolute;top:8px;left:8px;padding:3px 8px;border-radius:6px;font-size:9px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:0.5px;z-index:2;}
 .niv-badge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.7);border-radius:6px;padding:2px 6px;font-size:10px;font-weight:800;color:var(--text-muted);z-index:2;}
-.dog-card-info{flex:1;padding:12px 12px 12px 10px;display:flex;flex-direction:column;gap:6px;}
+.dog-card-info{flex:1;padding:8px 10px 8px 8px;display:flex;flex-direction:column;gap:3px;}
 .dog-card-header{display:flex;align-items:center;justify-content:space-between;}
-.dog-card-name{font-size:20px;font-weight:900;display:flex;align-items:center;gap:6px;}
+.dog-card-name{font-size:16px;font-weight:900;display:flex;align-items:center;gap:6px;}
 .actif-badge{background:#1a4a1a;border:1px solid #27AE60;border-radius:20px;padding:3px 8px;font-size:10px;font-weight:800;color:#2ECC71;display:flex;align-items:center;gap:3px;}
 .actif-dot{width:6px;height:6px;background:#2ECC71;border-radius:50%;}
 .prod-label{font-size:10px;color:var(--text-muted);font-weight:700;}
-.prod-val{font-size:22px;font-weight:900;color:var(--gold-light);display:flex;align-items:center;gap:4px;}
+.prod-val{font-size:17px;font-weight:900;color:var(--gold-light);display:flex;align-items:center;gap:4px;}
 .xp-bar-wrap{display:flex;flex-direction:column;gap:3px;}
-.xp-bar-outer{height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;border:1px solid rgba(245,166,35,0.15);}
+.xp-bar-outer{height:5px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;border:1px solid rgba(245,166,35,0.15);}
 .xp-bar-inner{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:4px;}
 .xp-txt{font-size:10px;color:var(--text-muted);font-weight:700;}
 .dog-card-btns{display:flex;gap:6px;}
-.btn-ameliorer{flex:1;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:8px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;}
+.btn-ameliorer{flex:1;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:8px;padding:5px;font-size:11px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;}
 .btn-ameliorer:active{transform:scale(0.95);}
-.btn-details{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(245,166,35,0.2);border-radius:10px;padding:8px;font-size:12px;font-weight:800;color:var(--text-muted);cursor:pointer;font-family:'Nunito',sans-serif;}
+.btn-details{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(245,166,35,0.2);border-radius:8px;padding:5px;font-size:11px;font-weight:800;color:var(--text-muted);cursor:pointer;font-family:'Nunito',sans-serif;}
 
 /* LOCKED */
 .locked-card{background:rgba(28,14,2,0.92);border:1px solid rgba(245,166,35,0.1);border-radius:16px;margin-bottom:10px;display:flex;overflow:hidden;}
