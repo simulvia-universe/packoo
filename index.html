@@ -77,6 +77,20 @@
     <div style="height:1px;background:rgba(245,166,35,0.15);margin-bottom:10px;"></div>
     <button onclick="resetGame()" style="width:100%;background:rgba(231,76,60,0.2);border:1px solid rgba(231,76,60,0.5);border-radius:10px;padding:10px;font-size:12px;font-weight:900;color:#E74C3C;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:8px;">🗑️ Réinitialiser le jeu</button>
     <div style="font-size:9px;color:var(--text-muted);text-align:center;">⚠️ Efface toute la progression</div>
+    <div style="height:1px;background:rgba(245,166,35,0.15);margin:10px 0;"></div>
+    <div style="font-size:10px;font-weight:900;color:#E67E22;letter-spacing:1px;margin-bottom:8px;">⚙️ MODE DEV</div>
+    <button onclick="devAddBones(1000000)"  style="width:100%;background:rgba(52,152,219,0.15);border:1px solid #3498DB;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#3498DB;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">💰 +1 000 000 Bones</button>
+    <button onclick="devAddBones(10000000)" style="width:100%;background:rgba(52,152,219,0.15);border:1px solid #3498DB;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#3498DB;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">💰 +10 000 000 Bones</button>
+    <button onclick="devAddDiamonds(1000)"  style="width:100%;background:rgba(155,89,182,0.15);border:1px solid #9B59B6;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#9B59B6;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">💎 +1 000 Diamants</button>
+    <button onclick="devSetTapMult(100)"    style="width:100%;background:rgba(39,174,96,0.15);border:1px solid #27AE60;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#27AE60;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">⚡ Tap ×100</button>
+    <button onclick="devSetTapMult(1000)"   style="width:100%;background:rgba(39,174,96,0.15);border:1px solid #27AE60;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#27AE60;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">⚡ Tap ×1000</button>
+    <button onclick="devSetTapMult(1)"      style="width:100%;background:rgba(127,140,141,0.15);border:1px solid #7F8C8D;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#7F8C8D;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">⚡ Tap normal</button>
+    <button onclick="devSetPassif(10)"      style="width:100%;background:rgba(230,126,34,0.15);border:1px solid #E67E22;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#E67E22;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">⏩ Passif ×10</button>
+    <button onclick="devSetPassif(100)"     style="width:100%;background:rgba(230,126,34,0.15);border:1px solid #E67E22;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#E67E22;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">⏩ Passif ×100</button>
+    <button onclick="devSetPassif(1)"       style="width:100%;background:rgba(127,140,141,0.15);border:1px solid #7F8C8D;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#7F8C8D;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">⏩ Passif normal</button>
+    <button onclick="devForceDrop()"        style="width:100%;background:rgba(231,76,60,0.15);border:1px solid #E74C3C;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#E74C3C;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">🎲 Forcer Drop NFT</button>
+    <button onclick="devUnlockAll()"        style="width:100%;background:rgba(243,156,18,0.15);border:1px solid #F39C12;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#F39C12;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">🐕 Débloquer tous les chiens</button>
+    <div id="devStatus" style="font-size:9px;color:#E67E22;text-align:center;margin-top:4px;">Tap ×1 | Passif ×1</div>
   </div>
 
   <div class="screens">
@@ -705,5 +719,67 @@
 
 <script src="data.js"></script>
 <script src="game.js"></script>
+
+<script>
+// ===== MODE DEV =====
+let devTapMult   = 1;
+let devPassifMult = 1;
+
+function devAddBones(amount) {
+  state.bones += amount;
+  updateUI(); saveState();
+  showToast('💰 +' + fmt(amount) + ' Bones !');
+  toggleMenu();
+}
+function devAddDiamonds(amount) {
+  state.diamonds += amount;
+  updateUI(); saveState();
+  showToast('💎 +' + amount + ' Diamants !');
+  toggleMenu();
+}
+function devSetTapMult(mult) {
+  devTapMult = mult;
+  const el = document.getElementById('devStatus');
+  if (el) el.textContent = 'Tap ×' + devTapMult + ' | Passif ×' + devPassifMult;
+  showToast('⚡ Tap ×' + mult + ' activé !');
+  toggleMenu();
+}
+function devSetPassif(mult) {
+  devPassifMult = mult;
+  const el = document.getElementById('devStatus');
+  if (el) el.textContent = 'Tap ×' + devTapMult + ' | Passif ×' + devPassifMult;
+  showToast('⏩ Passif ×' + mult + ' activé !');
+  toggleMenu();
+}
+function devForceDrop() {
+  const allNFT = [...NFT_POOLS.GENESIS, ...NFT_POOLS.THEMATIC, ...NFT_POOLS.SEASONAL];
+  const nft = allNFT[Math.floor(Math.random() * allNFT.length)];
+  dropLocked = false;
+  triggerNFT(nft);
+  toggleMenu();
+}
+function devUnlockAll() {
+  ALL_DOGS.forEach(dog => {
+    if (dog.unlockCost !== null) {
+      dog.unlocked = true;
+      if (ALL_DOGS.filter(d => d.active).length < MAX_ACTIVE) dog.active = true;
+    }
+  });
+  updateUI(); renderDogCards(); saveState();
+  showToast('🐕 Tous les chiens débloqués !');
+  toggleMenu();
+}
+
+// Brancher devTapMult et devPassifMult sur game.js
+const _origTap = tapPaco;
+window.tapPaco = function(e) {
+  if (devTapMult === 1) { _origTap(e); return; }
+  // Appliquer le multiplicateur tap
+  const origGet = window.getTapBones;
+  window.getTapBones = () => origGet() * devTapMult;
+  _origTap(e);
+  window.getTapBones = origGet;
+};
+</script>
 </body>
 </html>
