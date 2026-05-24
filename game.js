@@ -343,7 +343,7 @@ function toggleActive(dogId) {
     if (dog.id === 'paco') { showToast('Paco ne peut pas être désactivé !'); return; }
     dog.active = false;
   } else {
-    if (ALL_DOGS.filter(d => d.active).length >= MAX_ACTIVE) { showToast('6 chiens actifs max — désactive un chien d\'abord !'); return; }
+    if (ALL_DOGS.filter(d => d.active).length >= MAX_ACTIVE) { showToast('Équipe pleine !'); return; }
     dog.active = true;
   }
   showToast(dog.emoji + ' ' + dog.name + (dog.active ? ' activé !' : ' en réserve'));
@@ -365,6 +365,11 @@ function renderDogCards() {
   let dogs = ALL_DOGS.filter(d => d.unlocked);
   if (dogFilter === 'active')  dogs = dogs.filter(d => d.active);
   if (dogFilter === 'nft')     dogs = dogs.filter(d => d.rarity === 'LEGENDARY');
+  // Tri : actifs en premier, puis par production décroissante
+  dogs.sort((a, b) => {
+    if (a.active !== b.active) return a.active ? -1 : 1;
+    return getProduction(b.rarity, b.level, b.id) - getProduction(a.rarity, a.level, a.id);
+  });
   if (dogFilter === 'rarity')  dogs = [...dogs].sort((a,b) => ['LEGENDARY','EPIC','RARE','UNCOMMON','COMMON'].indexOf(a.rarity) - ['LEGENDARY','EPIC','RARE','UNCOMMON','COMMON'].indexOf(b.rarity));
 
   const locked = ALL_DOGS.filter(d => !d.unlocked && d.unlockCost !== null);
