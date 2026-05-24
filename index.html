@@ -294,7 +294,7 @@
         </div><!-- /padding -->
       </div>
     </div>
-
+    
     <!-- ===== SHOP ===== -->
     <div class="screen" id="screen-shop">
       <div class="scroll-content">
@@ -702,90 +702,6 @@ window.tapPaco = function(e) {
   _origTap(e);
   window.getTapBones = origGet;
 };
-</script>
-    <script>
-const PASS_REWARDS = [
-  { tier:1,  free:{icon:'🦴', label:'25K Bones',          type:'bones',    value:25000},   premium:{icon:'🦴', label:'100K Bones',         type:'bones',    value:100000} },
-  { tier:2,  free:{icon:'💎', label:'25 Diamants',         type:'diamonds', value:25},      premium:{icon:'💎', label:'100 Diamants',        type:'diamonds', value:100} },
-  { tier:3,  free:{icon:'📦', label:'Coffre Commun',       type:'chest',    value:'common'},premium:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'} },
-  { tier:4,  free:{icon:'🦴', label:'30K Bones',          type:'bones',    value:30000},   premium:{icon:'⚡', label:'Boost ×2 (2h)',        type:'boost',    value:'2h'} },
-  { tier:5,  free:{icon:'⚡', label:'Boost ×2 (30min)',   type:'boost',    value:'30m'},   premium:{icon:'🖼️', label:'Cadre Profil S1',      type:'cosmetic', value:'frame_s1'} },
-  { tier:6,  free:{icon:'🦴', label:'40K Bones',          type:'bones',    value:40000},   premium:{icon:'🦴', label:'150K Bones',          type:'bones',    value:150000} },
-  { tier:7,  free:{icon:'🦴', label:'50K Bones',          type:'bones',    value:50000},   premium:{icon:'✨', label:'Aura Lumineuse',       type:'cosmetic', value:'aura'} },
-  { tier:8,  free:{icon:'💎', label:'30 Diamants',         type:'diamonds', value:30},      premium:{icon:'📦', label:'Coffre Épique',        type:'chest',    value:'epic'} },
-  { tier:9,  free:{icon:'🦴', label:'60K Bones',          type:'bones',    value:60000},   premium:{icon:'🦴', label:'180K Bones',          type:'bones',    value:180000} },
-  { tier:10, free:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'},  premium:{icon:'🐶', label:'Skin Paco Exclusif',   type:'cosmetic', value:'skin_paco_s1'} },
-  { tier:11, free:{icon:'🦴', label:'70K Bones',          type:'bones',    value:70000},   premium:{icon:'🦴', label:'200K Bones',          type:'bones',    value:200000} },
-  { tier:12, free:{icon:'💎', label:'50 Diamants',         type:'diamonds', value:50},      premium:{icon:'💎', label:'200 Diamants',         type:'diamonds', value:200} },
-  { tier:13, free:{icon:'🦴', label:'80K Bones',          type:'bones',    value:80000},   premium:{icon:'🦴', label:'220K Bones',          type:'bones',    value:220000} },
-  { tier:14, free:{icon:'⚡', label:'Boost ×2 (1h)',      type:'boost',    value:'1h'},    premium:{icon:'⚡', label:'Boost ×2 (3h)',        type:'boost',    value:'3h'} },
-  { tier:15, free:{icon:'🎨', label:'Cosmétique Simple',  type:'cosmetic', value:'bg_s1'}, premium:{icon:'🏅', label:'Badge Premium S1',     type:'cosmetic', value:'badge_premium'} },
-  { tier:16, free:{icon:'🦴', label:'90K Bones',          type:'bones',    value:90000},   premium:{icon:'🦴', label:'250K Bones',          type:'bones',    value:250000} },
-  { tier:17, free:{icon:'💎', label:'60 Diamants',         type:'diamonds', value:60},      premium:{icon:'💎', label:'220 Diamants',         type:'diamonds', value:220} },
-  { tier:18, free:{icon:'🦴', label:'100K Bones',         type:'bones',    value:100000},  premium:{icon:'🎲', label:'Boost NFT ×3',         type:'boost',    value:'nft3'} },
-  { tier:19, free:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'},  premium:{icon:'🦴', label:'280K Bones',          type:'bones',    value:280000} },
-  { tier:20, free:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'},  premium:{icon:'📦', label:'Coffre Légendaire',    type:'chest',    value:'legendary'} },
-  { tier:21, free:{icon:'🦴', label:'110K Bones',         type:'bones',    value:110000},  premium:{icon:'🦴', label:'300K Bones',          type:'bones',    value:300000} },
-  { tier:22, free:{icon:'💎', label:'70 Diamants',         type:'diamonds', value:70},      premium:{icon:'🎭', label:'Emote Exclusive',      type:'cosmetic', value:'emote_s1'} },
-  { tier:23, free:{icon:'🦴', label:'120K Bones',         type:'bones',    value:120000},  premium:{icon:'🦴', label:'320K Bones',          type:'bones',    value:320000} },
-  { tier:24, free:{icon:'⚡', label:'Boost ×2 (1h)',      type:'boost',    value:'1h'},    premium:{icon:'💎', label:'250 Diamants',         type:'diamonds', value:250} },
-  { tier:25, free:{icon:'🏅', label:'Badge S1',           type:'cosmetic', value:'badge_s1'},premium:{icon:'🖼️',label:'Fond Profil Animé',   type:'cosmetic', value:'bg_animated'} },
-  { tier:26, free:{icon:'🦴', label:'130K Bones',         type:'bones',    value:130000},  premium:{icon:'🦴', label:'350K Bones',          type:'bones',    value:350000} },
-  { tier:27, free:{icon:'💎', label:'80 Diamants',         type:'diamonds', value:80},      premium:{icon:'💎', label:'280 Diamants',         type:'diamonds', value:280} },
-  { tier:28, free:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'},  premium:{icon:'📦', label:'Coffre Épique',        type:'chest',    value:'epic'} },
-  { tier:29, free:{icon:'🦴', label:'140K Bones',         type:'bones',    value:140000},  premium:{icon:'🦴', label:'380K Bones',          type:'bones',    value:380000} },
-  { tier:30, free:{icon:'🎲', label:'Boost NFT ×2',       type:'boost',    value:'nft2'},  premium:{icon:'🦴', label:'500K Bones',          type:'bones',    value:500000} },
-  { tier:31, free:{icon:'🦴', label:'150K Bones',         type:'bones',    value:150000},  premium:{icon:'🦴', label:'400K Bones',          type:'bones',    value:400000} },
-  { tier:32, free:{icon:'💎', label:'90 Diamants',         type:'diamonds', value:90},      premium:{icon:'💎', label:'300 Diamants',         type:'diamonds', value:300} },
-  { tier:33, free:{icon:'⚡', label:'Boost ×2 (2h)',      type:'boost',    value:'2h'},    premium:{icon:'⚡', label:'Boost ×3 (3h)',        type:'boost',    value:'3h_x3'} },
-  { tier:34, free:{icon:'🦴', label:'160K Bones',         type:'bones',    value:160000},  premium:{icon:'🦴', label:'450K Bones',          type:'bones',    value:450000} },
-  { tier:35, free:{icon:'💎', label:'100 Diamants',        type:'diamonds', value:100},     premium:{icon:'✨', label:'Animation Spéciale',   type:'cosmetic', value:'anim_s1'} },
-  { tier:36, free:{icon:'🦴', label:'170K Bones',         type:'bones',    value:170000},  premium:{icon:'🦴', label:'480K Bones',          type:'bones',    value:480000} },
-  { tier:37, free:{icon:'📦', label:'Coffre Épique',       type:'chest',    value:'epic'},  premium:{icon:'📦', label:'Coffre Épique',        type:'chest',    value:'epic'} },
-  { tier:38, free:{icon:'🦴', label:'180K Bones',         type:'bones',    value:180000},  premium:{icon:'🦴', label:'500K Bones',          type:'bones',    value:500000} },
-  { tier:39, free:{icon:'💎', label:'110 Diamants',        type:'diamonds', value:110},     premium:{icon:'💎', label:'350 Diamants',         type:'diamonds', value:350} },
-  { tier:40, free:{icon:'📦', label:'Coffre Épique',       type:'chest',    value:'epic'},  premium:{icon:'📦', label:'Coffre Mythique',      type:'chest',    value:'mythic'} },
-  { tier:41, free:{icon:'🦴', label:'190K Bones',         type:'bones',    value:190000},  premium:{icon:'🦴', label:'550K Bones',          type:'bones',    value:550000} },
-  { tier:42, free:{icon:'💎', label:'120 Diamants',        type:'diamonds', value:120},     premium:{icon:'💎', label:'400 Diamants',         type:'diamonds', value:400} },
-  { tier:43, free:{icon:'⚡', label:'Boost ×2 (2h)',      type:'boost',    value:'2h'},    premium:{icon:'⚡', label:'Boost ×3 (4h)',        type:'boost',    value:'4h_x3'} },
-  { tier:44, free:{icon:'🦴', label:'200K Bones',         type:'bones',    value:200000},  premium:{icon:'🦴', label:'600K Bones',          type:'bones',    value:600000} },
-  { tier:45, free:{icon:'🎨', label:'Cosmétique Animé',   type:'cosmetic', value:'anim_bg'},premium:{icon:'👑',label:'Titre Exclusif S1',    type:'cosmetic', value:'title_s1'} },
-  { tier:46, free:{icon:'🦴', label:'220K Bones',         type:'bones',    value:220000},  premium:{icon:'🦴', label:'650K Bones',          type:'bones',    value:650000} },
-  { tier:47, free:{icon:'💎', label:'130 Diamants',        type:'diamonds', value:130},     premium:{icon:'💎', label:'450 Diamants',         type:'diamonds', value:450} },
-  { tier:48, free:{icon:'📦', label:'Coffre Épique',       type:'chest',    value:'epic'},  premium:{icon:'📦', label:'Coffre Mythique',      type:'chest',    value:'mythic'} },
-  { tier:49, free:{icon:'🦴', label:'250K Bones',         type:'bones',    value:250000},  premium:{icon:'🦴', label:'700K Bones',          type:'bones',    value:700000} },
-  { tier:50, free:{icon:'🏆', label:'Récompense Finale S1',type:'cosmetic',value:'final_free'},premium:{icon:'🌟',label:'Récompense Finale Exclusive',type:'cosmetic',value:'final_premium'} },
-];
-function renderPassRewards() {
-  const el = document.getElementById('passRewardsList');
-  if (!el) return;
-  const activated = state && state.passActivated;
-  const passLevel = state ? (state.passLevel || 1) : 1;
-  const claimed = state ? (state.passClaimedTiers || []) : [];
-
-  el.innerHTML = PASS_REWARDS.map(r => {
-    const done = r.tier <= passLevel;
-    const isClaimed = claimed.includes(r.tier);
-    const canClaim = done && !isClaimed;
-    return \`
-    <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
-      <!-- Gratuit -->
-      <div style="flex:1;background:\${done ? 'rgba(245,166,35,0.08)' : 'rgba(255,255,255,0.03)'};border:1px solid \${done ? 'rgba(245,166,35,0.3)' : 'rgba(100,100,100,0.15)'};border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;">
-        <span style="font-size:20px;">\${r.free.icon}</span>
-        <span style="font-size:10px;font-weight:900;color:\${done ? 'var(--gold-light)' : 'var(--text-muted)'};">\${r.free.label}</span>
-        \${canClaim ? \`<button onclick="claimPassReward(\${r.tier},'free')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>\` : done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : ''}
-      </div>
-      <!-- Numéro palier -->
-      <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#1A0F00;font-size:10px;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">\${r.tier}</div>
-      <!-- Premium -->
-      <div style="flex:1;background:\${activated && done ? 'rgba(245,166,35,0.1)' : 'rgba(20,10,0,0.6)'};border:1px solid \${activated && done ? 'rgba(245,166,35,0.35)' : 'rgba(100,100,100,0.15)'};border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;">
-        <span style="font-size:20px;">\${r.premium.icon}</span>
-        <span style="font-size:10px;font-weight:900;color:\${activated && done ? 'var(--gold-light)' : 'var(--text-muted)'};">\${r.premium.label}</span>
-        \${activated && canClaim ? \`<button onclick="claimPassReward(\${r.tier},'premium')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>\` : activated && done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : '<span style="font-size:14px;opacity:0.4">🔒</span>'}
-      </div>
-    </div>\`;
-  }).join('');
-}
 </script>
 </body>
 </html>
