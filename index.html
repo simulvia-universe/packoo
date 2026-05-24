@@ -350,9 +350,10 @@ const PASS_REWARDS = [
 function renderPassRewards() {
   const el = document.getElementById('passRewardsList');
   if (!el) return;
-  const activated = state && state.passActivated;
-  const passLevel = state ? (state.passLevel || 1) : 1;
-  const claimed = state ? (state.passClaimedTiers || []) : [];
+  const s = window.state || {};
+  const activated = s.passActivated || false;
+  const passLevel = s.passLevel || 1;
+  const claimed = s.passClaimedTiers || [];
 
   el.innerHTML = PASS_REWARDS.map(r => {
     const done = r.tier <= passLevel;
