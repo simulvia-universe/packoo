@@ -864,6 +864,26 @@ function activatePass() {
   updatePass();
 }
 
+
+function claimPassReward(tier, type) {
+  if (!state.passClaimedTiers) state.passClaimedTiers = [];
+  const key = tier + '_' + type;
+  if (state.passClaimedTiers.includes(key)) return;
+  state.passClaimedTiers.push(key);
+  const rewards = typeof PASS_REWARDS !== 'undefined' ? PASS_REWARDS : [];
+  const r = rewards.find(x => x.tier === tier);
+  if (!r) return;
+  const reward = type === 'free' ? r.free : r.premium;
+  if (reward.type === 'bones')    { state.bones    += reward.value; showToast('🦴 +' + fmt(reward.value) + ' Bones !'); }
+  if (reward.type === 'diamonds') { state.diamonds += reward.value; showToast('💎 +' + reward.value + ' Diamants !'); }
+  if (reward.type === 'chest')    { showToast('📦 ' + reward.label + ' ajouté !'); }
+  if (reward.type === 'boost')    { showToast('⚡ ' + reward.label + ' activé !'); }
+  if (reward.type === 'cosmetic') { showToast('✨ ' + reward.label + ' débloqué !'); }
+  window.state = state;
+  if (typeof renderPassRewards === 'function') renderPassRewards();
+  updateUI(); saveState();
+}
+
 function updatePass() {
   window.state = state;
   window._state = state;
@@ -895,6 +915,7 @@ function closeDogsPanel() {
 
 // ===== INIT =====
 loadState();
+window.state = state;
 updateUI();
 // Popup offline earnings
 if (state._offlineEarned > 0) {
