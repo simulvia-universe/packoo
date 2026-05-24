@@ -173,7 +173,7 @@ function showToast(msg) {
 
 // ===== PRODUCTION PASSIVE =====
 setInterval(() => {
-  const prod = getTotalProduction() * getStreakMult();
+  const prod = getTotalProduction() * getStreakMult() * (DEV_MODE ? devPassifMult : 1);
   if (prod > 0) { state.bones += prod / 3600; updateUI(); }
 }, 1000);
 setInterval(saveState, 30000);
@@ -183,7 +183,7 @@ function tapPaco(e) {
   if (currentScreen !== 'home') return;
   const base  = getTapBones();
   const boost = (state.boostActive && Date.now() < state.boostEnd) ? 2 : 1;
-  const gain  = Math.round((base + Math.floor(Math.random() * 6)) * getStreakMult() * boost);
+  const gain  = Math.round((base + Math.floor(Math.random() * 6)) * getStreakMult() * boost * (DEV_MODE ? devTapMult : 1));
 
   state.bones      += gain;
   state.totalTaps  ++;
@@ -794,6 +794,98 @@ function resetGame() {
   location.reload();
 }
 
+// ===== MODE DEV =====
+// Activé via URL ?dev=true ou code secret
+const DEV_MODE = new URLSearchParams(window.location.search).get('dev') === 'true';
+
+// Multiplicateur passif actuel (1 = normal, 10 = x10, etc.)
+let devPassifMult = 1;
+let devTapMult    = 1;
+
+// Injecter le panneau dev dans le menu si mode actif
+function initDevPanel() {
+  if (!DEV_MODE) return;
+  const panel = document.getElementById('menuPanel');
+  if (!panel) return;
+  const devSection = document.createElement('div');
+  devSection.style.cssText = 'margin-top:12px;border-top:1px solid rgba(245,166,35,0.3);padding-top:12px;';
+  devSection.innerHTML = `
+    <div style="font-size:10px;font-weight:900;color:#E67E22;letter-spacing:2px;margin-bottom:8px;">⚙️ MODE DEV</div>
+    <button onclick="devAddBones(1000000)"   style="${devBtnStyle('#3498DB')}">💰 +1M Bones</button>
+    <button onclick="devAddBones(10000000)"  style="${devBtnStyle('#2980B9')}">💰 +10M Bones</button>
+    <button onclick="devAddDiamonds(1000)"   style="${devBtnStyle('#9B59B6')}">💎 +1 000 Diamants</button>
+    <button onclick="devSetTapMult(100)"     style="${devBtnStyle('#27AE60')}">⚡ Tap ×100</button>
+    <button onclick="devSetTapMult(1000)"    style="${devBtnStyle('#1E8449')}">⚡ Tap ×1000</button>
+    <button onclick="devSetTapMult(1)"       style="${devBtnStyle('#7F8C8D')}">⚡ Tap normal</button>
+    <button onclick="devSetPassif(10)"       style="${devBtnStyle('#E67E22')}">⏩ Passif ×10</button>
+    <button onclick="devSetPassif(100)"      style="${devBtnStyle('#CA6F1E')}">⏩ Passif ×100</button>
+    <button onclick="devSetPassif(1)"        style="${devBtnStyle('#7F8C8D')}">⏩ Passif normal</button>
+    <button onclick="devForceDrop()"         style="${devBtnStyle('#E74C3C')}">🎲 Forcer Drop NFT</button>
+    <button onclick="devUnlockAll()"         style="${devBtnStyle('#F39C12')}">🐕 Débloquer tous</button>
+    <div id="devStatus" style="font-size:10px;color:#E67E22;margin-top:6px;text-align:center;">Tap ×${devTapMult} | Passif ×${devPassifMult}</div>
+  `;
+  panel.appendChild(devSection);
+}
+
+function devBtnStyle(color) {
+  return `display:block;width:100%;margin-bottom:5px;padding:7px 10px;background:rgba(${hexToRgb(color)},0.15);border:1px solid ${color};border-radius:8px;color:${color};font-weight:900;font-size:11px;cursor:pointer;text-align:left;`;
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+function updateDevStatus() {
+  const el = document.getElementById('devStatus');
+  if (el) el.textContent = `Tap ×${devTapMult} | Passif ×${devPassifMult}`;
+}
+
+function devAddBones(amount) {
+  state.bones += amount;
+  updateUI(); saveState();
+  showToast('💰 +' + fmt(amount) + ' Bones injectés !');
+}
+
+function devAddDiamonds(amount) {
+  state.diamonds += amount;
+  updateUI(); saveState();
+  showToast('💎 +' + amount + ' Diamants injectés !');
+}
+
+function devSetTapMult(mult) {
+  devTapMult = mult;
+  updateDevStatus();
+  showToast('⚡ Tap ×' + mult + ' activé !');
+}
+
+function devSetPassif(mult) {
+  devPassifMult = mult;
+  updateDevStatus();
+  showToast('⏩ Passif ×' + mult + ' activé !');
+}
+
+function devForceDrop() {
+  const allNFT = [...NFT_POOLS.GENESIS, ...NFT_POOLS.THEMATIC, ...NFT_POOLS.SEASONAL];
+  const nft = allNFT[Math.floor(Math.random() * allNFT.length)];
+  dropLocked = false;
+  triggerNFT(nft);
+  showToast('🎲 Drop NFT forcé !');
+}
+
+function devUnlockAll() {
+  ALL_DOGS.forEach(dog => {
+    if (dog.unlockCost !== null) {
+      dog.unlocked = true;
+      if (ALL_DOGS.filter(d => d.active).length < MAX_ACTIVE) dog.active = true;
+    }
+  });
+  updateUI(); renderDogCards(); saveState();
+  showToast('🐕 Tous les chiens débloqués !');
+}
+
 // ===== MENU HAMBURGER =====
 function toggleMenu() {
   const panel = document.getElementById('menuPanel');
@@ -842,6 +934,7 @@ function closeDogsPanel() {
 loadState();
 updateUI();
 updatePass();
+initDevPanel();
 setTimeout(() => updateQuestBadge(), 200);
 
 // Render initial
