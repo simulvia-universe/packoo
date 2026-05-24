@@ -49,7 +49,8 @@ function saveState() {
   try {
     const save = Object.assign({}, state, {
       bones: Math.floor(state.bones),
-      dogs: ALL_DOGS.map(d => ({ id:d.id, unlocked:d.unlocked, active:d.active, level:d.level, xp:d.xp }))
+      dogs: ALL_DOGS.map(d => ({ id:d.id, unlocked:d.unlocked, active:d.active, level:d.level, xp:d.xp })),
+      lastOnline: Date.now()
     });
     localStorage.setItem('packoo_save', JSON.stringify(save));
   } catch(e) {}
@@ -68,6 +69,24 @@ function loadState() {
         if (dog) Object.assign(dog, { unlocked:sd.unlocked, active:sd.active, level:sd.level, xp:sd.xp });
       });
     }
+    // Offline earnings
+    if (s.lastOnline) {
+      const secondsOffline = Math.floor((Date.now() - s.lastOnline) / 1000);
+      const maxOffline = 8 * 3600; // max 8h de gains offline
+      const effectiveSeconds = Math.min(secondsOffline, maxOffline);
+      if (effectiveSeconds > 60) {
+        const prod = ALL_DOGS
+          .filter(d => d.unlocked && d.active)
+          .reduce((sum, d) => sum + getProduction(d.rarity, d.level, d.id), 0);
+        const earned = Math.floor(prod * effectiveSeconds / 3600);
+        if (earned > 0) {
+          state.bones += earned;
+          state._offlineEarned = earned;
+          state._offlineSeconds = effectiveSeconds;
+        }
+      }
+    }
+
     // Streak
     const today     = new Date().toDateString();
     const yesterday = new Date(Date.now() - 86400000).toDateString();
@@ -855,6 +874,15 @@ function closeDogsPanel() {
 // ===== INIT =====
 loadState();
 updateUI();
+// Popup offline earnings
+if (state._offlineEarned > 0) {
+  const h = Math.floor(state._offlineSeconds / 3600);
+  const m = Math.floor((state._offlineSeconds % 3600) / 60);
+  const duree = h > 0 ? h + 'h ' + m + 'min' : m + 'min';
+  setTimeout(() => showToast('😴 Absent ' + duree + ' — +' + fmt(state._offlineEarned) + ' Bones gagnés !'), 800);
+  delete state._offlineEarned;
+  delete state._offlineSeconds;
+}
 updatePass();
 setTimeout(() => updateQuestBadge(), 200);
 
