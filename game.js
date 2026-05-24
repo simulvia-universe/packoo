@@ -33,9 +33,9 @@ let state = {
   },
   lastWeeklyReset: '',
   defis: {
-    reach10: { done:false }, // atteindre niveau 10
-    unlock5: { done:false }, // débloquer 5 chiens
-    earn100k: { done:false }, // gagner 100k bones total
+    reach10: { done:false, claimed:false }, // atteindre niveau 10
+    unlock5: { done:false, claimed:false }, // débloquer 5 chiens
+    earn100k: { done:false, claimed:false }, // gagner 100k bones total
   },
   totalBonesEarned: 0,
 };
@@ -232,7 +232,10 @@ function tapPaco(e) {
   if (!state.questsWeekly.tap1000.done) state.questsWeekly.tap1000.progress = Math.min(state.questsWeekly.tap1000.progress + 1, 1000);
   if (!state.questsWeekly.tap5000.done) state.questsWeekly.tap5000.progress = Math.min(state.questsWeekly.tap5000.progress + 1, 5000);
   // Défis
-  if (!state.defis.reach10.done && state.playerLevel >= 10) state.defis.reach10.done = false; // claimable
+  if (!state.defis.reach10.done && state.playerLevel >= 10) state.defis.reach10.done = true;
+  const _unlockedCount = ALL_DOGS.filter(d => d.unlocked).length;
+  if (!state.defis.unlock5.done && _unlockedCount >= 5) state.defis.unlock5.done = true;
+  if (!state.defis.earn100k.done && (state.totalBonesEarned||0) >= 100000) state.defis.earn100k.done = true;
   if (!state.defis.earn100k.done) state.totalBonesEarned = (state.totalBonesEarned||0) + gain;
 
   // Niveau joueur
