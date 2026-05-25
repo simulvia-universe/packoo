@@ -906,13 +906,14 @@ function toggleMenu() {
 
 // ===== PASS SAISON =====
 function activatePass() {
-  if (state.passActivated) { showToast('Pass déjà activé !'); return; }
-  if (state.diamonds < 499) { showToast('Pas assez de Diamants ! 💎'); return; }
-  state.diamonds -= 499;
+  if (state.passActivated) { showToast('✅ Pass déjà activé !'); return; }
+  // Simulation achat — en production : paiement Telegram Stars / Stripe
+  const confirmed = confirm('Activer le Pass Saison 1 pour 4,99 € ?\n\n(Simulation — aucun paiement réel)');
+  if (!confirmed) return;
   state.passActivated = true;
   updateUI();
   saveState();
-  showToast('👑 Pass Saison activé !');
+  showToast('👑 Pass Saison activé ! Bienvenue dans le Premium !');
   window._state = state;
   if (typeof renderPassRewards === 'function') renderPassRewards();
   updatePass();
@@ -1045,6 +1046,9 @@ function updatePass() {
 
   // Mettre à jour passLevel si besoin
   if (state.passLevel !== level) state.passLevel = level;
+
+  const elNext = document.getElementById('passXpNext');
+  if (elNext) elNext.textContent = fmt(1000 - xpInLevel);
 
   const elLvl = document.getElementById('passLevelDisplay');
   if (elLvl) elLvl.textContent = level;
