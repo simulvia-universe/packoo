@@ -1097,6 +1097,19 @@ setTimeout(() => { _resetPassQuestDaily(); _resetPassQuestWeekly(); _updateDaily
 renderDogCards();
 renderQuests();
 
+// Lancer la Chasse aux Os
+setTimeout(() => _scheduleNextOs(), 2000);
+
+// Fonction dev pour forcer un os immédiatement
+function devForceOs() {
+  const existing = document.getElementById('falling-os');
+  if (existing) existing.remove();
+  const lbl = document.getElementById('os-label');
+  if (lbl) lbl.remove();
+  _spawnOsAnimation();
+  showToast('🦴 [DEV] Os forcé !');
+}
+
 // ============================================================
 // PACKOO — ÉCRAN CADEAUX
 // ============================================================
@@ -1117,6 +1130,162 @@ function renderCadeaux() {
   renderCoffresTab();
   renderInventaire();
   renderDailyStreak();
+}
+
+// ============================================================
+// CHASSE AUX OS — ANIMATION ACCUEIL
+// ============================================================
+
+let _osSpawnTimeout = null;
+
+function _canSpawnOs() {
+  const today = new Date().toDateString();
+  if (state.osLastDay !== today) { state.osDailyCount = 0; state.osLastDay = today; }
+  // Reset hebdo
+  const now = new Date();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  monday.setHours(0,0,0,0);
+  if (!state.osWeeklyStart || state.osWeeklyStart < monday.getTime()) {
+    state.osWeeklyCount = 0;
+    state.osWeeklyStart = monday.getTime();
+  }
+  return (state.osDailyCount || 0) < 4;
+}
+
+function _getNextOsDelay() {
+  const daily = state.osDailyCount || 0;
+  // Délais selon le document : 1er os 15-45s, 2e 3-6min, 3e 7-12min, 4e 12-20min
+  const ranges = [
+    [15000,   45000],
+    [180000,  360000],
+    [420000,  720000],
+    [720000, 1200000],
+  ];
+  const range = ranges[Math.min(daily, 3)];
+  return range[0] + Math.floor(Math.random() * (range[1] - range[0]));
+}
+
+function _scheduleNextOs() {
+  if (_osSpawnTimeout) clearTimeout(_osSpawnTimeout);
+  if (!_canSpawnOs()) return; // Quota du jour atteint
+  const delay = _getNextOsDelay();
+  _osSpawnTimeout = setTimeout(() => {
+    if (currentScreen === 'home' && _canSpawnOs()) {
+      _spawnOsAnimation();
+    } else if (_canSpawnOs()) {
+      // Le joueur n'est pas sur l'accueil — réessayer dans 30s
+      _osSpawnTimeout = setTimeout(() => {
+        if (currentScreen === 'home' && _canSpawnOs()) _spawnOsAnimation();
+        else _scheduleNextOs();
+      }, 30000);
+    }
+  }, delay);
+}
+
+function _spawnOsAnimation() {
+  const homeScreen = document.getElementById('screen-home');
+  if (!homeScreen) return;
+
+  // Créer l'os qui tombe
+  const os = document.createElement('div');
+  os.id = 'falling-os';
+  const leftPct = 15 + Math.floor(Math.random() * 70); // entre 15% et 85%
+  os.style.cssText = `
+    position: fixed;
+    left: ${leftPct}%;
+    top: -60px;
+    font-size: 48px;
+    z-index: 8888;
+    cursor: pointer;
+    filter: drop-shadow(0 0 12px rgba(245,166,35,0.8));
+    animation: osFall 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    user-select: none;
+  `;
+  os.textContent = '🦴';
+
+  // Ajouter l'animation CSS si pas encore présente
+  if (!document.getElementById('osFallStyle')) {
+    const style = document.createElement('style');
+    style.id = 'osFallStyle';
+    style.textContent = `
+      @keyframes osFall {
+        0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+        60%  { transform: translateY(55vh) rotate(180deg); opacity: 1; }
+        80%  { transform: translateY(52vh) rotate(160deg); opacity: 1; }
+        100% { transform: translateY(58vh) rotate(200deg); opacity: 1; }
+      }
+      @keyframes osPulse {
+        0%, 100% { filter: drop-shadow(0 0 12px rgba(245,166,35,0.8)); transform: translateY(58vh) rotate(200deg) scale(1); }
+        50%       { filter: drop-shadow(0 0 20px rgba(245,166,35,1));   transform: translateY(58vh) rotate(200deg) scale(1.15); }
+      }
+      @keyframes osCollect {
+        0%   { transform: translateY(var(--os-y)) scale(1); opacity: 1; }
+        100% { transform: translateY(calc(var(--os-y) - 120px)) scale(0.3); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  document.body.appendChild(os);
+
+  // Après la chute, l'os pulse pour attirer l'attention
+  setTimeout(() => {
+    if (!document.getElementById('falling-os')) return;
+    os.style.animation = 'osPulse 0.8s ease-in-out infinite';
+    // Afficher un label "CLIQUE !" au-dessus
+    const label = document.createElement('div');
+    label.id = 'os-label';
+    label.style.cssText = `
+      position: fixed;
+      left: ${leftPct}%;
+      transform: translateX(-50%);
+      top: calc(${leftPct > 70 ? '52' : '54'}vh - 30px);
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--gold, #F5A623);
+      z-index: 8889;
+      text-align: center;
+      background: rgba(0,0,0,0.6);
+      padding: 3px 8px;
+      border-radius: 10px;
+      animation: osPulse 0.8s ease-in-out infinite;
+      pointer-events: none;
+    `;
+    label.textContent = '👆 CLIQUE !';
+    document.body.appendChild(label);
+  }, 2500);
+
+  // Clic sur l'os → déclencher collectOs()
+  os.addEventListener('click', () => {
+    // Animation de collecte
+    const rect = os.getBoundingClientRect();
+    os.style.setProperty('--os-y', rect.top + 'px');
+    os.style.top = rect.top + 'px';
+    os.style.left = rect.left + 'px';
+    os.style.transform = 'none';
+    os.style.animation = 'osCollect 0.4s ease-out forwards';
+    const lbl = document.getElementById('os-label');
+    if (lbl) lbl.remove();
+    setTimeout(() => os.remove(), 400);
+    collectOs(); // Déclenche la vraie logique (pub simulée + récompense)
+    // Programmer le prochain os
+    _scheduleNextOs();
+  });
+
+  // L'os disparaît automatiquement après 15s si pas cliqué
+  setTimeout(() => {
+    const existing = document.getElementById('falling-os');
+    if (existing) {
+      existing.style.transition = 'opacity 0.5s';
+      existing.style.opacity = '0';
+      setTimeout(() => existing.remove(), 500);
+    }
+    const lbl = document.getElementById('os-label');
+    if (lbl) { lbl.style.transition = 'opacity 0.5s'; lbl.style.opacity = '0'; setTimeout(() => lbl.remove(), 500); }
+    // Reprogrammer même si pas cliqué (os manqué)
+    _scheduleNextOs();
+  }, 17000);
 }
 
 // ===== CHASSE AUX OS =====
