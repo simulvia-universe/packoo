@@ -231,6 +231,23 @@
 
         <div style="padding:14px;">
 
+        <!-- BLOC XP PASS — visible immédiatement -->
+        <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.3);border-radius:14px;padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+          <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="font-size:20px;">👑</span>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span style="font-size:10px;color:var(--text-muted);font-weight:800;text-transform:uppercase;letter-spacing:1px;">XP PASS — NIVEAU <span id="passLevelDisplay">1</span></span>
+              <span style="font-size:11px;font-weight:900;color:var(--gold);" id="passPointsDisplay">0 XP</span>
+            </div>
+            <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;">
+              <div id="passLevelBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:4px;transition:width 0.4s;"></div>
+            </div>
+            <div style="font-size:8px;color:var(--text-muted);margin-top:3px;">Prochain niveau dans <span id="passXpNext">1000</span> XP</div>
+          </div>
+        </div>
+
         <!-- TABS RÉCOMPENSES / QUÊTES -->
         <div style="display:flex;gap:0;margin-bottom:14px;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;">
           <div onclick="switchPassTab('rewards')" id="passTab-rewards" style="flex:1;text-align:center;padding:10px;font-size:12px;font-weight:900;color:var(--gold);background:rgba(245,166,35,0.15);cursor:pointer;">🎁 RÉCOMPENSES</div>
@@ -266,27 +283,11 @@
 
         </div>
 
-        <!-- SECTION QUÊTES PASS -->
+        <!-- SECTION QUÊTES PASS (cachée par défaut) -->
         <div id="passSection-quetes" style="display:none;">
-          <div id="passQuestesContent">
-            <!-- Rendu par renderPassQuests() -->
-          </div>
-        </div>
-
-        <!-- Points Pass -->
-        <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:12px;margin-top:12px;display:flex;align-items:center;gap:10px;">
-          <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <span style="font-size:20px;">🐾</span>
-          </div>
-          <div style="flex:1;">
-            <div style="font-size:10px;color:var(--text-muted);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">POINTS PASS</div>
-            <div style="height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;">
-              <div id="passLevelBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:3px;transition:width 0.3s;"></div>
-            </div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-size:16px;font-weight:900;color:var(--gold);" id="passPointsDisplay">0</div>
-            <div style="font-size:9px;color:var(--text-muted);">pts</div>
+          <div style="text-align:center;padding:30px 0;color:var(--text-muted);font-size:13px;">
+            <div style="font-size:32px;margin-bottom:8px;">🔄</div>
+            Quêtes Pass — Bientôt disponible
           </div>
         </div>
 
@@ -805,10 +806,17 @@
         <!-- ===== TAB : RÉCOMPENSES ===== -->
         <div id="cadeau-rewards" style="display:none;">
 
-          <!-- Récompenses journalières streak -->
+          <!-- Cadeau quotidien -->
           <div style="background:linear-gradient(135deg,rgba(60,35,0,0.8),rgba(40,20,0,0.9));border:2px solid rgba(245,166,35,0.4);border-radius:14px;padding:12px;margin-bottom:10px;">
-            <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:8px;">🗓️ RÉCOMPENSES JOURNALIÈRES</div>
-            <div id="dailyStreakScreen"></div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="font-size:44px;">🎀</div>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:2px;">CADEAU QUOTIDIEN</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">Reviens chaque jour pour ton cadeau !</div>
+                <div style="font-size:10px;color:var(--text-muted);">⏱️ Prochain cadeau dans : <span id="dailyGiftTimer" style="color:var(--gold);font-weight:900;">—</span></div>
+              </div>
+              <button id="dailyGiftBtn" onclick="claimDailyGift()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">RÉCUPÉRER</button>
+            </div>
           </div>
 
           <!-- Événement -->
