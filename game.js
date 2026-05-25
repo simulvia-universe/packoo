@@ -575,9 +575,9 @@ function renderQuestsDefis() {
     <div style="background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);border-radius:10px;padding:8px 12px;margin-bottom:10px;">
       <span style="font-size:11px;color:#C39BD3;font-weight:800;">🏅 DÉFIS — Permanents, à compléter une seule fois</span>
     </div>
-    ${questCard('🎯','Atteindre le niveau 10','Monte jusqu\'au niveau 10 joueur.',Math.min(state.playerLevel,10),10,'💎 100',d.reach10.done,'d_reach10')}
-    ${questCard('🐕','Débloquer 5 chiens','Constitue une vraie meute.',Math.min(unlockedCount,5),5,'💎 200 + 🦴 50,000',d.unlock5.done,'d_unlock5')}
-    ${questCard('💰','Gagner 100 000 Bones','Accumule 100 000 Bones au total.',Math.min(state.totalBonesEarned||0,100000),100000,'💎 300',d.earn100k.done,'d_earn100k')}
+    ${questCard('🎯','Atteindre le niveau 10','Monte jusqu\'au niveau 10 joueur.',Math.min(state.playerLevel,10),10,'💎 100',d.reach10.claimed||false,'d_reach10')}
+    ${questCard('🐕','Débloquer 5 chiens','Constitue une vraie meute.',Math.min(unlockedCount,5),5,'💎 200 + 🦴 50,000',d.unlock5.claimed||false,'d_unlock5')}
+    ${questCard('💰','Gagner 100 000 Bones','Accumule 100 000 Bones au total.',Math.min(state.totalBonesEarned||0,100000),100000,'💎 300',d.earn100k.claimed||false,'d_earn100k')}
   `;
 }
 function questCard(icon,title,desc,prog,max,reward,done,key) {
@@ -627,12 +627,20 @@ function collectQuest(key) {
   else if (key.startsWith('d_')) q = state.defis[key.slice(2)];
   else q = state.questsDaily[key];
   if (!q) return;
-  // Vérifier que la quête est complète et pas encore réclamée
+  // Vérifier pas encore réclamée
   if (q.claimed) return;
-  const isDone = key === 'login' ? true : (q.done || (q.progress !== undefined && q.progress >= (key === 'tap50' ? 50 : key === 'tap200' ? 200 : 1)));
-  if (!isDone) return;
+  // Vérifier complète
+  let isDone = false;
+  if (key.startsWith('d_')) {
+    isDone = q.done === true;
+  } else if (key === 'login') {
+    isDone = true;
+  } else {
+    isDone = q.done || (q.progress !== undefined && q.progress >= (key === 'tap50' ? 50 : key === 'tap200' ? 200 : key === 'unlock' ? 1 : key === 'w_tap1000' ? 1000 : key === 'w_tap5000' ? 5000 : key === 'w_unlock3' ? 3 : 1));
+  }
+  if (!isDone) { showToast('Défi pas encore complété !'); return; }
   q.claimed = true;
-  q.done = true;
+  q.done    = true;
   const r = QUEST_REWARDS[key];
   if (!r) return;
   state.bones    += r.bones;
