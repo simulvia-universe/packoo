@@ -17,8 +17,32 @@ let state = {
   boostActive: false,
   boostEnd: 0,
   wonNFTs: [], // NFT gagnés : { name, rarity, collection, date }
-  passPoints: 0,
-  passLevel: 1,
+  passXP: 0,           // XP total accumulé dans le Pass
+  passLevel: 1,        // niveau actuel du Pass (1-50)
+  passXP_TODAY: 0,     // XP gagnés aujourd'hui (pour le soft cap futur)
+  // Quêtes Pass quotidiennes (XP)
+  passQuestDaily: {
+    login:    { done:false, claimed:false, xp:100 },
+    collect:  { done:false, claimed:false, xp:150 },
+    tap:      { done:false, claimed:false, xp:100 },
+    upgrade:  { done:false, claimed:false, xp:150 },
+    coffre:   { done:false, claimed:false, xp:150 },
+    combo:    { done:false, claimed:false, xp:150 },
+  },
+  passQuestDailyDate: '',
+  // Quêtes Pass hebdomadaires
+  passQuestWeekly: {
+    connect5: { progress:0, done:false, claimed:false, xp:700 },
+    upgrade10:{ progress:0, done:false, claimed:false, xp:800 },
+    coffres5: { progress:0, done:false, claimed:false, xp:800 },
+    bones50k: { progress:0, done:false, claimed:false, xp:700 },
+    daily5:   { progress:0, done:false, claimed:false, xp:500 },
+  },
+  passQuestWeeklyDate: '',
+  // Récompenses journalières (streak)
+  dailyStreak: 0,
+  dailyStreakDate: '',
+  dailyStreakClaimed: false,
   passActivated: false,
   passClaimedTiers: [],
   questsDaily: {
@@ -243,12 +267,8 @@ function tapPaco(e) {
   state.totalTaps  ++;
   state.chanceScore++;
   state.playerXP   += 2;
-  state.passPoints = (state.passPoints || 0) + 1;
-  // Montée niveau pass
-  if (state.passPoints >= state.passLevel * 100) {
-    state.passLevel++;
-    showToast('👑 Pass niveau ' + state.passLevel + ' !');
-  }
+  // XP Pass via quêtes tap
+  _checkPassQuestTap();
   Object.keys(state.pityCounters).forEach(r => state.pityCounters[r]++);
 
   // Quêtes tap
@@ -370,6 +390,7 @@ function upgradeDog(dogId) {
   dog.level++;
   dog.xp = Math.min(dog.xp + 10, dog.level * 10);
   if (dog.level % 10 === 0) showToast('🔥 ' + dog.name + ' niveau ' + dog.level + ' !');
+  notifyPassUpgrade();
   updateUI();
   renderDogCards();
   saveState();
@@ -1007,26 +1028,41 @@ function switchPassTab(tab) {
   document.getElementById('passTab-rewards').style.background = tab === 'rewards' ? 'rgba(245,166,35,0.15)' : 'transparent';
   document.getElementById('passTab-quetes').style.color = tab === 'quetes' ? 'var(--gold)' : 'var(--text-muted)';
   document.getElementById('passTab-quetes').style.background = tab === 'quetes' ? 'rgba(245,166,35,0.15)' : 'transparent';
+  if (tab === 'quetes') renderPassQuests();
 }
 
 function updatePass() {
   window.state = state;
   window._state = state;
   if (typeof renderPassRewards === 'function') renderPassRewards();
-  const el = document.getElementById('passLevelDisplay');
-  if (el) el.textContent = state.passLevel;
+
+  const XP_PER_LEVEL = 1000;
+  const MAX_LEVEL    = 50;
+  const xpTotal      = state.passXP || 0;
+  const level        = Math.min(MAX_LEVEL, Math.floor(xpTotal / XP_PER_LEVEL) + 1);
+  const xpInLevel    = xpTotal % XP_PER_LEVEL;
+  const pct          = Math.round(xpInLevel / XP_PER_LEVEL * 100);
+
+  // Mettre à jour passLevel si besoin
+  if (state.passLevel !== level) state.passLevel = level;
+
+  const elLvl = document.getElementById('passLevelDisplay');
+  if (elLvl) elLvl.textContent = level;
+
   const elPts = document.getElementById('passPointsDisplay');
-  if (elPts) elPts.textContent = fmt(state.passPoints || 0);
+  if (elPts) elPts.textContent = fmt(xpTotal) + ' XP';
+
   const elBar = document.getElementById('passLevelBar');
-  const ptsForNextLevel = 100;
-  const pct = Math.min(100, Math.round((state.passPoints % ptsForNextLevel) / ptsForNextLevel * 100));
   if (elBar) elBar.style.width = pct + '%';
+
   const elBtn = document.getElementById('passActivateBtn');
   if (elBtn) {
-    elBtn.textContent = state.passActivated ? '✅ Pass activé' : 'ACTIVER LE PASS — 4,99 €';
+    elBtn.textContent  = state.passActivated ? '✅ Pass activé' : 'ACTIVER LE PASS — 4,99 €';
     elBtn.style.opacity = state.passActivated ? '0.6' : '1';
-    elBtn.style.cursor = state.passActivated ? 'default' : 'pointer';
+    elBtn.style.cursor  = state.passActivated ? 'default' : 'pointer';
   }
+  // Rendre les quêtes Pass
+  renderPassQuests();
 }
 
 function openDogsPanel()  {
@@ -1051,6 +1087,7 @@ if (state._offlineEarned > 0) {
 updatePass();
 setTimeout(() => updateQuestBadge(), 200);
 setTimeout(() => updateCadeauBadge(), 200);
+setTimeout(() => { _resetPassQuestDaily(); _resetPassQuestWeekly(); _updateDailyStreak(); }, 300);
 
 // Render initial
 renderDogCards();
@@ -1075,7 +1112,7 @@ function renderCadeaux() {
   renderOsChasse();
   renderCoffresTab();
   renderInventaire();
-  renderDailyGift();
+  renderDailyStreak();
 }
 
 // ===== CHASSE AUX OS =====
@@ -1285,6 +1322,7 @@ function openCoffre(type) {
   }
 
   showToast('📦 Coffre ouvert ! ' + reward);
+  notifyPassCoffre();
   renderCoffresTab();
   renderInventaire();
   updateUI();
@@ -1495,4 +1533,407 @@ function closeOfflinePopup() {
   delete state._offlineFullProd;
 
   saveState();
+}
+
+// ============================================================
+// PACKOO — SYSTÈME XP PASS
+// ============================================================
+
+const XP_PER_LEVEL = 1000;
+const PASS_MAX_LEVEL = 50;
+
+// Donner de l'XP Pass et monter de niveau si besoin
+function addPassXP(amount, source) {
+  if (!amount || amount <= 0) return;
+  const oldLevel = state.passLevel || 1;
+  state.passXP = (state.passXP || 0) + amount;
+  const newLevel = Math.min(PASS_MAX_LEVEL, Math.floor(state.passXP / XP_PER_LEVEL) + 1);
+  if (newLevel > oldLevel) {
+    state.passLevel = newLevel;
+    showToast('👑 Pass niveau ' + newLevel + ' ! (' + amount + ' XP ' + (source ? '— ' + source : '') + ')');
+  } else {
+    showToast('✨ +' + amount + ' XP Pass' + (source ? ' — ' + source : '') + ' !');
+  }
+  if (typeof updatePass === 'function') updatePass();
+  saveState();
+}
+
+// ============================================================
+// QUÊTES PASS QUOTIDIENNES
+// ============================================================
+
+const PASS_QUEST_DAILY_DEF = [
+  { key:'login',   label:'Se connecter',               desc:'Ouvre le jeu aujourd\'hui',              xp:100, icon:'📅' },
+  { key:'collect', label:'Récupérer des Bones passifs', desc:'Collecte tes gains offline ou passifs',  xp:150, icon:'🦴' },
+  { key:'tap',     label:'Faire 50 taps',               desc:'Tape 50 fois sur Paco',                  xp:100, icon:'👆', target:50 },
+  { key:'upgrade', label:'Améliorer un chien',          desc:'Monte un chien d\'un niveau',            xp:150, icon:'🐕' },
+  { key:'coffre',  label:'Ouvrir un coffre',            desc:'Ouvre n\'importe quel coffre',           xp:150, icon:'📦' },
+  { key:'combo',   label:'Compléter 3 quêtes',          desc:'Fais 3 quêtes quotidiennes aujourd\'hui',xp:150, icon:'⭐' },
+];
+
+const PASS_QUEST_WEEKLY_DEF = [
+  { key:'connect5',  label:'Se connecter 5 jours',          desc:'Connecte-toi 5 jours cette semaine',   xp:700,  icon:'📅', target:5 },
+  { key:'upgrade10', label:'Améliorer 10 fois des chiens',   desc:'Monte des chiens au total cette sem.', xp:800,  icon:'🐕', target:10 },
+  { key:'coffres5',  label:'Ouvrir 5 coffres',               desc:'Ouvre 5 coffres cette semaine',        xp:800,  icon:'📦', target:5 },
+  { key:'bones50k',  label:'Produire 50 000 Bones',          desc:'Accumule 50k Bones cette semaine',     xp:700,  icon:'🦴', target:50000 },
+  { key:'daily5',    label:'Finir 5 quêtes quotidiennes',    desc:'Complète 5 quêtes du jour cette sem.', xp:500,  icon:'⭐', target:5 },
+];
+
+// Reset quotidien quêtes pass
+function _resetPassQuestDaily() {
+  const today = new Date().toDateString();
+  if (state.passQuestDailyDate === today) return;
+  state.passQuestDailyDate = today;
+  state.passQuestDaily = {};
+  PASS_QUEST_DAILY_DEF.forEach(q => {
+    state.passQuestDaily[q.key] = { done:false, claimed:false, progress:0 };
+  });
+  // Connexion auto-complétée
+  state.passQuestDaily.login.done = true;
+  // Récompense journalière streak
+  _updateDailyStreak();
+}
+
+// Reset hebdomadaire quêtes pass
+function _resetPassQuestWeekly() {
+  const now    = new Date();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  monday.setHours(0,0,0,0);
+  const weekKey = monday.toDateString();
+  if (state.passQuestWeeklyDate === weekKey) return;
+  state.passQuestWeeklyDate = weekKey;
+  state.passQuestWeekly = {};
+  PASS_QUEST_WEEKLY_DEF.forEach(q => {
+    state.passQuestWeekly[q.key] = { done:false, claimed:false, progress:0 };
+  });
+}
+
+// Vérifier quêtes pass quotidiennes au tap
+function _checkPassQuestTap() {
+  _resetPassQuestDaily();
+  const q = state.passQuestDaily;
+  if (q.tap && !q.tap.done) {
+    q.tap.progress = (q.tap.progress || 0) + 1;
+    if (q.tap.progress >= 50) q.tap.done = true;
+  }
+  _checkComboQuest();
+}
+
+// Vérifier quête combo (3 quêtes complétées)
+function _checkComboQuest() {
+  const q     = state.passQuestDaily;
+  const doneCount = PASS_QUEST_DAILY_DEF
+    .filter(d => d.key !== 'combo')
+    .filter(d => q[d.key] && q[d.key].done)
+    .length;
+  if (doneCount >= 3 && q.combo && !q.combo.done) q.combo.done = true;
+}
+
+// Appelé depuis collectBones / production
+function notifyPassCollect() {
+  _resetPassQuestDaily();
+  const q = state.passQuestDaily;
+  if (q.collect && !q.collect.done) {
+    q.collect.done = true;
+    _checkComboQuest();
+  }
+  // Hebdo bones
+  _resetPassQuestWeekly();
+}
+
+// Appelé depuis upgrade chien
+function notifyPassUpgrade() {
+  _resetPassQuestDaily();
+  const qd = state.passQuestDaily;
+  if (qd.upgrade && !qd.upgrade.done) {
+    qd.upgrade.done = true;
+    _checkComboQuest();
+  }
+  _resetPassQuestWeekly();
+  const qw = state.passQuestWeekly;
+  if (qw.upgrade10 && !qw.upgrade10.done) {
+    qw.upgrade10.progress = (qw.upgrade10.progress || 0) + 1;
+    if (qw.upgrade10.progress >= 10) qw.upgrade10.done = true;
+  }
+}
+
+// Appelé depuis openCoffre
+function notifyPassCoffre() {
+  _resetPassQuestDaily();
+  const qd = state.passQuestDaily;
+  if (qd.coffre && !qd.coffre.done) {
+    qd.coffre.done = true;
+    _checkComboQuest();
+  }
+  _resetPassQuestWeekly();
+  const qw = state.passQuestWeekly;
+  if (qw.coffres5 && !qw.coffres5.done) {
+    qw.coffres5.progress = (qw.coffres5.progress || 0) + 1;
+    if (qw.coffres5.progress >= 5) qw.coffres5.done = true;
+  }
+}
+
+// Réclamer une quête Pass
+function claimPassQuest(type, key) {
+  _resetPassQuestDaily();
+  _resetPassQuestWeekly();
+  const def  = type === 'daily'
+    ? PASS_QUEST_DAILY_DEF.find(d => d.key === key)
+    : PASS_QUEST_WEEKLY_DEF.find(d => d.key === key);
+  const q    = type === 'daily' ? state.passQuestDaily[key] : state.passQuestWeekly[key];
+  if (!def || !q) return;
+  if (!q.done)    { showToast('Quête pas encore complétée !'); return; }
+  if (q.claimed)  { showToast('Déjà réclamée !'); return; }
+  q.claimed = true;
+
+  // Compter quêtes daily pour hebdo daily5
+  if (type === 'daily') {
+    _resetPassQuestWeekly();
+    const qw = state.passQuestWeekly;
+    if (qw.daily5 && !qw.daily5.done) {
+      qw.daily5.progress = (qw.daily5.progress || 0) + 1;
+      if (qw.daily5.progress >= 5) qw.daily5.done = true;
+    }
+  }
+
+  addPassXP(def.xp, def.label);
+  renderPassQuests();
+}
+
+// Render onglet quêtes du Pass
+function renderPassQuests() {
+  const el = document.getElementById('passSection-quetes');
+  if (!el || el.style.display === 'none') return;
+  _resetPassQuestDaily();
+  _resetPassQuestWeekly();
+
+  const XP_TOTAL = state.passXP || 0;
+  const level    = state.passLevel || 1;
+  const xpInLvl  = XP_TOTAL % XP_PER_LEVEL;
+  const pct      = Math.round(xpInLvl / XP_PER_LEVEL * 100);
+
+  el.innerHTML = `
+    <!-- XP Bar -->
+    <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.25);border-radius:14px;padding:12px;margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:12px;font-weight:900;color:var(--gold);">👑 NIVEAU ${level} / 50</span>
+        <span style="font-size:11px;color:var(--text-muted);">${fmt(XP_TOTAL)} XP total</span>
+      </div>
+      <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:4px;">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--gold-dark),var(--gold));border-radius:4px;transition:width 0.3s;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="font-size:9px;color:var(--text-muted);">${xpInLvl} / 1000 XP</span>
+        <span style="font-size:9px;color:var(--text-muted);">Prochain niveau : ${1000 - xpInLvl} XP</span>
+      </div>
+    </div>
+
+    <!-- Quêtes quotidiennes -->
+    <div style="font-size:11px;font-weight:900;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+      📅 QUÊTES QUOTIDIENNES
+      <span style="font-size:9px;color:var(--text-muted);font-weight:400;">~800 XP / jour</span>
+    </div>
+    ${PASS_QUEST_DAILY_DEF.map(def => {
+      const q    = (state.passQuestDaily || {})[def.key] || {};
+      const done = q.done || false;
+      const claimed = q.claimed || false;
+      const prog = def.target ? Math.min(q.progress || 0, def.target) : (done ? 1 : 0);
+      const max  = def.target || 1;
+      const pct  = Math.round(prog / max * 100);
+      return `
+      <div style="background:${claimed ? 'rgba(39,174,96,0.05)' : done ? 'rgba(245,166,35,0.06)' : 'var(--bg-card)'};border:1px solid ${claimed ? 'rgba(39,174,96,0.2)' : done ? 'rgba(245,166,35,0.3)' : 'rgba(255,255,255,0.06)'};border-radius:12px;padding:10px;margin-bottom:6px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:24px;flex-shrink:0;">${def.icon}</span>
+        <div style="flex:1;">
+          <div style="font-size:11px;font-weight:900;color:${claimed ? '#2ECC71' : done ? 'var(--gold-light)' : 'var(--text-light)'};margin-bottom:2px;">${def.label}</div>
+          <div style="font-size:9px;color:var(--text-muted);margin-bottom:4px;">${def.desc}</div>
+          ${def.target ? `<div style="height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:var(--gold);border-radius:2px;"></div></div><div style="font-size:8px;color:var(--text-muted);margin-top:2px;">${prog} / ${max}</div>` : ''}
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:10px;font-weight:900;color:var(--gold);margin-bottom:4px;">+${def.xp} XP</div>
+          ${claimed ? '<span style="font-size:16px;color:#2ECC71;">✓</span>'
+            : done ? `<button onclick="claimPassQuest('daily','${def.key}')" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:8px;padding:5px 10px;font-size:10px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">RÉCLAMER</button>`
+            : '<span style="font-size:14px;opacity:0.3;">🔒</span>'}
+        </div>
+      </div>`;
+    }).join('')}
+
+    <!-- Quêtes hebdomadaires -->
+    <div style="font-size:11px;font-weight:900;color:var(--gold);margin:14px 0 8px;display:flex;align-items:center;gap:6px;">
+      📆 QUÊTES HEBDOMADAIRES
+      <span style="font-size:9px;color:var(--text-muted);font-weight:400;">~3 500 XP / semaine</span>
+    </div>
+    ${PASS_QUEST_WEEKLY_DEF.map(def => {
+      const q    = (state.passQuestWeekly || {})[def.key] || {};
+      const done = q.done || false;
+      const claimed = q.claimed || false;
+      const prog = Math.min(q.progress || 0, def.target);
+      const pct  = Math.round(prog / def.target * 100);
+      return `
+      <div style="background:${claimed ? 'rgba(39,174,96,0.05)' : done ? 'rgba(245,166,35,0.06)' : 'var(--bg-card)'};border:1px solid ${claimed ? 'rgba(39,174,96,0.2)' : done ? 'rgba(245,166,35,0.3)' : 'rgba(255,255,255,0.06)'};border-radius:12px;padding:10px;margin-bottom:6px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:24px;flex-shrink:0;">${def.icon}</span>
+        <div style="flex:1;">
+          <div style="font-size:11px;font-weight:900;color:${claimed ? '#2ECC71' : done ? 'var(--gold-light)' : 'var(--text-light)'};margin-bottom:2px;">${def.label}</div>
+          <div style="font-size:9px;color:var(--text-muted);margin-bottom:4px;">${def.desc}</div>
+          <div style="height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:#7DD4FC;border-radius:2px;"></div></div>
+          <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">${def.key==='bones50k' ? fmt(prog)+' / '+fmt(def.target) : prog+' / '+def.target}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:10px;font-weight:900;color:#7DD4FC;margin-bottom:4px;">+${def.xp} XP</div>
+          ${claimed ? '<span style="font-size:16px;color:#2ECC71;">✓</span>'
+            : done ? `<button onclick="claimPassQuest('weekly','${def.key}')" style="background:linear-gradient(135deg,#1a6fd4,#7DD4FC);border:none;border-radius:8px;padding:5px 10px;font-size:10px;font-weight:900;color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;">RÉCLAMER</button>`
+            : '<span style="font-size:14px;opacity:0.3;">🔒</span>'}
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+// ============================================================
+// RÉCOMPENSES JOURNALIÈRES — STREAK
+// ============================================================
+
+const DAILY_STREAK_REWARDS = [
+  // Semaine 1
+  { day:1,  icon:'🦴', label:'5 000 Bones',    type:'bones',    value:5000 },
+  { day:2,  icon:'💎', label:'10 Diamants',     type:'diamonds', value:10 },
+  { day:3,  icon:'🦴', label:'10 000 Bones',   type:'bones',    value:10000 },
+  { day:4,  icon:'📦', label:'Coffre Bronze',   type:'coffre',   value:'bronze' },
+  { day:5,  icon:'💎', label:'25 Diamants',     type:'diamonds', value:25 },
+  { day:6,  icon:'🦴', label:'20 000 Bones',   type:'bones',    value:20000 },
+  { day:7,  icon:'🎁', label:'Coffre Argent',   type:'coffre',   value:'argent', special:true },
+  // Semaine 2
+  { day:8,  icon:'🦴', label:'15 000 Bones',   type:'bones',    value:15000 },
+  { day:9,  icon:'💎', label:'20 Diamants',     type:'diamonds', value:20 },
+  { day:10, icon:'⚡', label:'Boost ×2 2h',     type:'boost',    value:'prod2h' },
+  { day:11, icon:'🦴', label:'25 000 Bones',   type:'bones',    value:25000 },
+  { day:12, icon:'💎', label:'40 Diamants',     type:'diamonds', value:40 },
+  { day:13, icon:'🍀', label:'Boost NFT ×3',   type:'boost',    value:'nft3' },
+  { day:14, icon:'👑', label:'Coffre Or',       type:'coffre',   value:'or', special:true },
+  // Semaine 3
+  { day:15, icon:'🦴', label:'30 000 Bones',   type:'bones',    value:30000 },
+  { day:16, icon:'💎', label:'50 Diamants',     type:'diamonds', value:50 },
+  { day:17, icon:'🦴', label:'40 000 Bones',   type:'bones',    value:40000 },
+  { day:18, icon:'📦', label:'Coffre Argent',   type:'coffre',   value:'argent' },
+  { day:19, icon:'💎', label:'75 Diamants',     type:'diamonds', value:75 },
+  { day:20, icon:'⚡', label:'Boost ×2 4h',     type:'boost',    value:'prod4h' },
+  { day:21, icon:'💠', label:'Fragment NFT',    type:'fragment', value:1, special:true },
+  // Semaine 4
+  { day:22, icon:'🦴', label:'50 000 Bones',   type:'bones',    value:50000 },
+  { day:23, icon:'💎', label:'80 Diamants',     type:'diamonds', value:80 },
+  { day:24, icon:'🦴', label:'75 000 Bones',   type:'bones',    value:75000 },
+  { day:25, icon:'📦', label:'Coffre Or',       type:'coffre',   value:'or' },
+  { day:26, icon:'💎', label:'100 Diamants',    type:'diamonds', value:100 },
+  { day:27, icon:'🍀', label:'Boost NFT ×3',   type:'boost',    value:'nft3' },
+  { day:28, icon:'🏆', label:'Coffre Épique',   type:'coffre',   value:'event', special:true },
+];
+
+function _updateDailyStreak() {
+  const today     = new Date().toDateString();
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (state.dailyStreakDate === today) return; // déjà mis à jour aujourd'hui
+  if (state.dailyStreakDate === yesterday) {
+    state.dailyStreak = (state.dailyStreak || 0) + 1;
+  } else if (state.dailyStreakDate && state.dailyStreakDate !== yesterday) {
+    state.dailyStreak = 1; // streak cassé
+  } else {
+    state.dailyStreak = (state.dailyStreak || 0) + 1;
+  }
+  state.dailyStreakDate    = today;
+  state.dailyStreakClaimed = false;
+  // XP Pass pour connexion hebdo
+  _resetPassQuestWeekly();
+  const qw = state.passQuestWeekly;
+  if (qw && qw.connect5 && !qw.connect5.done) {
+    qw.connect5.progress = (qw.connect5.progress || 0) + 1;
+    if (qw.connect5.progress >= 5) qw.connect5.done = true;
+  }
+}
+
+function claimDailyStreak() {
+  const today = new Date().toDateString();
+  if (state.dailyStreakDate !== today) _updateDailyStreak();
+  if (state.dailyStreakClaimed) { showToast('🎁 Déjà réclamé aujourd\'hui !'); return; }
+
+  const day     = Math.min(state.dailyStreak || 1, 28);
+  const reward  = DAILY_STREAK_REWARDS.find(r => r.day === day)
+                || DAILY_STREAK_REWARDS[DAILY_STREAK_REWARDS.length - 1];
+
+  // Appliquer la récompense
+  if (reward.type === 'bones')    state.bones += reward.value;
+  if (reward.type === 'diamonds') state.diamonds += reward.value;
+  if (reward.type === 'coffre') {
+    state.coffres = state.coffres || {};
+    state.coffres[reward.value] = (state.coffres[reward.value] || 0) + 1;
+  }
+  if (reward.type === 'fragment') {
+    state.inventaire = state.inventaire || {};
+    state.inventaire.fragments = (state.inventaire.fragments || 0) + reward.value;
+  }
+  if (reward.type === 'boost') {
+    state.inventaire = state.inventaire || {};
+    state.inventaire.boosts = (state.inventaire.boosts || 0) + 1;
+  }
+
+  state.dailyStreakClaimed = true;
+  showToast('🎁 Jour ' + day + ' — ' + reward.label + ' réclamé !');
+  // XP Pass connexion quotidienne
+  const qd = state.passQuestDaily || {};
+  if (qd.login && qd.login.done && !qd.login.claimed) {
+    qd.login.claimed = true;
+    addPassXP(100, 'Connexion du jour');
+  }
+  renderDailyStreak();
+  updateUI();
+  saveState();
+}
+
+function renderDailyStreak() {
+  const el = document.getElementById('dailyStreakScreen');
+  if (!el) return;
+  const today  = new Date().toDateString();
+  if (state.dailyStreakDate !== today) _updateDailyStreak();
+  const streak  = state.dailyStreak || 1;
+  const claimed = state.dailyStreakClaimed || false;
+
+  // Afficher les 7 jours de la semaine en cours
+  const weekStart = Math.floor((streak - 1) / 7) * 7;
+  const days      = DAILY_STREAK_REWARDS.slice(weekStart, weekStart + 7);
+  const weekNum   = Math.floor((streak - 1) / 7) + 1;
+
+  el.innerHTML = `
+    <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);text-align:center;margin-bottom:4px;">🗓️ RÉCOMPENSES JOURNALIÈRES</div>
+    <div style="text-align:center;font-size:10px;color:var(--text-muted);margin-bottom:14px;">Semaine ${weekNum} · Jour ${streak} de connexion</div>
+
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px;">
+      ${days.map((r,i) => {
+        const dayNum  = weekStart + i + 1;
+        const isPast  = dayNum < streak;
+        const isToday = dayNum === streak;
+        const isFutur = dayNum > streak;
+        return `
+        <div style="
+          background:${isToday ? 'rgba(245,166,35,0.15)' : isPast ? 'rgba(39,174,96,0.08)' : 'rgba(255,255,255,0.03)'};
+          border:${isToday ? '2px solid rgba(245,166,35,0.7)' : isPast ? '1px solid rgba(39,174,96,0.3)' : '1px solid rgba(255,255,255,0.07)'};
+          border-radius:10px;padding:6px 2px;text-align:center;
+          ${r.special ? 'box-shadow:0 0 8px rgba(245,166,35,0.15);' : ''}
+        ">
+          <div style="font-size:8px;font-weight:900;color:${isToday ? 'var(--gold)' : 'var(--text-muted)'};margin-bottom:2px;">J${dayNum}</div>
+          <div style="font-size:${r.special ? '20px' : '16px'};margin-bottom:2px;">${isPast ? '✅' : r.icon}</div>
+          <div style="font-size:7px;color:${isToday ? 'var(--gold-light)' : 'var(--text-muted)'};line-height:1.2;">${r.label}</div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    ${claimed
+      ? `<div style="text-align:center;background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);border-radius:12px;padding:12px;font-size:12px;font-weight:900;color:#2ECC71;">✅ Réclamé aujourd'hui — Reviens demain !</div>`
+      : `<button onclick="claimDailyStreak()" style="width:100%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">
+          🎁 Réclamer le jour ${streak} — ${DAILY_STREAK_REWARDS.find(r=>r.day===Math.min(streak,28))?.label || ''}
+        </button>`
+    }
+
+    <div style="text-align:center;margin-top:8px;font-size:9px;color:var(--text-muted);">
+      Série actuelle : <strong style="color:var(--gold);">${streak} jour${streak>1?'s':''}</strong> 🔥
+    </div>
+  `;
 }
