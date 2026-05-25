@@ -950,15 +950,19 @@ function renderPassRewards() {
 
   el.innerHTML = PASS_REWARDS.map(r => {
     const done = r.tier <= passLevel;
-    const isClaimed = claimed.includes(r.tier);
-    const canClaim = done && !isClaimed;
+    const keyFree    = r.tier + '_free';
+    const keyPremium = r.tier + '_premium';
+    const claimedFree    = claimed.includes(keyFree);
+    const claimedPremium = claimed.includes(keyPremium);
+    const canClaimFree    = done && !claimedFree;
+    const canClaimPremium = done && !claimedPremium;
     return `
     <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
       <!-- Gratuit -->
       <div style="flex:1;background:${done ? 'rgba(245,166,35,0.08)' : 'rgba(255,255,255,0.03)'};border:1px solid ${done ? 'rgba(245,166,35,0.3)' : 'rgba(100,100,100,0.15)'};border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;">
         <span style="font-size:20px;">${r.free.icon}</span>
         <span style="font-size:10px;font-weight:900;color:${done ? 'var(--gold-light)' : 'var(--text-muted)'};">${r.free.label}</span>
-        ${canClaim ? `<button onclick="claimPassReward(${r.tier},'free')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>` : done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : ''}
+        ${canClaimFree ? `<button onclick="claimPassReward(${r.tier},'free')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>` : done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : ''}
       </div>
       <!-- Numéro palier -->
       <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#1A0F00;font-size:10px;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${r.tier}</div>
@@ -966,7 +970,7 @@ function renderPassRewards() {
       <div style="flex:1;background:${activated && done ? 'rgba(245,166,35,0.1)' : 'rgba(20,10,0,0.6)'};border:1px solid ${activated && done ? 'rgba(245,166,35,0.35)' : 'rgba(100,100,100,0.15)'};border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;">
         <span style="font-size:20px;">${r.premium.icon}</span>
         <span style="font-size:10px;font-weight:900;color:${activated && done ? 'var(--gold-light)' : 'var(--text-muted)'};">${r.premium.label}</span>
-        ${activated && canClaim ? `<button onclick="claimPassReward(${r.tier},'premium')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>` : activated && done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : '<span style="font-size:14px;opacity:0.4">🔒</span>'}
+        ${activated && canClaimPremium ? `<button onclick="claimPassReward(${r.tier},'premium')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>` : activated && done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : '<span style="font-size:14px;opacity:0.4">🔒</span>'}
       </div>
     </div>`;
   }).join('');
@@ -1011,7 +1015,7 @@ function updatePass() {
   if (elBar) elBar.style.width = pct + '%';
   const elBtn = document.getElementById('passActivateBtn');
   if (elBtn) {
-    elBtn.textContent = state.passActivated ? '✅ Pass activé' : 'ACTIVER LE PASS 💎 499';
+    elBtn.textContent = state.passActivated ? '✅ Pass activé' : 'ACTIVER LE PASS — 4,99 €';
     elBtn.style.opacity = state.passActivated ? '0.6' : '1';
     elBtn.style.cursor = state.passActivated ? 'default' : 'pointer';
   }
