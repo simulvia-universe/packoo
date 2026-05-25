@@ -39,6 +39,18 @@ let state = {
     earn100k: { done:false, claimed:false }, // gagner 100k bones total
   },
   totalBonesEarned: 0,
+  // Chasse aux Os
+  osWeeklyCount: 0,         // os récupérés cette semaine (0-28)
+  osWeeklyStart: 0,         // timestamp début de semaine
+  osDailyCount: 0,          // os récupérés aujourd'hui (0-4)
+  osLastDay: '',            // date du dernier os
+  // Coffres
+  coffres: { bronze:0, argent:0, or:0, event:0 },
+  // Inventaire
+  inventaire: { tickets:0, boosts:0, keys:0, fragments:0, luck:0 },
+  // Cadeau quotidien
+  dailyGiftClaimed: false,
+  dailyGiftDate: '',
 };
 
 let currentScreen = 'home';
@@ -96,6 +108,8 @@ function loadState() {
       state.lastLoginDate = today;
       // Reset quêtes quotidiennes
       state.questsDaily = { tap50:{progress:0,done:false,claimed:false}, tap200:{progress:0,done:false,claimed:false}, unlock:{done:false,claimed:false}, login:{done:true,claimed:false} };
+      // Reset cadeau quotidien
+      state.dailyGiftClaimed = false;
     }
   } catch(e) {}
 }
@@ -175,6 +189,8 @@ function updateUI() {
   if (shopD) shopD.textContent = state.diamonds.toLocaleString('fr-FR');
   // Badge quêtes
   updateQuestBadge();
+  // Badge cadeaux
+  updateCadeauBadge();
 }
 
 function updateQuestBadge() {
@@ -711,6 +727,7 @@ function navigate(screen) {
   if (screen === 'pass')        updatePass();
   if (screen === 'classement')   renderClassement();
   if (screen === 'evenements')   startEventCountdown();
+  if (screen === 'cadeaux')      renderCadeaux();
 }
 
 function switchQueteTab(tab) {
@@ -1015,7 +1032,312 @@ if (state._offlineEarned > 0) {
 }
 updatePass();
 setTimeout(() => updateQuestBadge(), 200);
+setTimeout(() => updateCadeauBadge(), 200);
 
 // Render initial
 renderDogCards();
 renderQuests();
+
+// ============================================================
+// PACKOO — ÉCRAN CADEAUX
+// ============================================================
+
+// ===== NAVIGATION ONGLETS CADEAUX =====
+function switchCadeauTab(tab) {
+  ['chasse','coffres','rewards','inventaire'].forEach(t => {
+    const el = document.getElementById('cadeau-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+    const tabEl = document.getElementById('ctab-' + t);
+    if (tabEl) tabEl.classList.toggle('active', t === tab);
+  });
+}
+
+// ===== RENDER PRINCIPAL CADEAUX =====
+function renderCadeaux() {
+  renderOsChasse();
+  renderCoffresTab();
+  renderInventaire();
+  renderDailyGift();
+}
+
+// ===== CHASSE AUX OS =====
+function renderOsChasse() {
+  // Reset quotidien des os
+  const today = new Date().toDateString();
+  if (state.osLastDay !== today) {
+    state.osDailyCount = 0;
+    state.osLastDay    = today;
+  }
+  // Reset hebdomadaire (chaque lundi)
+  const now    = new Date();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  monday.setHours(0,0,0,0);
+  if (!state.osWeeklyStart || state.osWeeklyStart < monday.getTime()) {
+    state.osWeeklyCount  = 0;
+    state.osWeeklyStart  = monday.getTime();
+  }
+
+  const count = state.osWeeklyCount || 0;
+  const pct   = Math.round((count / 28) * 100);
+
+  // Barre progression
+  const bar = document.getElementById('osProgressBar');
+  const txt = document.getElementById('osProgressDisplay');
+  if (bar) bar.style.width = pct + '%';
+  if (txt) txt.textContent = count + ' / 28';
+
+  // Couleur barre selon palier
+  if (bar) {
+    if (count >= 22)      bar.style.background = 'linear-gradient(90deg,#1a6fd4,#7DD4FC)';
+    else if (count >= 15) bar.style.background = 'linear-gradient(90deg,#B8860B,#FFD700)';
+    else if (count >= 8)  bar.style.background = 'linear-gradient(90deg,#808080,#C0C0C0)';
+    else                  bar.style.background = 'linear-gradient(90deg,#8B4513,#CD7F32)';
+  }
+
+  // Highlight palier actif
+  const paliers = ['bronze','argent','or','diamant'];
+  const actif   = count >= 22 ? 'diamant' : count >= 15 ? 'or' : count >= 8 ? 'argent' : 'bronze';
+  paliers.forEach(p => {
+    const el = document.getElementById('osPalier-' + p);
+    if (!el) return;
+    if (p === actif) {
+      el.style.background = 'rgba(245,166,35,0.25)';
+      el.style.border      = '1px solid rgba(245,166,35,0.6)';
+    } else {
+      el.style.background = 'rgba(255,255,255,0.03)';
+      el.style.border      = '1px solid rgba(255,255,255,0.08)';
+    }
+  });
+
+  // Message statut
+  const msg = document.getElementById('osStatusMsg');
+  if (msg) {
+    const daily = state.osDailyCount || 0;
+    if (daily >= 4) {
+      msg.innerHTML = '✅ Tu as récupéré tes <strong style="color:var(--gold);">4 os du jour</strong> !<br><span style="color:var(--text-muted);">Reviens demain pour continuer la série.</span>';
+    } else {
+      msg.innerHTML = '🦴 Un os mystérieux peut tomber à tout moment...<br><span style="color:var(--gold);font-weight:800;">Reste attentif pendant que tu joues !</span>';
+    }
+  }
+
+  // Timer fin de série
+  const nextMonday = new Date(state.osWeeklyStart + 7 * 86400000);
+  const diff       = nextMonday - Date.now();
+  if (diff > 0) {
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000)  / 60000);
+    const timerEl = document.getElementById('osSerieTimer');
+    if (timerEl) timerEl.textContent = d + 'j ' + h + 'h ' + m + 'm';
+  }
+}
+
+// Déclencher un os (appelé depuis l'accueil lors d'une apparition)
+function collectOs() {
+  const today = new Date().toDateString();
+  if (state.osLastDay !== today) { state.osDailyCount = 0; state.osLastDay = today; }
+  if ((state.osDailyCount || 0) >= 4) {
+    showToast('🦴 4 os récupérés aujourd\'hui — reviens demain !');
+    return;
+  }
+
+  // Simuler la pub (dans le prototype : 3s de délai)
+  showToast('📺 Pub en cours… 3 secondes');
+  setTimeout(() => {
+    state.osDailyCount  = (state.osDailyCount  || 0) + 1;
+    state.osWeeklyCount = (state.osWeeklyCount  || 0) + 1;
+
+    // Déterminer le type d'os selon progression semaine
+    const count = state.osWeeklyCount;
+    let osType, reward;
+    if (count >= 22) {
+      osType = '💎 Os Diamant';
+      reward = _rewardOsDiamant();
+    } else if (count >= 15) {
+      osType = '🥇 Os d\'Or';
+      reward = _rewardOsOr();
+    } else if (count >= 8) {
+      osType = '🥈 Os d\'Argent';
+      reward = _rewardOsArgent();
+    } else {
+      osType = '🦴 Os de Bronze';
+      reward = _rewardOsBronze();
+    }
+
+    showToast(osType + ' ouvert ! ' + reward.msg);
+    updateUI();
+    saveState();
+    if (currentScreen === 'cadeaux') renderCadeaux();
+  }, 3000);
+}
+
+function _rewardOsBronze() {
+  const bones = Math.floor(Math.random() * 5000) + 1000;
+  state.bones += bones;
+  return { msg: '🦴 +' + fmt(bones) + ' Bones !' };
+}
+function _rewardOsArgent() {
+  const roll = Math.random();
+  if (roll < 0.5) {
+    const bones = Math.floor(Math.random() * 15000) + 5000;
+    state.bones += bones;
+    return { msg: '🦴 +' + fmt(bones) + ' Bones !' };
+  } else {
+    const gems = Math.floor(Math.random() * 20) + 10;
+    state.diamonds += gems;
+    return { msg: '💎 +' + gems + ' Diamants !' };
+  }
+}
+function _rewardOsOr() {
+  const roll = Math.random();
+  if (roll < 0.4) {
+    const bones = Math.floor(Math.random() * 50000) + 20000;
+    state.bones += bones;
+    return { msg: '🦴 +' + fmt(bones) + ' Bones !' };
+  } else if (roll < 0.7) {
+    const gems = Math.floor(Math.random() * 50) + 30;
+    state.diamonds += gems;
+    return { msg: '💎 +' + gems + ' Diamants !' };
+  } else {
+    state.coffres = state.coffres || {};
+    state.coffres.bronze = (state.coffres.bronze || 0) + 1;
+    return { msg: '📦 Coffre Bronze gagné !' };
+  }
+}
+function _rewardOsDiamant() {
+  const roll = Math.random();
+  if (roll < 0.4) {
+    const gems = Math.floor(Math.random() * 100) + 80;
+    state.diamonds += gems;
+    return { msg: '💎 +' + gems + ' Diamants !' };
+  } else if (roll < 0.7) {
+    state.coffres = state.coffres || {};
+    state.coffres.argent = (state.coffres.argent || 0) + 1;
+    return { msg: '🎁 Coffre Argent gagné !' };
+  } else {
+    // Gros boost chance NFT
+    state.chanceScore += 200;
+    return { msg: '🍀 Boost NFT +200 chance !' };
+  }
+}
+
+// ===== COFFRES =====
+function renderCoffresTab() {
+  state.coffres = state.coffres || { bronze:0, argent:0, or:0, event:0 };
+  const c = state.coffres;
+  const elB = document.getElementById('coffreBronzeCount'); if (elB) elB.textContent = c.bronze || 0;
+  const elA = document.getElementById('coffreArgentCount'); if (elA) elA.textContent = c.argent || 0;
+  const elO = document.getElementById('coffreOrCount');     if (elO) elO.textContent = c.or     || 0;
+  const elE = document.getElementById('coffreEventCount');  if (elE) elE.textContent = c.event  || 0;
+  const total = (c.bronze||0) + (c.argent||0) + (c.or||0) + (c.event||0);
+  const elT = document.getElementById('totalCoffresCount'); if (elT) elT.textContent = '📦 ' + total;
+}
+
+function openCoffre(type) {
+  state.coffres = state.coffres || { bronze:0, argent:0, or:0, event:0 };
+  if ((state.coffres[type] || 0) <= 0) {
+    showToast('📦 Tu n\'as pas de coffre ' + type + ' !');
+    return;
+  }
+  state.coffres[type]--;
+
+  let reward = '';
+  if (type === 'bronze') {
+    const bones = Math.floor(Math.random() * 8000) + 2000;
+    state.bones += bones;
+    reward = '🦴 +' + fmt(bones) + ' Bones !';
+  } else if (type === 'argent') {
+    const gems = Math.floor(Math.random() * 30) + 15;
+    state.diamonds += gems;
+    state.bones += 5000;
+    reward = '💎 +' + gems + ' Diamants + 🦴 5K Bones !';
+  } else if (type === 'or') {
+    const gems = Math.floor(Math.random() * 80) + 50;
+    state.diamonds += gems;
+    state.bones += 20000;
+    state.chanceScore += 100;
+    reward = '💎 +' + gems + ' Diamants + 🦴 20K + 🍀 Chance NFT !';
+  } else if (type === 'event') {
+    state.inventaire = state.inventaire || {};
+    state.inventaire.tickets = (state.inventaire.tickets || 0) + 2;
+    const gems = Math.floor(Math.random() * 50) + 20;
+    state.diamonds += gems;
+    reward = '🎫 +2 Tickets + 💎 +' + gems + ' Diamants !';
+  }
+
+  showToast('📦 Coffre ouvert ! ' + reward);
+  renderCoffresTab();
+  renderInventaire();
+  updateUI();
+  saveState();
+}
+
+// ===== INVENTAIRE =====
+function renderInventaire() {
+  state.inventaire = state.inventaire || { tickets:0, boosts:0, keys:0, fragments:0, luck:0 };
+  const inv = state.inventaire;
+  const elT  = document.getElementById('invTickets');   if (elT)  elT.textContent  = inv.tickets   || 0;
+  const elB  = document.getElementById('invBoosts');    if (elB)  elB.textContent  = inv.boosts    || 0;
+  const elK  = document.getElementById('invKeys');      if (elK)  elK.textContent  = inv.keys      || 0;
+  const elF  = document.getElementById('invFragments'); if (elF)  elF.textContent  = inv.fragments || 0;
+  const elL  = document.getElementById('invLuck');      if (elL)  elL.textContent  = inv.luck      || 0;
+  const total = Object.values(inv).reduce((s,v) => s + (v||0), 0);
+  const elC  = document.getElementById('inventaireCount'); if (elC) elC.textContent = '🎒 ' + total;
+}
+
+// ===== CADEAU QUOTIDIEN =====
+function renderDailyGift() {
+  const today  = new Date().toDateString();
+  const claimed = state.dailyGiftDate === today && state.dailyGiftClaimed;
+  const btn    = document.getElementById('dailyGiftBtn');
+  const timer  = document.getElementById('dailyGiftTimer');
+
+  if (btn) {
+    btn.textContent = claimed ? '✅ Réclamé' : 'RÉCUPÉRER';
+    btn.style.opacity = claimed ? '0.5' : '1';
+    btn.style.cursor  = claimed ? 'default' : 'pointer';
+  }
+
+  if (claimed && timer) {
+    const midnight = new Date(); midnight.setHours(24,0,0,0);
+    const diff = midnight - Date.now();
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    timer.textContent = h + 'h ' + m + 'm';
+  } else if (timer) {
+    timer.textContent = 'Disponible !';
+  }
+}
+
+function claimDailyGift() {
+  const today = new Date().toDateString();
+  if (state.dailyGiftDate === today && state.dailyGiftClaimed) {
+    showToast('🎁 Déjà réclamé aujourd\'hui !');
+    return;
+  }
+  // Récompense quotidienne
+  const bones = 5000 + Math.floor(state.streak * 500);
+  state.bones += bones;
+  state.dailyGiftClaimed = true;
+  state.dailyGiftDate    = today;
+
+  showToast('🎁 Cadeau quotidien ! 🦴 +' + fmt(bones) + ' Bones !');
+  renderDailyGift();
+  updateUI();
+  saveState();
+}
+
+// ===== BADGE CADEAUX (bouton accueil) =====
+function updateCadeauBadge() {
+  const today   = new Date().toDateString();
+  const giftOk  = !(state.dailyGiftDate === today && state.dailyGiftClaimed);
+  const coffres  = state.coffres || {};
+  const hasCoffre = Object.values(coffres).some(v => v > 0);
+  const badge   = document.getElementById('cadeauBadge');
+  if (badge) {
+    const count = (giftOk ? 1 : 0) + (hasCoffre ? 1 : 0);
+    badge.style.display = count > 0 ? 'flex' : 'none';
+    badge.textContent   = count;
+  }
+}
