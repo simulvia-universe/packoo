@@ -85,17 +85,25 @@ function loadState() {
     // Offline earnings
     if (s.lastOnline) {
       const secondsOffline = Math.floor((Date.now() - s.lastOnline) / 1000);
-      const maxOffline = 8 * 3600; // max 8h de gains offline
+      const maxOffline = 8 * 3600; // plafond de base : 8h
       const effectiveSeconds = Math.min(secondsOffline, maxOffline);
       if (effectiveSeconds > 60) {
         const prod = ALL_DOGS
           .filter(d => d.unlocked && d.active)
           .reduce((sum, d) => sum + getProduction(d.rarity, d.level, d.id), 0);
-        const earned = Math.floor(prod * effectiveSeconds / 3600);
-        if (earned > 0) {
-          state.bones += earned;
-          state._offlineEarned = earned;
-          state._offlineSeconds = effectiveSeconds;
+        const fullEarned = Math.floor(prod * effectiveSeconds / 3600);
+        if (fullEarned > 0) {
+          // On donne 40% directement, le reste est proposé via pub
+          const earned40  = Math.floor(fullEarned * 0.4);
+          const earned80  = Math.floor(fullEarned * 0.8);
+          const earned100 = fullEarned;
+          state.bones += earned40;
+          // Stocker les infos pour la popup
+          state._offlineEarned    = earned40;      // ce qu'on a déjà reçu
+          state._offlineEarned80  = earned80;      // total si pub
+          state._offlineEarned100 = earned100;     // total si pub + pass
+          state._offlineSeconds   = effectiveSeconds;
+          state._offlineFullProd  = fullEarned;    // pour calculer le bonus à ajouter
         }
       }
     }
@@ -1026,9 +1034,7 @@ if (state._offlineEarned > 0) {
   const h = Math.floor(state._offlineSeconds / 3600);
   const m = Math.floor((state._offlineSeconds % 3600) / 60);
   const duree = h > 0 ? h + 'h ' + m + 'min' : m + 'min';
-  setTimeout(() => showToast('😴 Absent ' + duree + ' — +' + fmt(state._offlineEarned) + ' Bones gagnés !'), 800);
-  delete state._offlineEarned;
-  delete state._offlineSeconds;
+  setTimeout(() => showOfflinePopup(duree), 800);
 }
 updatePass();
 setTimeout(() => updateQuestBadge(), 200);
@@ -1340,4 +1346,141 @@ function updateCadeauBadge() {
     badge.style.display = count > 0 ? 'flex' : 'none';
     badge.textContent   = count;
   }
+}
+
+// ============================================================
+// PACKOO — SYSTÈME OFFLINE
+// ============================================================
+
+function showOfflinePopup(duree) {
+  const earned40  = state._offlineEarned     || 0;
+  const earned80  = state._offlineEarned80   || 0;
+  const earned100 = state._offlineEarned100  || 0;
+  const hasPass   = state.passActivated      || false;
+
+  // Bonus encore à recevoir si pub
+  const bonusPub  = earned80  - earned40;   // +40% supplémentaire
+  const bonusPass = earned100 - earned40;   // +60% supplémentaire
+
+  // Créer la popup
+  const overlay = document.createElement('div');
+  overlay.id = 'offlineOverlay';
+  overlay.style.cssText = `
+    position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:3000;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      background:linear-gradient(160deg,#1a0a00,#2d1500);
+      border:2px solid rgba(245,166,35,0.5);
+      border-radius:20px;padding:24px;max-width:340px;width:100%;
+      text-align:center;box-shadow:0 8px 40px rgba(245,166,35,0.2);
+    ">
+      <!-- Icône + titre -->
+      <div style="font-size:48px;margin-bottom:8px;">😴</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);margin-bottom:4px;">
+        Absent ${duree}
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">
+        Tes chiens ont continué à produire pendant ton absence.
+      </div>
+
+      <!-- Tableau 40% / 80% / 100% -->
+      <div style="display:flex;gap:6px;margin-bottom:20px;">
+
+        <!-- 40% déjà reçu -->
+        <div style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:10px;">
+          <div style="font-size:18px;font-weight:900;color:#9D9D9D;">40%</div>
+          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">Récupéré</div>
+          <div style="font-size:12px;font-weight:900;color:var(--gold-light);">🦴 ${fmt(earned40)}</div>
+          <div style="margin-top:6px;background:#27AE60;border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:white;">✅ REÇU</div>
+        </div>
+
+        <!-- 80% avec pub -->
+        <div style="flex:1;background:rgba(155,89,182,0.1);border:2px solid rgba(155,89,182,0.4);border-radius:12px;padding:10px;">
+          <div style="font-size:18px;font-weight:900;color:#C39BD3;">80%</div>
+          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">Avec pub</div>
+          <div style="font-size:12px;font-weight:900;color:var(--gold-light);">🦴 ${fmt(earned80)}</div>
+          <div style="margin-top:6px;background:linear-gradient(135deg,#7D3C98,#9B59B6);border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:white;">📺 PUB</div>
+        </div>
+
+        <!-- 100% avec pub + pass -->
+        <div style="flex:1;background:rgba(245,166,35,0.08);border:2px solid rgba(245,166,35,0.3);border-radius:12px;padding:10px;${hasPass ? '' : 'opacity:0.5;'}">
+          <div style="font-size:18px;font-weight:900;color:var(--gold);">100%</div>
+          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">Pub + Pass</div>
+          <div style="font-size:12px;font-weight:900;color:var(--gold-light);">🦴 ${fmt(earned100)}</div>
+          <div style="margin-top:6px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:#1A0F00;">${hasPass ? '👑 PASS' : '🔒 PASS'}</div>
+        </div>
+
+      </div>
+
+      <!-- Bouton pub -->
+      <button onclick="collectOfflinePub()" style="
+        width:100%;background:linear-gradient(135deg,#7D3C98,#9B59B6);
+        border:none;border-radius:14px;padding:14px;
+        font-size:14px;font-weight:900;color:white;cursor:pointer;
+        font-family:'Nunito',sans-serif;margin-bottom:10px;
+      ">
+        📺 Regarder une pub — récupérer ${hasPass ? '100%' : '80%'}
+      </button>
+
+      <!-- Bouton ignorer -->
+      <button onclick="closeOfflinePopup()" style="
+        width:100%;background:transparent;
+        border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:10px;
+        font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;
+        font-family:'Nunito',sans-serif;
+      ">
+        Garder les 40% — continuer
+      </button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+}
+
+function collectOfflinePub() {
+  const overlay = document.getElementById('offlineOverlay');
+  if (overlay) overlay.remove();
+
+  // Simuler la pub (3 secondes)
+  showToast('📺 Pub en cours…');
+  setTimeout(() => {
+    const hasPass    = state.passActivated  || false;
+    const full       = state._offlineEarned100 || 0;
+    const already    = state._offlineEarned    || 0;
+    const target     = hasPass ? full : Math.floor(full * 0.8);
+    const bonus      = target - already;
+
+    if (bonus > 0) {
+      state.bones += bonus;
+      showToast('✅ ' + (hasPass ? '100%' : '80%') + ' récupéré ! 🦴 +' + fmt(bonus) + ' Bones bonus !');
+    }
+
+    // Nettoyer
+    delete state._offlineEarned;
+    delete state._offlineEarned80;
+    delete state._offlineEarned100;
+    delete state._offlineSeconds;
+    delete state._offlineFullProd;
+
+    updateUI();
+    saveState();
+  }, 3000);
+}
+
+function closeOfflinePopup() {
+  const overlay = document.getElementById('offlineOverlay');
+  if (overlay) overlay.remove();
+
+  // Nettoyer sans donner le bonus
+  delete state._offlineEarned;
+  delete state._offlineEarned80;
+  delete state._offlineEarned100;
+  delete state._offlineSeconds;
+  delete state._offlineFullProd;
+
+  saveState();
 }
