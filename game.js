@@ -2182,6 +2182,7 @@ function claimDailyStreak() {
   }
   renderDailyStreak();
   updateUI();
+  updateAllBadges();
   saveState();
 }
 
