@@ -979,7 +979,7 @@ function renderPassRewards() {
   const claimed = state ? (state.passClaimedTiers || []) : [];
 
   el.innerHTML = PASS_REWARDS.map(r => {
-    const done = r.tier <= passLevel;
+    const done = r.tier < passLevel; // palier N débloqué quand passLevel > N (après 1000 XP)
     const keyFree    = r.tier + '_free';
     const keyPremium = r.tier + '_premium';
     const claimedFree    = claimed.includes(keyFree);
