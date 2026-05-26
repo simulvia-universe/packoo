@@ -1148,7 +1148,11 @@ function renderPassRewards() {
       <!-- Gratuit -->
       <div style="flex:1;background:${done ? 'rgba(245,166,35,0.08)' : 'rgba(255,255,255,0.03)'};border:1px solid ${done ? 'rgba(245,166,35,0.3)' : 'rgba(100,100,100,0.15)'};border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;">
         <span style="font-size:20px;">${r.free.icon}</span>
-        <span style="font-size:10px;font-weight:900;color:${done ? 'var(--gold-light)' : 'var(--text-muted)'};">${r.free.label}</span>
+        <span style="font-size:10px;font-weight:900;color:${done ? 'var(--gold-light)' : 'var(--text-muted)'};">
+          ${r.free.type==='bones' && typeof r.free.value==='string' && r.free.value.startsWith('prod_')
+            ? getBonesLabel(parseFloat(r.free.value.replace('prod_','').replace('h','')))
+            : r.free.label}
+        </span>
         ${canClaimFree ? `<button onclick="claimPassReward(${r.tier},'free')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>` : done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : ''}
       </div>
       <!-- Numéro palier -->
@@ -1156,7 +1160,11 @@ function renderPassRewards() {
       <!-- Premium -->
       <div style="flex:1;background:${activated && done ? 'rgba(245,166,35,0.1)' : 'rgba(20,10,0,0.6)'};border:1px solid ${activated && done ? 'rgba(245,166,35,0.35)' : 'rgba(100,100,100,0.15)'};border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;">
         <span style="font-size:20px;">${r.premium.icon}</span>
-        <span style="font-size:10px;font-weight:900;color:${activated && done ? 'var(--gold-light)' : 'var(--text-muted)'};">${r.premium.label}</span>
+        <span style="font-size:10px;font-weight:900;color:${activated && done ? 'var(--gold-light)' : 'var(--text-muted)'};">
+          ${r.premium.type==='bones' && typeof r.premium.value==='string' && r.premium.value.startsWith('prod_')
+            ? getBonesLabel(parseFloat(r.premium.value.replace('prod_','').replace('h','')))
+            : r.premium.label}
+        </span>
         ${activated && canClaimPremium ? `<button onclick="claimPassReward(${r.tier},'premium')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>` : activated && done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : '<span style="font-size:14px;opacity:0.4">🔒</span>'}
       </div>
     </div>`;
