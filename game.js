@@ -69,7 +69,7 @@ let state = {
   osDailyCount: 0,          // os récupérés aujourd'hui (0-4)
   osLastDay: '',            // date du dernier os
   // Coffres
-  coffres: { bronze:0, argent:0, or:0, event:0 },
+  coffres: { bronze:0, argent:0, or:0, event:0, commun:0, rare:0, epic:0, legendary:0, mythic:0 },
   // Inventaire
   inventaire: { tickets:0, boosts:0, keys:0, fragments:0, luck:0 },
   // Cadeau quotidien
@@ -168,6 +168,55 @@ function getBonesLabel(hours) {
   if (val >= 1000000) return (val/1000000).toFixed(1) + 'M Bones';
   if (val >= 1000) return Math.floor(val/1000) + 'K Bones';
   return val + ' Bones';
+}
+
+// ============================================================
+// SYSTÈME DÉGRESSIF
+// Les récompenses en heures de prod stockées perdent -1h/jour
+// et expirent après 30 jours si non réclamées
+// ============================================================
+function applyDegressiveRewards() {
+  if (!state.pendingRewards) state.pendingRewards = [];
+  const now = Date.now();
+  const oneDayMs = 86400000;
+  const maxAge = 30 * oneDayMs; // 30 jours
+
+  state.pendingRewards = state.pendingRewards.filter(r => {
+    const age = now - r.createdAt;
+    if (age >= maxAge) return false; // expirée
+    // Calculer combien d'heures ont été perdues
+    const daysPassed = Math.floor(age / oneDayMs);
+    r.currentHours = Math.max(0, r.initialHours - daysPassed);
+    return r.currentHours > 0;
+  });
+}
+
+// Ajouter une récompense en attente (en heures de prod)
+function addPendingReward(hours, source) {
+  state.pendingRewards = state.pendingRewards || [];
+  state.pendingRewards.push({
+    initialHours: hours,
+    currentHours: hours,
+    source: source || 'unknown',
+    createdAt: Date.now()
+  });
+}
+
+// Réclamer toutes les récompenses en attente
+function claimAllPendingRewards() {
+  applyDegressiveRewards();
+  if (!state.pendingRewards || state.pendingRewards.length === 0) {
+    showToast('Aucune récompense en attente.');
+    return;
+  }
+  let totalBones = 0;
+  state.pendingRewards.forEach(r => {
+    totalBones += getBonesReward(r.currentHours);
+  });
+  state.bones += totalBones;
+  state.pendingRewards = [];
+  showToast('🦴 +' + fmt(totalBones) + ' Bones réclamés !');
+  updateUI(); updateAllBadges(); saveState();
 }
 function getProduction(rarity, level, dogId) {
   // Si DOG_PRODUCTION existe (nouveau data.js), on utilise la valeur niveau 50 comme base
@@ -927,7 +976,7 @@ function navigate(screen) {
   if (screen === 'shop') {
     // Mettre à jour le label Pack Bones dynamiquement
     const el = document.getElementById('packBonesQty');
-    if (el) el.textContent = getBonesLabel(48);
+    if (el) el.textContent = getBonesLabel(36);
   }
 }
 
@@ -1042,7 +1091,7 @@ function buyBoost(type) {
 function buyBones() {
   if (state.diamonds < 100) { showToast('Pas assez de Diamants ! 💎'); return; }
   state.diamonds -= 100;
-  state.bones += getBonesReward(48);
+  state.bones += getBonesReward(36);
   updateUI(); saveState();
   showToast('🦴 +500,000 Bones !');
 }
@@ -1089,11 +1138,11 @@ function activatePass() {
 const PASS_REWARDS = [
   { tier:1,  free:{icon:'🦴', label:'25K Bones',          type:'bones',    value:'prod_1h'},   premium:{icon:'🦴', label:'100K Bones',         type:'bones',    value:'prod_3h'} },
   { tier:2,  free:{icon:'💎', label:'25 Diamants',         type:'diamonds', value:25},      premium:{icon:'💎', label:'100 Diamants',        type:'diamonds', value:100} },
-  { tier:3,  free:{icon:'📦', label:'Coffre Commun',       type:'chest',    value:'common'},premium:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'} },
+  { tier:3,  free:{icon:'📦', label:'Coffre Commun',       type:'chest',    value:'commun'},premium:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'} },
   { tier:4,  free:{icon:'🦴', label:'30K Bones',          type:'bones',    value:'prod_3h'},   premium:{icon:'⚡', label:'Boost ×2 (2h)',        type:'boost',    value:'2h'} },
   { tier:5,  free:{icon:'⚡', label:'Boost ×2 (30min)',   type:'boost',    value:'30m'},   premium:{icon:'🖼️', label:'Cadre Profil S1',      type:'cosmetic', value:'frame_s1'} },
   { tier:6,  free:{icon:'🦴', label:'40K Bones',          type:'bones',    value:'prod_4h'},   premium:{icon:'🦴', label:'150K Bones',          type:'bones',    value:'prod_10h'} },
-  { tier:7,  free:{icon:'🦴', label:'50K Bones',          type:'bones',    value:50000},   premium:{icon:'✨', label:'Aura Lumineuse',       type:'cosmetic', value:'aura'} },
+  { tier:7,  free:{icon:'🦴', label:'50K Bones',          type:'bones',    value:'prod_4h'},   premium:{icon:'✨', label:'Aura Lumineuse',       type:'cosmetic', value:'aura'} },
   { tier:8,  free:{icon:'💎', label:'30 Diamants',         type:'diamonds', value:30},      premium:{icon:'📦', label:'Coffre Épique',        type:'chest',    value:'epic'} },
   { tier:9,  free:{icon:'🦴', label:'60K Bones',          type:'bones',    value:'prod_6h'},   premium:{icon:'🦴', label:'180K Bones',          type:'bones',    value:'prod_14h'} },
   { tier:10, free:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'},  premium:{icon:'🐶', label:'Skin Paco Exclusif',   type:'cosmetic', value:'skin_paco_s1'} },
@@ -1104,33 +1153,33 @@ const PASS_REWARDS = [
   { tier:15, free:{icon:'🎨', label:'Cosmétique Simple',  type:'cosmetic', value:'bg_s1'}, premium:{icon:'🏅', label:'Badge Premium S1',     type:'cosmetic', value:'badge_premium'} },
   { tier:16, free:{icon:'🦴', label:'90K Bones',          type:'bones',    value:'prod_8h'},   premium:{icon:'🦴', label:'250K Bones',          type:'bones',    value:'prod_20h'} },
   { tier:17, free:{icon:'💎', label:'60 Diamants',         type:'diamonds', value:60},      premium:{icon:'💎', label:'220 Diamants',         type:'diamonds', value:220} },
-  { tier:18, free:{icon:'🦴', label:'100K Bones',         type:'bones',    value:'prod_10h'},  premium:{icon:'🎲', label:'Boost NFT ×3',         type:'boost',    value:'nft3'} },
+  { tier:18, free:{icon:'🦴', label:'100K Bones',         type:'bones',    value:'prod_10h'},  premium:{icon:'🍀', label:'Boost NFT +25% 1h',    type:'boost',    value:'nft25_1h'} },
   { tier:19, free:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'},  premium:{icon:'🦴', label:'280K Bones',          type:'bones',    value:'prod_24h'} },
   { tier:20, free:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'},  premium:{icon:'📦', label:'Coffre Légendaire',    type:'chest',    value:'legendary'} },
   { tier:21, free:{icon:'🦴', label:'110K Bones',         type:'bones',    value:'prod_12h'},  premium:{icon:'🦴', label:'300K Bones',          type:'bones',    value:'prod_28h'} },
   { tier:22, free:{icon:'💎', label:'70 Diamants',         type:'diamonds', value:70},      premium:{icon:'🎭', label:'Emote Exclusive',      type:'cosmetic', value:'emote_s1'} },
-  { tier:23, free:{icon:'🦴', label:'120K Bones',         type:'bones',    value:120000},  premium:{icon:'🦴', label:'320K Bones',          type:'bones',    value:320000} },
+  { tier:23, free:{icon:'🦴', label:'120K Bones',         type:'bones',    value:'prod_12h'},  premium:{icon:'🦴', label:'320K Bones',          type:'bones',    value:'prod_28h'} },
   { tier:24, free:{icon:'⚡', label:'Boost ×2 (1h)',      type:'boost',    value:'1h'},    premium:{icon:'💎', label:'250 Diamants',         type:'diamonds', value:250} },
   { tier:25, free:{icon:'🏅', label:'Badge S1',           type:'cosmetic', value:'badge_s1'},premium:{icon:'🖼️',label:'Fond Profil Animé',   type:'cosmetic', value:'bg_animated'} },
   { tier:26, free:{icon:'🦴', label:'130K Bones',         type:'bones',    value:'prod_14h'},  premium:{icon:'🦴', label:'350K Bones',          type:'bones',    value:'prod_32h'} },
   { tier:27, free:{icon:'💎', label:'80 Diamants',         type:'diamonds', value:80},      premium:{icon:'💎', label:'280 Diamants',         type:'diamonds', value:280} },
   { tier:28, free:{icon:'📦', label:'Coffre Rare',         type:'chest',    value:'rare'},  premium:{icon:'📦', label:'Coffre Épique',        type:'chest',    value:'epic'} },
   { tier:29, free:{icon:'🦴', label:'140K Bones',         type:'bones',    value:'prod_14h'},  premium:{icon:'🦴', label:'380K Bones',          type:'bones',    value:'prod_32h'} },
-  { tier:30, free:{icon:'🎲', label:'Boost NFT ×2',       type:'boost',    value:'nft2'},  premium:{icon:'🦴', label:'500K Bones',          type:'bones',    value:'prod_36h'} },
+  { tier:30, free:{icon:'🍀', label:'Boost NFT +25% 2h',  type:'boost',    value:'nft25_2h'},  premium:{icon:'🦴', label:'500K Bones',          type:'bones',    value:'prod_36h'} },
   { tier:31, free:{icon:'🦴', label:'150K Bones',         type:'bones',    value:'prod_16h'},  premium:{icon:'🦴', label:'400K Bones',          type:'bones',    value:'prod_36h'} },
   { tier:32, free:{icon:'💎', label:'90 Diamants',         type:'diamonds', value:90},      premium:{icon:'💎', label:'300 Diamants',         type:'diamonds', value:300} },
-  { tier:33, free:{icon:'⚡', label:'Boost ×2 (2h)',      type:'boost',    value:'2h'},    premium:{icon:'⚡', label:'Boost ×3 (3h)',        type:'boost',    value:'3h_x3'} },
+  { tier:33, free:{icon:'⚡', label:'Boost ×2 (2h)',      type:'boost',    value:'2h'},    premium:{icon:'⚡', label:'Boost ×2 (4h)',        type:'boost',    value:'2h_4h'} },
   { tier:34, free:{icon:'🦴', label:'160K Bones',         type:'bones',    value:'prod_18h'},  premium:{icon:'🦴', label:'450K Bones',          type:'bones',    value:'prod_40h'} },
   { tier:35, free:{icon:'💎', label:'100 Diamants',        type:'diamonds', value:100},     premium:{icon:'✨', label:'Animation Spéciale',   type:'cosmetic', value:'anim_s1'} },
-  { tier:36, free:{icon:'🦴', label:'170K Bones',         type:'bones',    value:170000},  premium:{icon:'🦴', label:'480K Bones',          type:'bones',    value:480000} },
+  { tier:36, free:{icon:'🦴', label:'170K Bones',         type:'bones',    value:'prod_18h'},  premium:{icon:'🦴', label:'480K Bones',          type:'bones',    value:'prod_40h'} },
   { tier:37, free:{icon:'📦', label:'Coffre Épique',       type:'chest',    value:'epic'},  premium:{icon:'📦', label:'Coffre Épique',        type:'chest',    value:'epic'} },
   { tier:38, free:{icon:'🦴', label:'180K Bones',         type:'bones',    value:'prod_20h'},  premium:{icon:'🦴', label:'500K Bones',          type:'bones',    value:'prod_48h'} },
   { tier:39, free:{icon:'💎', label:'110 Diamants',        type:'diamonds', value:110},     premium:{icon:'💎', label:'350 Diamants',         type:'diamonds', value:350} },
   { tier:40, free:{icon:'📦', label:'Coffre Épique',       type:'chest',    value:'epic'},  premium:{icon:'📦', label:'Coffre Mythique',      type:'chest',    value:'mythic'} },
   { tier:41, free:{icon:'🦴', label:'190K Bones',         type:'bones',    value:'prod_22h'},  premium:{icon:'🦴', label:'550K Bones',          type:'bones',    value:'prod_52h'} },
   { tier:42, free:{icon:'💎', label:'120 Diamants',        type:'diamonds', value:120},     premium:{icon:'💎', label:'400 Diamants',         type:'diamonds', value:400} },
-  { tier:43, free:{icon:'⚡', label:'Boost ×2 (2h)',      type:'boost',    value:'2h'},    premium:{icon:'⚡', label:'Boost ×3 (4h)',        type:'boost',    value:'4h_x3'} },
-  { tier:44, free:{icon:'🦴', label:'200K Bones',         type:'bones',    value:200000},  premium:{icon:'🦴', label:'600K Bones',          type:'bones',    value:600000} },
+  { tier:43, free:{icon:'⚡', label:'Boost ×2 (2h)',      type:'boost',    value:'2h'},    premium:{icon:'⚡', label:'Boost ×2 (4h)',        type:'boost',    value:'2h_4h'} },
+  { tier:44, free:{icon:'🦴', label:'200K Bones',         type:'bones',    value:'prod_22h'},  premium:{icon:'🦴', label:'600K Bones',          type:'bones',    value:'prod_48h'} },
   { tier:45, free:{icon:'🎨', label:'Cosmétique Animé',   type:'cosmetic', value:'anim_bg'},premium:{icon:'👑',label:'Titre Exclusif S1',    type:'cosmetic', value:'title_s1'} },
   { tier:46, free:{icon:'🦴', label:'220K Bones',         type:'bones',    value:'prod_24h'},  premium:{icon:'🦴', label:'650K Bones',          type:'bones',    value:'prod_60h'} },
   { tier:47, free:{icon:'💎', label:'130 Diamants',        type:'diamonds', value:130},     premium:{icon:'💎', label:'450 Diamants',         type:'diamonds', value:450} },
@@ -1634,7 +1683,7 @@ function _rewardOsDiamant() {
 
 // ===== COFFRES =====
 function renderCoffresTab() {
-  state.coffres = state.coffres || { bronze:0, argent:0, or:0, event:0 };
+  state.coffres = state.coffres || { bronze:0, argent:0, or:0, event:0, commun:0, rare:0, epic:0, legendary:0, mythic:0 };
   const c = state.coffres;
   const elB = document.getElementById('coffreBronzeCount'); if (elB) elB.textContent = c.bronze || 0;
   const elA = document.getElementById('coffreArgentCount'); if (elA) elA.textContent = c.argent || 0;
@@ -1644,39 +1693,151 @@ function renderCoffresTab() {
   const elT = document.getElementById('totalCoffresCount'); if (elT) elT.textContent = '📦 ' + total;
 }
 
+// ============================================================
+// CONFIG DÉTAILLÉE DES COFFRES (V6)
+// ============================================================
+const CHEST_CONFIG = {
+  // ===== COFFRES SHOP (métal) =====
+  bronze: {
+    name: 'Bronze',
+    bonesMin: 1, bonesMax: 2,
+    secondary: [
+      { type:'diamonds', chance:0.25, min:5,  max:15  },
+      { type:'boost',    chance:0.10, value:'prod2_15m', label:'Boost x2 15min' },
+      { type:'fragment', chance:0.01, rarity:'rare' },
+    ]
+  },
+  argent: {
+    name: 'Argent',
+    bonesMin: 3, bonesMax: 5,
+    secondary: [
+      { type:'diamonds', chance:0.40, min:20, max:50  },
+      { type:'boost',    chance:0.20, value:'prod2_30m', label:'Boost x2 30min' },
+      { type:'fragment', chance:0.08, rarity:'rare' },
+      { type:'fragment', chance:0.01, rarity:'epic' },
+      { type:'ticket',   chance:0.03 },
+    ]
+  },
+  or: {
+    name: 'Or',
+    bonesMin: 6, bonesMax: 10,
+    secondary: [
+      { type:'diamonds', chance:0.50, min:50, max:120 },
+      { type:'boost',    chance:0.25, value:'prod2_1h', label:'Boost x2 1h' },
+      { type:'fragment', chance:0.15, rarity:'rare' },
+      { type:'fragment', chance:0.04, rarity:'epic' },
+      { type:'nft',      chance:0.005, rarity:'common' },
+    ]
+  },
+  // ===== COFFRES PASS (rareté) =====
+  commun: {
+    name: 'Commun',
+    bonesMin: 2, bonesMax: 4,
+    secondary: [
+      { type:'diamonds', chance:0.35, min:15, max:40  },
+      { type:'boost',    chance:0.15, value:'prod2_30m', label:'Boost x2 30min' },
+      { type:'fragment', chance:0.06, rarity:'rare' },
+    ]
+  },
+  rare: {
+    name: 'Rare',
+    bonesMin: 5, bonesMax: 8,
+    secondary: [
+      { type:'diamonds', chance:0.45, min:40, max:80  },
+      { type:'boost',    chance:0.20, value:'prod2_1h', label:'Boost x2 1h' },
+      { type:'fragment', chance:0.12, rarity:'rare' },
+      { type:'fragment', chance:0.03, rarity:'epic' },
+      { type:'nft',      chance:0.005, rarity:'common' },
+    ]
+  },
+  epic: {
+    name: 'Épique',
+    bonesMin: 10, bonesMax: 16,
+    secondary: [
+      { type:'diamonds', chance:0.60, min:100, max:250 },
+      { type:'boost',    chance:0.30, value:'prod2_2h', label:'Boost x2 2h' },
+      { type:'fragment', chance:0.18, rarity:'epic' },
+      { type:'fragment', chance:0.03, rarity:'legendary' },
+      { type:'nft',      chance:0.01, rarity:'rare' },
+    ]
+  },
+  legendary: {
+    name: 'Légendaire',
+    bonesMin: 18, bonesMax: 28,
+    secondary: [
+      { type:'diamonds', chance:0.75, min:250, max:500 },
+      { type:'boost',    chance:0.40, value:'prod2_4h', label:'Boost x2 4h' },
+      { type:'fragment', chance:0.25, rarity:'epic' },
+      { type:'fragment', chance:0.08, rarity:'legendary' },
+      { type:'nft',      chance:0.02, rarity:'rare' },
+      { type:'nft',      chance:0.003, rarity:'epic' },
+    ]
+  },
+  mythic: {
+    name: 'Mythique',
+    bonesMin: 30, bonesMax: 36,
+    secondary: [
+      { type:'diamonds', chance:0.90, min:500, max:1000 },
+      { type:'boost',    chance:0.50, value:'prod2_6h', label:'Boost x2 6h' },
+      { type:'fragment', chance:0.15, rarity:'legendary' },
+      { type:'nft',      chance:0.01, rarity:'epic' },
+      { type:'nft',      chance:0.001, rarity:'legendary' },
+    ]
+  },
+  // Alias rétro-compatibilité
+  event: {
+    name: 'Événement',
+    bonesMin: 3, bonesMax: 5,
+    secondary: [
+      { type:'diamonds', chance:0.5, min:20, max:50 },
+      { type:'ticket',   chance:1.0, count:2 },
+    ]
+  }
+};
+
 function openCoffre(type) {
-  state.coffres = state.coffres || { bronze:0, argent:0, or:0, event:0 };
+  state.coffres = state.coffres || {};
   if ((state.coffres[type] || 0) <= 0) {
     showToast('📦 Tu n\'as pas de coffre ' + type + ' !');
     return;
   }
   state.coffres[type]--;
+  const config = CHEST_CONFIG[type];
+  if (!config) { showToast('📦 Coffre inconnu !'); return; }
 
-  let reward = '';
-  if (type === 'bronze') {
-    const bones = Math.floor(Math.random() * 8000) + 2000;
-    state.bones += bones;
-    reward = '🦴 +' + fmt(bones) + ' Bones !';
-  } else if (type === 'argent') {
-    const gems = Math.floor(Math.random() * 30) + 15;
-    state.diamonds += gems;
-    state.bones += 5000;
-    reward = '💎 +' + gems + ' Diamants + 🦴 5K Bones !';
-  } else if (type === 'or') {
-    const gems = Math.floor(Math.random() * 80) + 50;
-    state.diamonds += gems;
-    state.bones += 20000;
-    state.chanceScore += 100;
-    reward = '💎 +' + gems + ' Diamants + 🦴 20K + 🍀 Chance NFT !';
-  } else if (type === 'event') {
-    state.inventaire = state.inventaire || {};
-    state.inventaire.tickets = (state.inventaire.tickets || 0) + 2;
-    const gems = Math.floor(Math.random() * 50) + 20;
-    state.diamonds += gems;
-    reward = '🎫 +2 Tickets + 💎 +' + gems + ' Diamants !';
-  }
+  // Récompense garantie : Bones (en heures de prod)
+  const hours = config.bonesMin + Math.random() * (config.bonesMax - config.bonesMin);
+  const bones = getBonesReward(hours);
+  state.bones += bones;
+  const rewards = ['🦴 +' + fmt(bones) + ' Bones'];
 
-  showToast('📦 Coffre ouvert ! ' + reward);
+  // Récompenses secondaires aléatoires (chaque secondaire est indépendante)
+  config.secondary.forEach(s => {
+    if (Math.random() > s.chance) return;
+    if (s.type === 'diamonds') {
+      const gems = Math.floor(s.min + Math.random() * (s.max - s.min));
+      state.diamonds += gems;
+      rewards.push('💎 +' + gems);
+    } else if (s.type === 'boost') {
+      state.inventaire = state.inventaire || {};
+      state.inventaire.boosts = (state.inventaire.boosts || 0) + 1;
+      rewards.push('⚡ ' + s.label);
+    } else if (s.type === 'fragment') {
+      state.inventaire = state.inventaire || {};
+      state.inventaire.fragments = (state.inventaire.fragments || 0) + 1;
+      rewards.push('💠 Fragment ' + s.rarity);
+    } else if (s.type === 'ticket') {
+      state.inventaire = state.inventaire || {};
+      const count = s.count || 1;
+      state.inventaire.tickets = (state.inventaire.tickets || 0) + count;
+      rewards.push('🎫 +' + count + ' Ticket(s)');
+    } else if (s.type === 'nft') {
+      rewards.push('🐶 NFT ' + s.rarity + ' !');
+      // Note : à brancher avec le système NFT réel
+    }
+  });
+
+  showToast('📦 Coffre ' + config.name + ' : ' + rewards.join(' · '));
   notifyPassCoffre();
   renderCoffresTab();
   renderInventaire();
