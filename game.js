@@ -278,6 +278,93 @@ function updateDefisBadge() {
   }
 }
 
+// ===== TOUS LES BADGES =====
+function _setBadge(id, count) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (count > 0) {
+    el.style.display = 'flex';
+    el.textContent = count > 9 ? '9+' : count;
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function updateAllBadges() {
+  const today = new Date().toDateString();
+  const q  = state.questsDaily  || {};
+  const qw = state.questsWeekly || {};
+  const d  = state.defis        || {};
+  const unlockedCount = ALL_DOGS.filter(dog => dog.unlocked).length;
+
+  // QUETES QUOTIDIENNES
+  let dailyCount = 0;
+  if (q.login  && !q.login.claimed)  dailyCount++;
+  if (q.tap50  && (q.tap50.progress||0)  >= 50  && !q.tap50.claimed)  dailyCount++;
+  if (q.tap200 && (q.tap200.progress||0) >= 200 && !q.tap200.claimed) dailyCount++;
+  if (q.unlock && q.unlock.done && !q.unlock.claimed) dailyCount++;
+  _setBadge('badge-daily', dailyCount);
+
+  // QUETES HEBDOMADAIRES
+  let weeklyCount = 0;
+  if (qw.tap1000 && (qw.tap1000.progress||0) >= 1000 && !qw.tap1000.done) weeklyCount++;
+  if (qw.tap5000 && (qw.tap5000.progress||0) >= 5000 && !qw.tap5000.done) weeklyCount++;
+  if (qw.unlock3 && (qw.unlock3.progress||0) >= 3    && !qw.unlock3.done) weeklyCount++;
+  _setBadge('badge-weekly', weeklyCount);
+
+  // DEFIS
+  let defisCount = 0;
+  if (state.playerLevel >= 10               && d.reach10  && !d.reach10.claimed)  defisCount++;
+  if (unlockedCount >= 5                    && d.unlock5  && !d.unlock5.claimed)  defisCount++;
+  if ((state.totalBonesEarned||0) >= 100000 && d.earn100k && !d.earn100k.claimed) defisCount++;
+  _setBadge('badge-defis', defisCount);
+
+  // NAV QUETES (total)
+  const totalQuests = dailyCount + weeklyCount + defisCount;
+  _setBadge('questBadge', totalQuests);
+
+  // PASS
+  let passCount = 0;
+  const passLevel = state.passLevel || 1;
+  const claimed = state.passClaimedTiers || [];
+  if (typeof PASS_REWARDS !== 'undefined') {
+    PASS_REWARDS.forEach(r => {
+      if (r.tier < passLevel) {
+        if (!claimed.includes(r.tier + '_free'))    passCount++;
+        if (state.passActivated && !claimed.includes(r.tier + '_premium')) passCount++;
+      }
+    });
+  }
+  const pqd = state.passQuestDaily || {};
+  Object.values(pqd).forEach(pq => { if (pq && pq.done && !pq.claimed) passCount++; });
+  const pqw = state.passQuestWeekly || {};
+  Object.values(pqw).forEach(pq => { if (pq && pq.done && !pq.claimed) passCount++; });
+  _setBadge('passBadge', passCount);
+
+  // CADEAUX
+  const coffres = state.coffres || {};
+  const totalCoffres = Object.values(coffres).reduce((s,v) => s+(v||0), 0);
+  const giftOk   = !(state.dailyGiftDate === today && state.dailyGiftClaimed);
+  const streakOk = !(state.dailyStreakDate === today && state.dailyStreakClaimed);
+  const osRestants = Math.max(0, 4 - (state.osDailyCount||0));
+  _setBadge('cadeauBadge',   (giftOk?1:0) + (streakOk?1:0) + totalCoffres);
+  _setBadge('badge-coffres', totalCoffres);
+  _setBadge('badge-rewards', (giftOk?1:0) + (streakOk?1:0));
+  _setBadge('badge-chasse',  osRestants);
+
+  // CHIENS (upgrade dispo)
+  const canUpgrade = ALL_DOGS.some(dog => {
+    if (!dog.unlocked || !dog.active) return false;
+    const cost = getLevelCost(dog.rarity, dog.level, dog.id);
+    return cost && state.bones >= cost;
+  });
+  const upgBadge = document.getElementById('upgradeBadge');
+  if (upgBadge) upgBadge.style.display = canUpgrade ? 'flex' : 'none';
+
+  // EVENEMENTS (toujours actif si evenement en cours)
+  _setBadge('evenementsBadge', 1);
+}
+
 // ===== TOAST =====
 function showToast(msg) {
   const t = document.createElement('div');
@@ -467,14 +554,7 @@ function setDogFilter(filter) {
 // ===== RENDU ÉCRAN CHIENS =====
 
 function updateUpgradeBadge() {
-  const badge = document.getElementById('upgradeBadge');
-  if (!badge) return;
-  const canUpgrade = ALL_DOGS.some(d => {
-    if (!d.unlocked || !d.active) return false;
-    const cost = getLevelCost(d.rarity, d.level, d.id);
-    return cost && state.bones >= cost;
-  });
-  badge.style.display = canUpgrade ? 'flex' : 'none';
+  updateAllBadges();
 }
 
 function renderDogCards() {
@@ -1142,8 +1222,7 @@ if (state._offlineEarned > 0) {
   setTimeout(() => showOfflinePopup(duree), 800);
 }
 updatePass();
-setTimeout(() => updateQuestBadge(), 200);
-setTimeout(() => updateCadeauBadge(), 200);
+setTimeout(() => updateAllBadges(), 200);
 setTimeout(() => { _resetPassQuestDaily(); _resetPassQuestWeekly(); _updateDailyStreak(); }, 300);
 
 // Render initial
@@ -1612,16 +1691,7 @@ function claimDailyGift() {
 
 // ===== BADGE CADEAUX (bouton accueil) =====
 function updateCadeauBadge() {
-  const today   = new Date().toDateString();
-  const giftOk  = !(state.dailyGiftDate === today && state.dailyGiftClaimed);
-  const coffres  = state.coffres || {};
-  const hasCoffre = Object.values(coffres).some(v => v > 0);
-  const badge   = document.getElementById('cadeauBadge');
-  if (badge) {
-    const count = (giftOk ? 1 : 0) + (hasCoffre ? 1 : 0);
-    badge.style.display = count > 0 ? 'flex' : 'none';
-    badge.textContent   = count;
-  }
+  updateAllBadges();
 }
 
 // ============================================================
