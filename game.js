@@ -344,13 +344,12 @@ function updateAllBadges() {
   // CADEAUX
   const coffres = state.coffres || {};
   const totalCoffres = Object.values(coffres).reduce((s,v) => s+(v||0), 0);
-  const giftOk   = !(state.dailyGiftDate === today && state.dailyGiftClaimed);
   const streakOk = !(state.dailyStreakDate === today && state.dailyStreakClaimed);
   // Badge chasse : uniquement quand un os est visible à l'écran
   const osVisible = document.getElementById('falling-os') !== null;
-  _setBadge('cadeauBadge',   (giftOk?1:0) + (streakOk?1:0) + totalCoffres);
+  _setBadge('cadeauBadge',   (streakOk?1:0) + totalCoffres);
   _setBadge('badge-coffres', totalCoffres);
-  _setBadge('badge-rewards', (giftOk?1:0) + (streakOk?1:0));
+  _setBadge('badge-rewards', streakOk ? 1 : 0);
   _setBadge('badge-chasse',  osVisible ? 1 : 0);
 
   // CHIENS (upgrade dispo)
