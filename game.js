@@ -695,9 +695,9 @@ function renderQuestsDaily() {
       <span>⏱️</span><span style="font-size:11px;color:var(--text-muted);">NOUVELLES QUÊTES DANS :</span>
       <span style="font-size:12px;font-weight:900;color:var(--gold);">${h}h ${m}m</span>
     </div>
-    ${questCard('🐾','Taper 50 fois','Tape sur Paco 50 fois.',q.tap50.progress,50,'🦴 2,000',q.tap50.claimed||false,'tap50')}
+    ${questCard('🐾','Taper 50 fois','Tape sur Paco 50 fois.',q.tap50.progress,50,'🦴 '+getBonesLabel(0.5),q.tap50.claimed||false,'tap50')}
     ${questCard('🏆','Taper 200 fois','Deviens un vrai DogMaster !',q.tap200.progress,200,'💎 15',q.tap200.claimed||false,'tap200')}
-    ${questCard('🔓','Débloquer un chien','Ajoute un nouveau chien.',q.unlock.done?1:0,1,'🦴 5,000 + 💎 5',q.unlock.claimed||false,'unlock')}
+    ${questCard('🔓','Débloquer un chien','Ajoute un nouveau chien.',q.unlock.done?1:0,1,'🦴 '+getBonesLabel(1)+' + 💎 5',q.unlock.claimed||false,'unlock')}
     ${questCard('📅','Connexion du jour','Tu es là — bien joué !',1,1,'🦴 1,000',q.login?.claimed||false,'login')}
   `;
 }
@@ -718,9 +718,9 @@ function renderQuestsWeekly() {
       <span>📅</span><span style="font-size:11px;color:var(--text-muted);">RESET DANS :</span>
       <span style="font-size:12px;font-weight:900;color:var(--gold);">${days}j ${hrs}h</span>
     </div>
-    ${questCard('🐾','Taper 1 000 fois','Tape Paco 1000 fois cette semaine.',q.tap1000.progress,1000,'🦴 20,000 + 💎 50',q.tap1000.done,'w_tap1000')}
+    ${questCard('🐾','Taper 1 000 fois','Tape Paco 1000 fois cette semaine.',q.tap1000.progress,1000,'🦴 '+getBonesLabel(2)+' + 💎 50',q.tap1000.done,'w_tap1000')}
     ${questCard('🏆','Taper 5 000 fois','Un vrai champion du tap !',q.tap5000.progress,5000,'💎 150',q.tap5000.done,'w_tap5000')}
-    ${questCard('🔓','Débloquer 3 chiens','Agrandis ta meute cette semaine.',q.unlock3.progress,3,'🦴 30,000 + 💎 30',q.unlock3.done,'w_unlock3')}
+    ${questCard('🔓','Débloquer 3 chiens','Agrandis ta meute cette semaine.',q.unlock3.progress,3,'🦴 '+getBonesLabel(3)+' + 💎 30',q.unlock3.done,'w_unlock3')}
   `;
 }
 
@@ -740,7 +740,7 @@ function renderQuestsDefis() {
       <span style="font-size:11px;color:#C39BD3;font-weight:800;">🏅 DÉFIS — Permanents, à compléter une seule fois</span>
     </div>
     ${questCard('🎯','Atteindre le niveau 10','Monte jusqu\'au niveau 10 joueur.',Math.min(state.playerLevel,10),10,'💎 100',d.reach10.claimed||false,'d_reach10')}
-    ${questCard('🐕','Débloquer 5 chiens','Constitue une vraie meute.',Math.min(unlockedCount,5),5,'💎 200 + 🦴 50,000',d.unlock5.claimed||false,'d_unlock5')}
+    ${questCard('🐕','Débloquer 5 chiens','Constitue une vraie meute.',Math.min(unlockedCount,5),5,'💎 200 + 🦴 '+getBonesLabel(3),d.unlock5.claimed||false,'d_unlock5')}
     ${questCard('💰','Gagner 100 000 Bones','Accumule 100 000 Bones au total.',Math.min(state.totalBonesEarned||0,100000),100000,'💎 300',d.earn100k.claimed||false,'d_earn100k')}
   `;
 
@@ -775,18 +775,18 @@ function questCard(icon,title,desc,prog,max,reward,done,key) {
 }
 const QUEST_REWARDS = {
   // Quotidiennes
-  tap50:     { bones:2000,  diamonds:0   },
-  tap200:    { bones:0,     diamonds:15  },
-  unlock:    { bones:5000,  diamonds:5   },
-  login:     { bones:1000,  diamonds:0   },
+  tap50:     { bones:'prod_0.5h', diamonds:0   },
+  tap200:    { bones:0,           diamonds:15  },
+  unlock:    { bones:'prod_1h',   diamonds:5   },
+  login:     { bones:'prod_0.25h',diamonds:0   },
   // Hebdomadaires
-  w_tap1000: { bones:20000, diamonds:50  },
-  w_tap5000: { bones:0,     diamonds:150 },
-  w_unlock3: { bones:30000, diamonds:30  },
+  w_tap1000: { bones:'prod_2h',   diamonds:50  },
+  w_tap5000: { bones:0,           diamonds:150 },
+  w_unlock3: { bones:'prod_3h',   diamonds:30  },
   // Défis
-  d_reach10: { bones:0,     diamonds:100 },
-  d_unlock5: { bones:'prod_3h', diamonds:200 },
-  d_earn100k:{ bones:0,     diamonds:300 },
+  d_reach10: { bones:0,           diamonds:100 },
+  d_unlock5: { bones:'prod_3h',   diamonds:200 },
+  d_earn100k:{ bones:0,           diamonds:300 },
 };
 function collectQuest(key) {
   let q;
@@ -920,6 +920,11 @@ function navigate(screen) {
   if (screen === 'classement')   renderClassement();
   if (screen === 'evenements')   startEventCountdown();
   if (screen === 'cadeaux')      renderCadeaux();
+  if (screen === 'shop') {
+    // Mettre à jour le label Pack Bones dynamiquement
+    const el = document.getElementById('packBonesQty');
+    if (el) el.textContent = getBonesLabel(48);
+  }
 }
 
 function switchQueteTab(tab) {
@@ -1033,7 +1038,7 @@ function buyBoost(type) {
 function buyBones() {
   if (state.diamonds < 100) { showToast('Pas assez de Diamants ! 💎'); return; }
   state.diamonds -= 100;
-  state.bones += 500000;
+  state.bones += getBonesReward(48);
   updateUI(); saveState();
   showToast('🦴 +500,000 Bones !');
 }
@@ -2133,31 +2138,31 @@ function renderPassQuests() {
 
 const DAILY_STREAK_REWARDS = [
   // Semaine 1
-  { day:1,  icon:'🦴', label:'5 000 Bones',    type:'bones',    value:'prod_1h' },
+  { day:1,  icon:'🦴', label:getBonesLabel(1),    type:'bones',    value:'prod_1h' },
   { day:2,  icon:'💎', label:'10 Diamants',     type:'diamonds', value:10 },
-  { day:3,  icon:'🦴', label:'10 000 Bones',   type:'bones',    value:'prod_1.5h' },
+  { day:3,  icon:'🦴', label:getBonesLabel(1.5),   type:'bones',    value:'prod_1.5h' },
   { day:4,  icon:'📦', label:'Coffre Bronze',   type:'coffre',   value:'bronze' },
   { day:5,  icon:'💎', label:'25 Diamants',     type:'diamonds', value:25 },
-  { day:6,  icon:'🦴', label:'20 000 Bones',   type:'bones',    value:'prod_2h' },
+  { day:6,  icon:'🦴', label:getBonesLabel(2),   type:'bones',    value:'prod_2h' },
   { day:7,  icon:'🎁', label:'Coffre Argent',   type:'coffre',   value:'argent', special:true },
   // Semaine 2
   { day:8,  icon:'🦴', label:'15 000 Bones',   type:'bones',    value:'prod_2h' },
   { day:9,  icon:'💎', label:'20 Diamants',     type:'diamonds', value:20 },
   { day:10, icon:'⚡', label:'Boost ×2 2h',     type:'boost',    value:'prod2h' },
-  { day:11, icon:'🦴', label:'25 000 Bones',   type:'bones',    value:'prod_3h' },
+  { day:11, icon:'🦴', label:getBonesLabel(3),   type:'bones',    value:'prod_3h' },
   { day:12, icon:'💎', label:'40 Diamants',     type:'diamonds', value:40 },
   { day:13, icon:'🍀', label:'Boost NFT ×3',   type:'boost',    value:'nft3' },
   { day:14, icon:'👑', label:'Coffre Or',       type:'coffre',   value:'or', special:true },
   // Semaine 3
-  { day:15, icon:'🦴', label:'30 000 Bones',   type:'bones',    value:'prod_4h' },
+  { day:15, icon:'🦴', label:getBonesLabel(4),   type:'bones',    value:'prod_4h' },
   { day:16, icon:'💎', label:'50 Diamants',     type:'diamonds', value:50 },
-  { day:17, icon:'🦴', label:'40 000 Bones',   type:'bones',    value:'prod_4h' },
+  { day:17, icon:'🦴', label:getBonesLabel(4),   type:'bones',    value:'prod_4h' },
   { day:18, icon:'📦', label:'Coffre Argent',   type:'coffre',   value:'argent' },
   { day:19, icon:'💎', label:'75 Diamants',     type:'diamonds', value:75 },
   { day:20, icon:'⚡', label:'Boost ×2 4h',     type:'boost',    value:'prod4h' },
   { day:21, icon:'💠', label:'Fragment NFT',    type:'fragment', value:1, special:true },
   // Semaine 4
-  { day:22, icon:'🦴', label:'50 000 Bones',   type:'bones',    value:'prod_6h' },
+  { day:22, icon:'🦴', label:getBonesLabel(6),   type:'bones',    value:'prod_6h' },
   { day:23, icon:'💎', label:'80 Diamants',     type:'diamonds', value:80 },
   { day:24, icon:'🦴', label:'75 000 Bones',   type:'bones',    value:75000 },
   { day:25, icon:'📦', label:'Coffre Or',       type:'coffre',   value:'or' },
