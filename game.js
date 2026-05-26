@@ -140,8 +140,8 @@ function loadState() {
       state.lastLoginDate = today;
       // Reset quêtes quotidiennes
       state.questsDaily = { tap50:{progress:0,done:false,claimed:false}, tap200:{progress:0,done:false,claimed:false}, unlock:{done:false,claimed:false}, login:{done:true,claimed:false} };
-      // Reset cadeau quotidien
-      state.dailyGiftClaimed = false;
+      // Reset cadeau quotidien seulement si pas encore réclamé aujourd'hui
+      if (state.dailyGiftDate !== today) state.dailyGiftClaimed = false;
     }
   } catch(e) {}
 }
@@ -1687,6 +1687,7 @@ function claimDailyGift() {
   showToast('🎁 Cadeau quotidien ! 🦴 +' + fmt(bones) + ' Bones !');
   renderDailyGift();
   updateUI();
+  updateAllBadges();
   saveState();
 }
 
