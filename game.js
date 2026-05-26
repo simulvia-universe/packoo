@@ -408,10 +408,12 @@ function updateAllBadges() {
     });
   }
   const pqd = state.passQuestDaily || {};
-  Object.values(pqd).forEach(pq => { if (pq && pq.done && !pq.claimed) passCount++; });
+  let passQuestCount = 0;
+  Object.values(pqd).forEach(pq => { if (pq && pq.done && !pq.claimed) { passCount++; passQuestCount++; } });
   const pqw = state.passQuestWeekly || {};
-  Object.values(pqw).forEach(pq => { if (pq && pq.done && !pq.claimed) passCount++; });
+  Object.values(pqw).forEach(pq => { if (pq && pq.done && !pq.claimed) { passCount++; passQuestCount++; } });
   _setBadge('passBadge', passCount);
+  _setBadge('passQuestTabBadge', passQuestCount);
 
   // CADEAUX
   const coffres = state.coffres || {};
