@@ -109,7 +109,9 @@ function loadState() {
     // Offline earnings
     if (s.lastOnline) {
       const secondsOffline = Math.floor((Date.now() - s.lastOnline) / 1000);
-      const maxOffline = 8 * 3600; // plafond de base : 8h
+      const hasPack = state.packActivated || false;
+      // Plafond : 2h sans pack, 3h avec pack
+      const maxOffline = hasPack ? 3 * 3600 : 2 * 3600;
       const effectiveSeconds = Math.min(secondsOffline, maxOffline);
       if (effectiveSeconds > 60) {
         const prod = ALL_DOGS
@@ -117,17 +119,19 @@ function loadState() {
           .reduce((sum, d) => sum + getProduction(d.rarity, d.level, d.id), 0);
         const fullEarned = Math.floor(prod * effectiveSeconds / 3600);
         if (fullEarned > 0) {
-          // On donne 40% directement, le reste est proposé via pub
-          const earned40  = Math.floor(fullEarned * 0.4);
-          const earned80  = Math.floor(fullEarned * 0.8);
-          const earned100 = fullEarned;
+          // Sans pack : 40% auto, 80% avec pub
+          // Avec pack : 40% auto, 100% avec pub
+          const earned40  = Math.floor(fullEarned * 0.4);  // reçu auto (pack ou non)
+          const earned80  = Math.floor(fullEarned * 0.8);  // total si pub sans pack
+          const earned100 = fullEarned;                     // total si pub avec pack
           state.bones += earned40;
           // Stocker les infos pour la popup
-          state._offlineEarned    = earned40;      // ce qu'on a déjà reçu
-          state._offlineEarned80  = earned80;      // total si pub
-          state._offlineEarned100 = earned100;     // total si pub + pass
+          state._offlineEarned    = earned40;
+          state._offlineEarned80  = earned80;
+          state._offlineEarned100 = earned100;
           state._offlineSeconds   = effectiveSeconds;
-          state._offlineFullProd  = fullEarned;    // pour calculer le bonus à ajouter
+          state._offlineFullProd  = fullEarned;
+          state._hasPack          = hasPack;
         }
       }
     }
@@ -1750,6 +1754,7 @@ function showOfflinePopup(duree) {
   const earned80  = state._offlineEarned80   || 0;
   const earned100 = state._offlineEarned100  || 0;
   const hasPass   = state.passActivated      || false;
+  const hasPack   = state.packActivated       || false;
 
   // Bonus encore à recevoir si pub
   const bonusPub  = earned80  - earned40;   // +40% supplémentaire
@@ -1776,7 +1781,7 @@ function showOfflinePopup(duree) {
         Absent ${duree}
       </div>
       <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">
-        Tes chiens ont continué à produire pendant ton absence.
+        Tes chiens ont continué à produire (max ${state._hasPack ? '3h' : '2h'}).
       </div>
 
       <!-- Tableau 40% / 80% / 100% -->
@@ -1801,9 +1806,9 @@ function showOfflinePopup(duree) {
         <!-- 100% avec pub + pass -->
         <div style="flex:1;background:rgba(245,166,35,0.08);border:2px solid rgba(245,166,35,0.3);border-radius:12px;padding:10px;${hasPass ? '' : 'opacity:0.5;'}">
           <div style="font-size:18px;font-weight:900;color:var(--gold);">100%</div>
-          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">Pub + Pass</div>
+          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">Pub + Pack</div>
           <div style="font-size:12px;font-weight:900;color:var(--gold-light);">🦴 ${fmt(earned100)}</div>
-          <div style="margin-top:6px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:#1A0F00;">${hasPass ? '👑 PASS' : '🔒 PASS'}</div>
+          <div style="margin-top:6px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:#1A0F00;">${hasPack ? '📦 PACK' : '🔒 PACK'}</div>
         </div>
 
       </div>
@@ -1815,7 +1820,7 @@ function showOfflinePopup(duree) {
         font-size:14px;font-weight:900;color:white;cursor:pointer;
         font-family:'Nunito',sans-serif;margin-bottom:10px;
       ">
-        📺 Regarder une pub — récupérer ${hasPass ? '100%' : '80%'}
+        📺 Regarder une pub — récupérer ${hasPack ? '100%' : '80%'}
       </button>
 
       <!-- Bouton ignorer -->
