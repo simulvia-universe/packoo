@@ -261,13 +261,27 @@
         <div id="passSection-rewards">
 
           <!-- Débloquer Pass -->
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:16px;">🐾</span><span style="font-size:12px;font-weight:900;color:var(--text-muted);">GRATUIT</span>
+          <div style="margin-bottom:10px;">
+            <!-- Bouton activation centré en haut -->
+            <div style="text-align:center;margin-bottom:10px;">
+              <button id="passActivateBtn" onclick="activatePass()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:8px 20px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">ACTIVER LE PASS — 4,99 €</button>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:14px;">👑</span><span style="font-size:12px;font-weight:900;color:var(--gold);">PREMIUM</span>
-              <button id="passActivateBtn" onclick="activatePass()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:7px 12px;font-size:11px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">DÉBLOQUER — 4,99 €</button>
+            <!-- En-têtes colonnes alignés sur le tableau -->
+            <div style="display:flex;gap:8px;align-items:center;">
+              <!-- Colonne GRATUIT -->
+              <div style="flex:1;text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.06);border-radius:8px;padding:4px 10px;">
+                  <span style="font-size:13px;">🐾</span><span style="font-size:11px;font-weight:900;color:var(--text-muted);">GRATUIT</span>
+                </div>
+              </div>
+              <!-- Spacer numéro palier -->
+              <div style="width:22px;flex-shrink:0;"></div>
+              <!-- Colonne PREMIUM -->
+              <div style="flex:1;text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:4px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.3);border-radius:8px;padding:4px 10px;">
+                  <span style="font-size:13px;">👑</span><span style="font-size:11px;font-weight:900;color:var(--gold);">PREMIUM</span>
+                </div>
+              </div>
             </div>
           </div>
 
