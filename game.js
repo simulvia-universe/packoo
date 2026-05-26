@@ -215,6 +215,7 @@ function updateUI() {
   const el = document.getElementById('bonesDisplay');
   if (el) el.textContent = fmt(state.bones);
   const prod = Math.round(getTotalProduction() * getStreakMult());
+  state.totalPassivePerHour = prod; // sync pour getBonesReward
   // Bouton central nav
   const navProd = document.getElementById('navProdDisplay');
   if (navProd) navProd.textContent = fmt(prod) + '/h';
