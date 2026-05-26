@@ -233,10 +233,48 @@ function updateQuestBadge() {
   if (q.tap50  && q.tap50.progress  >= 50  && !q.tap50.claimed)  count++;
   if (q.tap200 && q.tap200.progress >= 200 && !q.tap200.claimed) count++;
   if (q.unlock && q.unlock.done && !q.unlock.claimed) count++;
+  // Compter les défis complétés non réclamés
+  const d = state.defis || {};
+  const unlockedCount = ALL_DOGS.filter(dog => dog.unlocked).length;
+  if (state.playerLevel >= 10               && d.reach10  && !d.reach10.claimed)  count++;
+  if (unlockedCount >= 5                    && d.unlock5  && !d.unlock5.claimed)  count++;
+  if ((state.totalBonesEarned||0) >= 100000 && d.earn100k && !d.earn100k.claimed) count++;
   const badge = document.getElementById('questBadge');
   if (badge) {
     badge.style.display = count > 0 ? 'flex' : 'none';
     badge.textContent = count;
+  }
+}
+
+// ===== BADGE DÉFIS =====
+function updateDefisBadge() {
+  const d = state.defis || {};
+  const unlockedCount = ALL_DOGS.filter(dog => dog.unlocked).length;
+  // Vérifier done en temps réel
+  if (!d.reach10 ) d.reach10  = { done:false, claimed:false };
+  if (!d.unlock5 ) d.unlock5  = { done:false, claimed:false };
+  if (!d.earn100k) d.earn100k = { done:false, claimed:false };
+  if (state.playerLevel >= 10)               d.reach10.done  = true;
+  if (unlockedCount >= 5)                    d.unlock5.done  = true;
+  if ((state.totalBonesEarned||0) >= 100000) d.earn100k.done = true;
+
+  let count = 0;
+  if (d.reach10.done  && !d.reach10.claimed)  count++;
+  if (d.unlock5.done  && !d.unlock5.claimed)  count++;
+  if (d.earn100k.done && !d.earn100k.claimed) count++;
+
+  // Badge sur l'onglet Défis dans les quêtes
+  const badge = document.getElementById('defisBadge');
+  if (badge) {
+    badge.style.display = count > 0 ? 'inline-flex' : 'none';
+    badge.textContent = count;
+  }
+  // Badge global sur l'icône Quêtes dans la nav
+  const navBadge = document.getElementById('questBadge');
+  if (navBadge && count > 0) {
+    navBadge.style.display = 'flex';
+    const current = parseInt(navBadge.textContent) || 0;
+    // On l'additionne dans updateQuestBadge, ici on force si défis seuls
   }
 }
 
@@ -592,6 +630,12 @@ function renderQuestsDefis() {
   if (!container) return;
   const d = state.defis;
   const unlockedCount = ALL_DOGS.filter(dog => dog.unlocked).length;
+
+  // Mettre à jour done en temps reel avant le rendu
+  if (!d.reach10.done  && state.playerLevel >= 10)               d.reach10.done  = true;
+  if (!d.unlock5.done  && unlockedCount >= 5)                    d.unlock5.done  = true;
+  if (!d.earn100k.done && (state.totalBonesEarned||0) >= 100000) d.earn100k.done = true;
+
   container.innerHTML = `
     <div style="background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);border-radius:10px;padding:8px 12px;margin-bottom:10px;">
       <span style="font-size:11px;color:#C39BD3;font-weight:800;">🏅 DÉFIS — Permanents, à compléter une seule fois</span>
@@ -600,6 +644,9 @@ function renderQuestsDefis() {
     ${questCard('🐕','Débloquer 5 chiens','Constitue une vraie meute.',Math.min(unlockedCount,5),5,'💎 200 + 🦴 50,000',d.unlock5.claimed||false,'d_unlock5')}
     ${questCard('💰','Gagner 100 000 Bones','Accumule 100 000 Bones au total.',Math.min(state.totalBonesEarned||0,100000),100000,'💎 300',d.earn100k.claimed||false,'d_earn100k')}
   `;
+
+  // Badge sur l onglet Defis
+  updateDefisBadge();
 }
 function questCard(icon,title,desc,prog,max,reward,done,key) {
   const pct = Math.round((prog/max)*100);
@@ -653,7 +700,13 @@ function collectQuest(key) {
   // Vérifier complète
   let isDone = false;
   if (key.startsWith('d_')) {
-    isDone = q.done === true;
+    // Pour les défis, vérifier aussi la condition en temps réel
+    const unlockedCount = ALL_DOGS.filter(dog => dog.unlocked).length;
+    if (key === 'd_reach10')  isDone = state.playerLevel >= 10;
+    else if (key === 'd_unlock5')   isDone = unlockedCount >= 5;
+    else if (key === 'd_earn100k')  isDone = (state.totalBonesEarned||0) >= 100000;
+    else isDone = q.done === true;
+    if (isDone) q.done = true; // synchroniser l état
   } else if (key === 'login') {
     isDone = true;
   } else {
