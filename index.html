@@ -104,10 +104,10 @@
         <div class="side-buttons-left">
           <div class="side-btn" onclick="navigate('quetes')"><div class="sb-badge" id="questBadge" style="display:none">0</div><span class="sb-icon">📋</span><span class="sb-label">Quêtes</span></div>
           <div class="side-btn" onclick="navigate('pass')"><div class="sb-badge" id="passBadge" style="display:none">0</div><span class="sb-icon">👑</span><span class="sb-label">Pass</span></div>
-          <div class="side-btn" onclick="navigate('shop')"><span class="sb-icon">🏪</span><span class="sb-label">Shop</span></div>
+          <div class="side-btn" onclick="navigate('shop')" style="position:relative;"><div class="sb-badge" id="shopBadge" style="display:none;">!</div><span class="sb-icon">🏪</span><span class="sb-label">Shop</span></div>
 
           <div class="side-btn" onclick="navigateShopSection('cosmetiques')"><span class="sb-icon">✨</span><span class="sb-label">Cosmétiques</span></div>
-          <div class="side-btn" onclick="navigate('evenements')"><span class="nouveau-tag">NOUVEAU</span><span class="sb-icon">🎉</span><span class="sb-label">Événements</span></div>
+          <div class="side-btn" onclick="navigate('evenements')" style="position:relative;"><div class="sb-badge" id="evenementsBadge" style="display:none;">!</div><span class="nouveau-tag">NOUVEAU</span><span class="sb-icon">🎉</span><span class="sb-label">Événements</span></div>
         </div>
         <div class="right-col">
           <div class="cadeau-btn" onclick="navigate('cadeaux')"><div class="cb-badge" id="cadeauBadge">1</div><span style="font-size:20px">🎁</span><span style="font-size:7px;font-weight:800;color:var(--text-muted)">CADEAU</span></div>
@@ -207,9 +207,9 @@
           </div>
         </div>
         <div class="filter-tabs">
-          <div class="tab active" id="qtab-daily"   onclick="switchQueteTab('daily')">Quotidiennes</div>
-          <div class="tab"        id="qtab-weekly"  onclick="switchQueteTab('weekly')">Hebdomadaires</div>
-          <div class="tab"        id="qtab-defis"   onclick="switchQueteTab('defis')">Défis</div>
+          <div class="tab active" id="qtab-daily"   onclick="switchQueteTab('daily')" style="position:relative;">Quotidiennes<span id="badge-daily" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
+          <div class="tab"        id="qtab-weekly"  onclick="switchQueteTab('weekly')" style="position:relative;">Hebdomadaires<span id="badge-weekly" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
+          <div class="tab"        id="qtab-defis"   onclick="switchQueteTab('defis')" style="position:relative;">Défis<span id="badge-defis" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
         </div>
         <div id="quetes-daily"><div id="quetes-daily-content"></div></div>
         <div id="quetes-weekly" style="display:none;"><div id="quetes-weekly-content"></div></div>
@@ -648,9 +648,9 @@
 
         <!-- TABS -->
         <div class="filter-tabs" style="margin-bottom:14px;">
-          <div class="tab active" id="ctab-chasse"   onclick="switchCadeauTab('chasse')">🦴 Chasse aux Os</div>
-          <div class="tab"        id="ctab-coffres"  onclick="switchCadeauTab('coffres')">📦 Coffres</div>
-          <div class="tab"        id="ctab-rewards"  onclick="switchCadeauTab('rewards')">🎁 Récompenses</div>
+          <div class="tab active" id="ctab-chasse"   onclick="switchCadeauTab('chasse')" style="position:relative;">🦴 Chasse aux Os<span id="badge-chasse" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
+          <div class="tab"        id="ctab-coffres"  onclick="switchCadeauTab('coffres')" style="position:relative;">📦 Coffres<span id="badge-coffres" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
+          <div class="tab"        id="ctab-rewards"  onclick="switchCadeauTab('rewards')" style="position:relative;">🎁 Récompenses<span id="badge-rewards" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
           <div class="tab"        id="ctab-inventaire" onclick="switchCadeauTab('inventaire')">🎒 Inventaire</div>
         </div>
 
@@ -909,7 +909,7 @@
     <div class="nav-item active" id="nav-home" onclick="navigate('home')"><span class="nav-icon">🏠</span><span class="nav-label">Accueil</span></div>
     <div class="nav-item" id="nav-chiens" onclick="navigate('chiens')" style="position:relative;"><div id="upgradeBadge" style="display:none;position:absolute;top:2px;right:6px;background:#E74C3C;color:white;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:900;align-items:center;justify-content:center;z-index:10;">⬆</div><span class="nav-icon">🐾</span><span class="nav-label">Chiens</span></div>
     <div class="nav-tap" onclick="openDogsPanel()"><div class="nav-tap-btn"><span style="font-size:18px">🦴</span><span id="navProdDisplay" style="font-size:10px;font-weight:900;color:#1A0F00;">900/h</span></div></div>
-    <div class="nav-item" id="nav-collection" onclick="navigate('collection')"><span class="nav-icon">🃏</span><span class="nav-label">Collection</span></div>
+    <div class="nav-item" id="nav-collection" onclick="navigate('collection')" style="position:relative;"><div id="collectionBadge" style="display:none;position:absolute;top:2px;right:6px;background:#E74C3C;color:white;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:900;align-items:center;justify-content:center;z-index:10;">!</div><span class="nav-icon">🃏</span><span class="nav-label">Collection</span></div>
     <div class="nav-item" id="nav-classement" onclick="navigate('classement')"><span class="nav-icon">🏆</span><span class="nav-label">Classement</span></div>
   </nav>
 </div>
