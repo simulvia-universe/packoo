@@ -51,7 +51,7 @@
 <div class="app" id="app-wrapper">
   <!-- TOPBAR -->
   <div class="topbar home-bar" id="topbar">
-    <div class="player-avatar">🐕</div>
+    <div class="player-avatar" onclick="navigate('profil')" style="cursor:pointer;position:relative;" title="Mon Profil"><div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;background:#00CFFF;border-radius:50%;border:2px solid #010B1A;display:flex;align-items:center;justify-content:center;font-size:7px;">✏️</div>🐕</div>
     <div class="player-info">
       <div class="player-name">DogMaster</div>
       <div class="player-level">
@@ -1163,6 +1163,141 @@
             🎒 Les objets s'accumulent via la Chasse aux Os, les événements et les quêtes.
           </div>
 
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== PROFIL ===== -->
+    <div class="screen" id="screen-profil">
+      <div class="scroll-content">
+
+        <!-- HEADER PROFIL -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#00CFFF;">MON PROFIL</div>
+          <div style="font-size:10px;color:rgba(150,200,255,0.6);background:rgba(0,60,120,0.3);border:1px solid rgba(0,140,255,0.2);border-radius:8px;padding:4px 10px;" id="profilePlayerId">#PCK001</div>
+        </div>
+
+        <!-- CARTE PROFIL PRINCIPALE -->
+        <div style="background:linear-gradient(160deg,#010B1A,#021830);border:2px solid rgba(0,150,255,0.5);border-radius:20px;overflow:hidden;margin-bottom:14px;position:relative;">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00AAFF,#00CFFF,#00AAFF,transparent);"></div>
+
+          <div style="display:flex;gap:12px;padding:14px;">
+            <!-- Avatar gauche -->
+            <div style="flex-shrink:0;text-align:center;">
+              <div style="width:90px;height:90px;border-radius:16px;border:2px solid rgba(0,180,255,0.5);background:linear-gradient(135deg,#010B1A,#021830);display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;overflow:hidden;">
+                🐶
+                <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);padding:3px;font-size:8px;font-weight:900;color:#00CFFF;text-align:center;cursor:pointer;" onclick="showToast('🐶 Changer l\'avatar — bientôt disponible !')">📷 Changer</div>
+              </div>
+              <div style="margin-top:6px;font-size:9px;color:rgba(150,200,255,0.6);">NIVEAU</div>
+              <div style="font-size:22px;font-weight:900;color:white;" id="profileLevel">1</div>
+            </div>
+
+            <!-- Infos droite -->
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                <div style="font-size:16px;font-weight:900;color:white;" id="profileName">DogMaster</div>
+                <div style="font-size:14px;cursor:pointer;" onclick="editProfileName()">✏️</div>
+              </div>
+
+              <!-- Titre actuel -->
+              <div style="background:linear-gradient(90deg,rgba(0,80,160,0.4),rgba(0,140,255,0.2));border:1px solid rgba(0,160,255,0.4);border-radius:10px;padding:6px 10px;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+                <span style="font-size:14px;">🐾</span>
+                <div>
+                  <div style="font-size:8px;color:rgba(150,200,255,0.6);letter-spacing:1px;">TITRE ACTUEL</div>
+                  <div style="font-size:13px;font-weight:900;color:#00CFFF;" id="profileTitle">FOUNDER</div>
+                </div>
+              </div>
+
+              <!-- Stats rapides -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                <div style="background:rgba(0,40,80,0.4);border-radius:8px;padding:6px 8px;">
+                  <div style="font-size:8px;color:rgba(150,200,255,0.5);">MEMBRE DEPUIS</div>
+                  <div style="font-size:10px;font-weight:900;color:#00CFFF;" id="profileSince">Saison 1</div>
+                </div>
+                <div style="background:rgba(0,40,80,0.4);border-radius:8px;padding:6px 8px;">
+                  <div style="font-size:8px;color:rgba(150,200,255,0.5);">NFT POSSÉDÉS</div>
+                  <div style="font-size:10px;font-weight:900;color:#00CFFF;" id="profileNFTCount">0 / 1014</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barre XP -->
+          <div style="padding:0 14px 14px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:9px;color:rgba(150,200,255,0.6);">XP JOUEUR</span>
+              <span style="font-size:9px;font-weight:900;color:#00CFFF;" id="profileXPLabel">0 / 1000 XP</span>
+            </div>
+            <div style="height:6px;background:rgba(0,60,120,0.4);border-radius:3px;overflow:hidden;">
+              <div id="profileXPBar" style="height:100%;width:0%;background:linear-gradient(90deg,#0066CC,#00CFFF);border-radius:3px;transition:width 0.4s;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TITRES -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">TITRES</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);">VOIR TOUT (8) ›</div>
+          </div>
+          <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;" id="profileTitres">
+            <!-- généré par JS -->
+          </div>
+        </div>
+
+        <!-- BADGES -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">BADGES</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);" id="profileBadgesCount">VOIR TOUT ›</div>
+          </div>
+          <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;" id="profileBadges">
+            <!-- généré par JS -->
+          </div>
+        </div>
+
+        <!-- STATISTIQUES -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="font-size:12px;font-weight:900;color:#00CFFF;margin-bottom:10px;">STATISTIQUES</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="profileStats">
+            <!-- généré par JS -->
+          </div>
+        </div>
+
+        <!-- COLLECTION FAVORITE -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">COLLECTION FAVORITE</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);cursor:pointer;" onclick="showToast('✏️ Éditer la collection — bientôt disponible !')">ÉDITER</div>
+          </div>
+          <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;" id="profileCollection">
+            <!-- généré par JS -->
+          </div>
+        </div>
+
+        <!-- HISTORIQUE SAISONS -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">HISTORIQUE DES SAISONS</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);">VOIR TOUT ›</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(0,40,80,0.3);border:1px solid rgba(0,100,200,0.25);border-radius:12px;padding:12px;">
+            <div style="width:44px;height:44px;background:linear-gradient(135deg,#0066CC,#00AAFF);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:16px;font-weight:900;color:white;flex-shrink:0;">S1</div>
+            <div style="flex:1;">
+              <div style="font-size:12px;font-weight:900;color:white;margin-bottom:4px;">SAISON 1 — THE FIRST PACK</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <div style="font-size:9px;color:rgba(150,200,255,0.7);">📅 Participé · 27 mai 2026</div>
+                <div style="font-size:9px;color:#00CFFF;font-weight:900;" id="profileS1Event">⭐ Founder Event</div>
+                <div style="font-size:9px;color:rgba(150,200,255,0.7);" id="profileS1Rank">🏆 En cours</div>
+              </div>
+            </div>
+            <div style="text-align:center;flex-shrink:0;">
+              <div style="font-size:28px;">🔴</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.6);">MYTHIC</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.5);" id="profileMythicCount">0 obtenu</div>
+            </div>
+          </div>
         </div>
 
       </div>
