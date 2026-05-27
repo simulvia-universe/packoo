@@ -80,6 +80,9 @@ let state = {
   referralCount: 0,
   referralHistory: [],
   referralClaimedPaliers: [],
+  // Founder Event
+  founderTickets: 0,
+  founderCommunityBones: 10000000,
 };
 
 let currentScreen = 'home';
@@ -2623,4 +2626,57 @@ function renderDailyStreak() {
       Série actuelle : <strong style="color:var(--gold);">${streak} jour${streak>1?'s':''}</strong> 🔥
     </div>
   `;
+}
+
+// ============================================================
+// FOUNDER EVENT
+// ============================================================
+
+function renderFounderEvent() {
+  const el = document.getElementById('founderTicketsDisplay');
+  if (el) el.textContent = state.founderTickets || 0;
+}
+
+function openFounderCrate() {
+  if (!state.founderTickets || state.founderTickets < 1) {
+    showToast('🎟️ Tu n\'as pas de tickets Founder !'); return;
+  }
+  state.founderTickets--;
+  // Récompenses aléatoires
+  const roll = Math.random();
+  let reward = '';
+  if (roll < 0.005) {
+    // NFT Founder
+    reward = '🐺 NFT Founder Exclusif !';
+    showToast('🏆 ' + reward);
+  } else if (roll < 0.03) {
+    state.diamonds = (state.diamonds||0) + 100;
+    reward = '💎 +100 Diamants !';
+    showToast('💎 ' + reward);
+  } else if (roll < 0.15) {
+    state.coffres = state.coffres || {};
+    state.coffres.argent = (state.coffres.argent||0) + 1;
+    reward = '🎁 Coffre Argent !';
+    showToast('🎁 ' + reward);
+  } else if (roll < 0.40) {
+    const bones = getBonesReward(2);
+    state.bones += bones;
+    reward = '🦴 +' + fmt(bones) + ' Bones !';
+    showToast('🦴 ' + reward);
+  } else {
+    const bones = getBonesReward(0.5);
+    state.bones += bones;
+    reward = '🦴 +' + fmt(bones) + ' Bones';
+    showToast('🦴 ' + reward);
+  }
+  updateUI(); saveState();
+  renderFounderEvent();
+}
+
+// Dev : ajouter tickets founder
+function devAddFounderTickets(n) {
+  state.founderTickets = (state.founderTickets||0) + (n||5);
+  saveState(); renderFounderEvent();
+  showToast('🎟️ +' + (n||5) + ' Founder Tickets !');
+  toggleMenu();
 }
