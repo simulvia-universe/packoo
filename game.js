@@ -240,12 +240,17 @@ function claimAllPendingRewards() {
   updateUI(); updateAllBadges(); saveState();
 }
 function getProduction(rarity, level, dogId) {
-  // Si DOG_PRODUCTION existe (nouveau data.js), on utilise la valeur niveau 50 comme base
+  // Production niveau 1 = baseProduction de la rareté
+  // Production niveau 50 = DOG_PRODUCTION[dogId] (valeur cible)
+  // On interpole linéairement entre les deux
+  const baseProd = RARITY[rarity] ? RARITY[rarity].baseProduction : 50;
   if (dogId && typeof DOG_PRODUCTION !== 'undefined' && DOG_PRODUCTION[dogId]) {
     const maxProd = DOG_PRODUCTION[dogId];
-    return Math.round(maxProd * Math.pow(1.0 / Math.pow(1.08, 49), 1) * Math.pow(1.08, level - 1));
+    // Interpolation linéaire : niveau 1 → baseProd, niveau 50 → maxProd
+    const t = (level - 1) / 49;
+    return Math.round(baseProd + (maxProd - baseProd) * t);
   }
-  return Math.round(RARITY[rarity].baseProduction * Math.pow(1.08, level - 1));
+  return Math.round(baseProd * Math.pow(1.08, level - 1));
 }
 function getLevelCost(rarity, level, dogId) {
   if (level >= MAX_LEVEL) return null;
