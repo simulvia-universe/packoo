@@ -83,6 +83,14 @@ let state = {
   // Founder Event
   founderTickets: 0,
   founderCommunityBones: 10000000,
+  // Stats profil
+  totalCoffresOpened: 0,
+  totalDaysConnected: 1,
+  totalPlayTime: 0,        // en minutes
+  sessionStart: Date.now(),
+  playerName: 'DogMaster',
+  profileTitleEquipped: 'FOUNDER',
+  joinDate: new Date().toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}),
 };
 
 let currentScreen = 'home';
@@ -91,6 +99,11 @@ let dogFilter     = 'all';
 
 // ===== SAUVEGARDE =====
 function saveState() {
+  // Tracker temps de jeu
+  const now = Date.now();
+  const sessionMinutes = Math.floor((now - (state.sessionStart || now)) / 60000);
+  state.totalPlayTime = (state.totalPlayTime || 0) + sessionMinutes;
+  state.sessionStart = now;
   try {
     const save = Object.assign({}, state, {
       bones: Math.floor(state.bones),
@@ -983,6 +996,7 @@ function navigate(screen) {
   if (screen === 'classement')   renderClassement();
   if (screen === 'evenements')   startEventCountdown();
   if (screen === 'cadeaux')      renderCadeaux();
+  if (screen === 'profil')       renderProfil();
   if (screen === 'shop') {
     // Mettre à jour le label Pack Bones dynamiquement
     const el = document.getElementById('packBonesQty');
@@ -1970,6 +1984,7 @@ const CHEST_CONFIG = {
 };
 
 function openCoffre(type) {
+  state.totalCoffresOpened = (state.totalCoffresOpened || 0) + 1;
   state.coffres = state.coffres || {};
   if ((state.coffres[type] || 0) <= 0) {
     showToast('📦 Tu n\'as pas de coffre ' + type + ' !');
@@ -2679,4 +2694,176 @@ function devAddFounderTickets(n) {
   saveState(); renderFounderEvent();
   showToast('🎟️ +' + (n||5) + ' Founder Tickets !');
   toggleMenu();
+}
+
+
+// ============================================================
+// PACKOO — PAGE PROFIL
+// ============================================================
+
+function editProfileName() {
+  const newName = prompt('Nouveau nom :', state.playerName || 'DogMaster');
+  if (newName && newName.trim().length > 0 && newName.trim().length <= 20) {
+    state.playerName = newName.trim();
+    saveState();
+    renderProfil();
+    showToast('✅ Nom mis à jour !');
+  }
+}
+
+function renderProfil() {
+  _updateProfileHeader();
+  _renderProfileTitres();
+  _renderProfileBadges();
+  _renderProfileStats();
+  _renderProfileCollection();
+  _updateProfileSeason();
+}
+
+function _updateProfileHeader() {
+  const lvl = state.playerLevel || 1;
+  const xp = state.playerXP || 0;
+  const xpNext = lvl * 1000;
+  const pct = Math.min(100, Math.floor((xp % 1000) / 10));
+
+  const el = (id) => document.getElementById(id);
+  if (el('profileLevel'))   el('profileLevel').textContent   = lvl;
+  if (el('profileName'))    el('profileName').textContent    = state.playerName || 'DogMaster';
+  if (el('profileTitle'))   el('profileTitle').textContent   = state.profileTitleEquipped || 'FOUNDER';
+  if (el('profileSince'))   el('profileSince').textContent   = 'Saison 1 · ' + (state.joinDate || '27 mai 2026');
+  if (el('profileNFTCount')) el('profileNFTCount').textContent = (state.wonNFTs ? state.wonNFTs.length : 0) + ' / 1014';
+  if (el('profileXPLabel')) el('profileXPLabel').textContent = fmt(xp % 1000) + ' / 1 000 XP';
+  if (el('profileXPBar'))   el('profileXPBar').style.width   = pct + '%';
+  if (el('profilePlayerId')) el('profilePlayerId').textContent = '#PCK' + String(lvl * 17 + 1).padStart(4, '0');
+}
+
+function _renderProfileTitres() {
+  const cont = document.getElementById('profileTitres');
+  if (!cont) return;
+
+  const TITRES = [
+    { key:'founder',      label:'FOUNDER',      icon:'👑', color:'#00CFFF',  unlocked: true  },
+    { key:'firstpack',    label:'FIRST PACK',   icon:'🐾', color:'#9B59B6',  unlocked: true  },
+    { key:'bonehunter',   label:'BONE HUNTER',  icon:'🦴', color:'#00AAFF',  unlocked: (state.totalBonesEarned||0) >= 10000 },
+    { key:'earlyplayer',  label:'EARLY PLAYER', icon:'⭐', color:'#00CFFF',  unlocked: true  },
+    { key:'season1',      label:'SEASON 1',     icon:'🏅', color:'rgba(150,200,255,0.3)', unlocked: false },
+    { key:'dogmaster',    label:'DOG MASTER',   icon:'🐕', color:'rgba(150,200,255,0.3)', unlocked: false },
+  ];
+
+  cont.innerHTML = TITRES.map(t => {
+    const equipped = state.profileTitleEquipped === t.label;
+    const opacity = t.unlocked ? '1' : '0.4';
+    const border = equipped ? '2px solid #00CFFF' : (t.unlocked ? '1px solid rgba(0,140,255,0.4)' : '1px solid rgba(0,60,120,0.3)');
+    const bg = t.unlocked ? 'rgba(0,60,120,0.3)' : 'rgba(0,20,40,0.3)';
+    const lock = t.unlocked ? '' : '<div style="font-size:10px;opacity:0.5;">🔒</div>';
+    const equip = equipped ? '<div style="font-size:7px;font-weight:900;color:#00CFFF;margin-top:2px;">ÉQUIPÉ ✓</div>' : '';
+    return `<div onclick="${t.unlocked ? `equipTitle('${t.label}')` : ''}" style="flex-shrink:0;width:70px;background:${bg};border:${border};border-radius:10px;padding:8px 4px;text-align:center;cursor:${t.unlocked?'pointer':'default'};opacity:${opacity};">
+      <div style="font-size:18px;">${t.icon}</div>
+      <div style="font-size:7px;font-weight:900;color:${t.unlocked?t.color:'rgba(150,200,255,0.4)'};margin-top:3px;line-height:1.2;">${t.label}</div>
+      ${lock}${equip}
+    </div>`;
+  }).join('');
+}
+
+function equipTitle(label) {
+  state.profileTitleEquipped = label;
+  saveState();
+  renderProfil();
+  showToast('✅ Titre équipé : ' + label);
+}
+
+function _renderProfileBadges() {
+  const cont = document.getElementById('profileBadges');
+  if (!cont) return;
+
+  const nfts = (state.wonNFTs || []).length;
+  const coffres = state.totalCoffresOpened || 0;
+  const days = state.totalDaysConnected || 1;
+  const bones = state.totalBonesEarned || 0;
+
+  const BADGES = [
+    { label:'FOUNDER',      sub:'S1',           icon:'🐾', color:'#00CFFF', unlocked: true },
+    { label:'SEASON 1',     sub:'PARTICIPANT',   icon:'⭐', color:'#9B59B6', unlocked: true },
+    { label:'BONE HUNTER',  sub:'10K+ BONES',    icon:'🦴', color:'#00AAFF', unlocked: bones >= 10000 },
+    { label:'CHEST MASTER', sub:'10+ COFFRES',   icon:'📦', color:'#E67E22', unlocked: coffres >= 10 },
+    { label:'DAILY',        sub:'LEGEND',        icon:'📅', color:'#27AE60', unlocked: days >= 7 },
+    { label:'COLLECTOR',    sub:'1er NFT',       icon:'🃏', color:'#00CFFF', unlocked: nfts >= 1 },
+  ];
+
+  const unlocked = BADGES.filter(b => b.unlocked);
+  const badgeCount = document.getElementById('profileBadgesCount');
+  if (badgeCount) badgeCount.textContent = 'VOIR TOUT (' + unlocked.length + ') ›';
+
+  cont.innerHTML = BADGES.map(b => {
+    const op = b.unlocked ? '1' : '0.35';
+    return `<div style="flex-shrink:0;width:68px;text-align:center;opacity:${op};">
+      <div style="width:52px;height:52px;margin:0 auto 4px;background:linear-gradient(135deg,rgba(0,40,80,0.8),rgba(0,20,50,0.9));border:2px solid ${b.unlocked ? b.color : 'rgba(0,60,120,0.3)'};border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">${b.icon}</div>
+      <div style="font-size:8px;font-weight:900;color:${b.unlocked ? b.color : 'rgba(150,200,255,0.3)'};">${b.label}</div>
+      <div style="font-size:7px;color:rgba(150,200,255,0.5);">${b.sub}</div>
+    </div>`;
+  }).join('');
+}
+
+function _renderProfileStats() {
+  const cont = document.getElementById('profileStats');
+  if (!cont) return;
+
+  const dogs = ALL_DOGS.filter(d => d.unlocked).length;
+  const nfts = (state.wonNFTs || []).length;
+  const coffres = state.totalCoffresOpened || 0;
+  const days = state.totalDaysConnected || 1;
+  const bones = state.totalBonesEarned || 0;
+  const playTime = Math.floor((state.totalPlayTime || 0) / 60); // en heures
+
+  const STATS = [
+    { icon:'🦴', label:'BONES PRODUITS', value: fmt(bones), sub:'Total' },
+    { icon:'🐾', label:'CHIENS DÉBLOQUÉS', value: dogs + ' / ' + ALL_DOGS.length, sub:'/' + ALL_DOGS.length },
+    { icon:'📦', label:'COFFRES OUVERTS', value: fmt(coffres), sub:'Total' },
+    { icon:'🃏', label:'NFT POSSÉDÉS', value: nfts + ' / 1 014', sub:'/ 1 014' },
+    { icon:'📅', label:'JOURS CONNECTÉS', value: days, sub:'Meilleur Streak' },
+    { icon:'⏱️', label:'TEMPS DE JEU', value: playTime + 'h', sub:'Total' },
+    { icon:'⭐', label:'SAISON ACTUELLE', value: 'Saison 1', sub:'En cours' },
+    { icon:'📊', label:'RANG COLLECTION', value: nfts > 0 ? 'Top 50%' : '—', sub:'Cette saison' },
+  ];
+
+  cont.innerHTML = STATS.map(s => `
+    <div style="background:rgba(0,30,60,0.4);border:1px solid rgba(0,100,180,0.2);border-radius:10px;padding:10px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="font-size:16px;">${s.icon}</span>
+        <span style="font-size:8px;color:rgba(150,200,255,0.5);font-weight:800;text-transform:uppercase;letter-spacing:0.5px;">${s.label}</span>
+      </div>
+      <div style="font-size:18px;font-weight:900;color:white;">${s.value}</div>
+    </div>
+  `).join('');
+}
+
+function _renderProfileCollection() {
+  const cont = document.getElementById('profileCollection');
+  if (!cont) return;
+
+  const lastNFT = state.wonNFTs && state.wonNFTs.length > 0 ? state.wonNFTs[state.wonNFTs.length-1] : null;
+  const activeDog = ALL_DOGS.find(d => d.active) || ALL_DOGS[0];
+
+  const COLLECTION = [
+    { label:'NFT ÉQUIPÉ',     sub: lastNFT ? lastNFT.name : '—',       sub2: lastNFT ? lastNFT.rarity : 'Aucun NFT', icon:'🃏',  color:'#00CFFF' },
+    { label:'CHIEN FAVORI',   sub: activeDog ? activeDog.name : 'Paco', sub2: 'Niveau ' + (activeDog ? activeDog.level : 1), icon: activeDog ? activeDog.emoji : '🐶', color:'#27AE60' },
+    { label:'CADRE',          sub:'Founder Frame',  sub2:'Équipé',  icon:'🖼️',  color:'#E67E22' },
+    { label:'BACKGROUND',     sub:'Neon Room',      sub2:'Équipé',  icon:'🌌',  color:'#9B59B6' },
+    { label:'AURA',           sub:'Blue Glow',      sub2:'Équipé',  icon:'✨',  color:'#00AAFF' },
+  ];
+
+  cont.innerHTML = COLLECTION.map(c => `
+    <div style="flex-shrink:0;width:80px;text-align:center;">
+      <div style="width:70px;height:70px;margin:0 auto 4px;background:linear-gradient(135deg,rgba(0,40,80,0.6),rgba(0,20,50,0.8));border:1px solid rgba(0,140,255,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;">${c.icon}</div>
+      <div style="font-size:7px;font-weight:900;color:${c.color};letter-spacing:0.5px;">${c.label}</div>
+      <div style="font-size:8px;font-weight:900;color:white;margin-top:1px;">${c.sub}</div>
+      <div style="font-size:7px;color:rgba(150,200,255,0.5);">${c.sub2}</div>
+    </div>
+  `).join('');
+}
+
+function _updateProfileSeason() {
+  const nfts = (state.wonNFTs || []).filter(n => n.rarity && n.rarity.toLowerCase().includes('mythic')).length;
+  const el = document.getElementById('profileMythicCount');
+  if (el) el.textContent = nfts + ' obtenu' + (nfts > 1 ? 's' : '');
 }
