@@ -75,6 +75,11 @@ let state = {
   // Cadeau quotidien
   dailyGiftClaimed: false,
   dailyGiftDate: '',
+  // Parrainage
+  referralCode: '',
+  referralCount: 0,
+  referralHistory: [],
+  referralClaimedPaliers: [],
 };
 
 let currentScreen = 'home';
@@ -1347,12 +1352,13 @@ function devForceOs() {
 
 // ===== NAVIGATION ONGLETS CADEAUX =====
 function switchCadeauTab(tab) {
-  ['chasse','coffres','rewards','inventaire'].forEach(t => {
+  ['chasse','coffres','rewards','inviter','inventaire'].forEach(t => {
     const el = document.getElementById('cadeau-' + t);
     if (el) el.style.display = t === tab ? 'block' : 'none';
     const tabEl = document.getElementById('ctab-' + t);
     if (tabEl) tabEl.classList.toggle('active', t === tab);
   });
+  if (tab === 'inviter') renderInviter();
 }
 
 // ===== RENDER PRINCIPAL CADEAUX =====
@@ -1361,6 +1367,169 @@ function renderCadeaux() {
   renderCoffresTab();
   renderInventaire();
   renderDailyStreak();
+}
+
+// ============================================================
+// PARRAINAGE — SYSTÈME INVITER
+// ============================================================
+
+const REFERRAL_PALIERS = [
+  { count:1,   reward:'📦 Coffre Bronze',             color:'#CD7F32' },
+  { count:3,   reward:'🦴 300 Bones',                 color:'#CD7F32' },
+  { count:5,   reward:'🎁 Coffre Argent',              color:'#C0C0C0' },
+  { count:10,  reward:'🏅 Badge "Recruteur"',          color:'#F5A623' },
+  { count:15,  reward:'🎟️ Ticket Événement',           color:'#C39BD3' },
+  { count:25,  reward:'🪄 Skin Tapis Exclusif',        color:'#9B59B6' },
+  { count:35,  reward:'👑 Coffre Or',                  color:'#F5A623' },
+  { count:50,  reward:'✨ Décoration Collector',       color:'#F5A623' },
+  { count:75,  reward:'👑 Titre Spécial',              color:'#E67E22' },
+  { count:100, reward:'🗿 Statue Packoo Légendaire',   color:'#E74C3C' },
+];
+
+function _generateReferralCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = 'PACKOO-';
+  for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+function _getNextReferralPalier(count) {
+  return REFERRAL_PALIERS.find(p => p.count > count) || null;
+}
+
+function renderInviter() {
+  // Générer un code si pas encore fait
+  if (!state.referralCode) {
+    state.referralCode = _generateReferralCode();
+    saveState();
+  }
+
+  // Code display
+  const codeEl = document.getElementById('referralCodeDisplay');
+  if (codeEl) codeEl.textContent = state.referralCode;
+
+  // Compteur filleuls
+  const countEl = document.getElementById('referralCountDisplay');
+  if (countEl) countEl.textContent = state.referralCount;
+
+  // Barre prochain palier
+  const next = _getNextReferralPalier(state.referralCount);
+  const prevPalier = REFERRAL_PALIERS.filter(p => p.count <= state.referralCount).pop();
+  const prevCount = prevPalier ? prevPalier.count : 0;
+  const nextCount = next ? next.count : REFERRAL_PALIERS[REFERRAL_PALIERS.length-1].count;
+  const pct = next ? Math.min(100, ((state.referralCount - prevCount) / (nextCount - prevCount)) * 100) : 100;
+
+  const barEl = document.getElementById('referralProgressBar');
+  if (barEl) barEl.style.width = pct + '%';
+
+  const labelEl = document.getElementById('referralNextLabel');
+  if (labelEl) labelEl.textContent = next ? 'Prochain : ' + next.reward + ' (' + next.count + ' amis)' : '🎉 Tous les paliers débloqués !';
+
+  const progEl = document.getElementById('referralNextProgress');
+  if (progEl) progEl.textContent = state.referralCount + ' / ' + nextCount;
+
+  // Activité récente
+  const actEl = document.getElementById('referralActivity');
+  if (actEl) {
+    if (!state.referralHistory || state.referralHistory.length === 0) {
+      actEl.innerHTML = '<div style="font-size:10px;color:var(--text-muted);text-align:center;padding:8px;">Aucun filleul pour l\'instant. Invite tes amis !</div>';
+    } else {
+      actEl.innerHTML = state.referralHistory.slice(-5).reverse().map(h =>
+        '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);">' +
+        '<span style="font-size:14px;">🐾</span>' +
+        '<span style="font-size:10px;color:var(--text-muted);flex:1;">' + h.name + ' — ' + h.action + '</span>' +
+        '<span style="font-size:9px;color:var(--text-muted);">' + h.date + '</span>' +
+        '</div>'
+      ).join('');
+    }
+  }
+
+  // Paliers
+  const paliersEl = document.getElementById('referralPaliers');
+  if (paliersEl) {
+    paliersEl.innerHTML = REFERRAL_PALIERS.map(p => {
+      const done = state.referralCount >= p.count;
+      const claimed = state.referralClaimedPaliers && state.referralClaimedPaliers.includes(p.count);
+      return '<div style="display:flex;align-items:center;gap:10px;padding:8px;background:' +
+        (done ? 'rgba(245,166,35,0.08)' : 'rgba(255,255,255,0.02)') +
+        ';border:1px solid ' + (done ? 'rgba(245,166,35,0.3)' : 'rgba(255,255,255,0.06)') +
+        ';border-radius:10px;opacity:' + (done ? '1' : '0.5') + ';">' +
+        '<div style="width:32px;height:32px;border-radius:50%;background:' +
+        (done ? 'rgba(245,166,35,0.2)' : 'rgba(255,255,255,0.05)') +
+        ';display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:' +
+        (done ? p.color : 'var(--text-muted)') + ';flex-shrink:0;">' + p.count + '</div>' +
+        '<span style="flex:1;font-size:11px;color:' + (done ? 'var(--gold)' : 'var(--text-muted)') + ';font-weight:' + (done ? '800' : '600') + ';">' + p.reward + '</span>' +
+        (done && !claimed
+          ? '<button onclick="claimReferralPalier(' + p.count + ')" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:8px;padding:6px 10px;font-size:10px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:\'Nunito\',sans-serif;">RÉCLAMER</button>'
+          : claimed
+            ? '<span style="font-size:16px;">✅</span>'
+            : '<span style="font-size:14px;">🔒</span>'
+        ) +
+        '</div>';
+    }).join('');
+  }
+}
+
+function copyReferralCode() {
+  if (!state.referralCode) return;
+  const text = state.referralCode;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+  const btn = document.getElementById('copyCodeBtn');
+  if (btn) { btn.textContent = '✅ Copié !'; setTimeout(() => { btn.textContent = '📋 Copier'; }, 2000); }
+  showToast('✅ Code copié : ' + text);
+}
+
+function shareReferral() {
+  if (!state.referralCode) return;
+  const msg = '🐾 Rejoins-moi sur Packoo ! Utilise mon code ' + state.referralCode + ' pour démarrer avec des bonus. 🦴';
+  if (navigator.share) {
+    navigator.share({ title: 'Packoo', text: msg }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(msg).catch(() => {});
+    showToast('📤 Lien copié dans le presse-papiers !');
+  } else {
+    showToast('📤 Code : ' + state.referralCode);
+  }
+}
+
+function claimReferralPalier(count) {
+  if (!state.referralClaimedPaliers) state.referralClaimedPaliers = [];
+  if (state.referralClaimedPaliers.includes(count)) return;
+  if (state.referralCount < count) return;
+
+  state.referralClaimedPaliers.push(count);
+  const palier = REFERRAL_PALIERS.find(p => p.count === count);
+
+  // Récompenses selon palier
+  if (count === 1)  { state.coffres.bronze = (state.coffres.bronze||0) + 1; showToast('📦 Coffre Bronze obtenu !'); }
+  if (count === 3)  { state.bones += 300; showToast('🦴 +300 Bones !'); }
+  if (count === 5)  { state.coffres.argent = (state.coffres.argent||0) + 1; showToast('🎁 Coffre Argent obtenu !'); }
+  if (count === 15) { state.inventaire.tickets = (state.inventaire.tickets||0) + 1; showToast('🎟️ Ticket Événement obtenu !'); }
+  if (count === 35) { state.coffres.or = (state.coffres.or||0) + 1; showToast('👑 Coffre Or obtenu !'); }
+  // Paliers cosmétiques (10, 25, 50, 75, 100) : juste le toast pour l'instant
+  if ([10,25,50,75,100].includes(count)) {
+    showToast('🏅 ' + (palier ? palier.reward : 'Récompense') + ' débloquée !');
+  }
+
+  updateUI();
+  saveState();
+  renderInviter();
+}
+
+// ===== DEV : simuler un filleul validé =====
+function devAddReferral(name) {
+  if (!state.referralHistory) state.referralHistory = [];
+  state.referralCount = (state.referralCount || 0) + 1;
+  state.referralHistory.push({
+    name: name || 'Ami #' + state.referralCount,
+    action: 'filleul validé ✅',
+    date: new Date().toLocaleDateString('fr-FR')
+  });
+  saveState();
+  renderInviter();
+  showToast('👥 +1 filleul actif !');
 }
 
 // ============================================================
