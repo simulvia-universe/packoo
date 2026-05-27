@@ -114,33 +114,7 @@
         </div>
         <div class="right-col">
         </div>
-        <div class="panel-backdrop" id="panelBackdrop" onclick="closeDogsPanel()"></div>
-        <div class="dogs-panel" id="dogsPanel">
-          <div class="dogs-panel-title">🐾 Mes Chiens <div class="dogs-panel-close" onclick="closeDogsPanel()">✕</div></div>
-          <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
-            <span style="font-size:10px;color:var(--text-muted);font-weight:700">Production totale</span>
-            <span style="font-size:16px;font-weight:900;color:var(--gold-light)">🦴 12,350 /h</span>
-          </div>
-          <div class="dog-panel-row">
-            <div class="dog-panel-avatar"><span class="dimg" style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">🐶</span><div class="dog-rarity-badge" style="background:#9B59B6"></div></div>
-            <div class="dog-panel-info"><div class="dog-panel-name">Paco</div><div class="dog-panel-level">Niv. 25 · Épique</div><div class="dog-panel-xp"><div class="dog-panel-xp-fill" style="width:82%"></div></div></div>
-            <div class="dog-panel-prod">+5,000/h</div>
-          </div>
-          <div class="dog-panel-row">
-            <div class="dog-panel-avatar"><span class="dimg" style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">🐶</span><div class="dog-rarity-badge" style="background:#E67E22"></div></div>
-            <div class="dog-panel-info"><div class="dog-panel-name">Luna</div><div class="dog-panel-level">Niv. 20 · Légendaire</div><div class="dog-panel-xp"><div class="dog-panel-xp-fill" style="width:72%"></div></div></div>
-            <div class="dog-panel-prod">+3,200/h</div>
-          </div>
-          <div class="dog-panel-row">
-            <div class="dog-panel-avatar"><span class="dimg" style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">🐶</span><div class="dog-rarity-badge" style="background:#3498DB"></div></div>
-            <div class="dog-panel-info"><div class="dog-panel-name">Snow Paco</div><div class="dog-panel-level">Niv. 15 · Rare</div><div class="dog-panel-xp"><div class="dog-panel-xp-fill" style="width:50%"></div></div></div>
-            <div class="dog-panel-prod">+2,150/h</div>
-          </div>
-          <div class="dog-panel-locked"><span style="font-size:22px;opacity:0.3">🔒</span><div style="font-size:11px;color:var(--text-muted)">Emplacement verrouillé<br><span style="font-size:10px;opacity:0.7">Débloque au Niveau 30</span></div></div>
-          <div style="margin-top:auto;padding-top:10px;">
-            <button onclick="navigate('chiens');closeDogsPanel();" style="width:100%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">Voir tous mes chiens →</button>
-          </div>
-        </div>
+
         <div class="paco-glow-ring"></div>
         <div class="paco-tap-area" onclick="tapPaco(event)">
           <img src='image/paco.png' class="paco-img" alt="Paco" draggable="false"/>
@@ -1304,6 +1278,22 @@
     </div>
 
   </div><!-- end screens -->
+
+  <!-- DOGS PANEL — global, accessible depuis tous les écrans -->
+  <div class="panel-backdrop" id="panelBackdrop" onclick="closeDogsPanel()"></div>
+  <div class="dogs-panel" id="dogsPanel">
+    <div class="dogs-panel-title">🐾 Mes Chiens <div class="dogs-panel-close" onclick="closeDogsPanel()">✕</div></div>
+    <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:10px;color:var(--text-muted);font-weight:700">Production totale</span>
+      <span style="font-size:16px;font-weight:900;color:var(--gold-light)" id="dogPanelProdTotal">🦴 0 /h</span>
+    </div>
+    <div id="dogPanelList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;">
+      <!-- généré dynamiquement -->
+    </div>
+    <div style="padding-top:10px;">
+      <button onclick="navigate('chiens');closeDogsPanel();" style="width:100%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">Voir tous mes chiens →</button>
+    </div>
+  </div>
 
   <nav class="bottom-nav">
     <div class="nav-item active" id="nav-home" onclick="navigate('home')"><span class="nav-icon">🏠</span><span class="nav-label">Accueil</span></div>
