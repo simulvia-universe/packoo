@@ -1323,7 +1323,54 @@ function updatePass() {
   renderPassQuests();
 }
 
-function openDogsPanel()  {
+
+function _renderDogsPanel() {
+  const activeDogs = ALL_DOGS.filter(d => d.active && d.unlocked);
+  const totalProd = getTotalProduction();
+  const RARITY_COLORS = { COMMON:'#9D9D9D', UNCOMMON:'#27AE60', RARE:'#3498DB', EPIC:'#9B59B6', LEGENDARY:'#E67E22' };
+  const RARITY_LABELS = { COMMON:'Commun', UNCOMMON:'Peu Commun', RARE:'Rare', EPIC:'Épique', LEGENDARY:'Légendaire' };
+
+  // Production totale
+  const prodEl = document.getElementById('dogPanelProdTotal');
+  if (prodEl) prodEl.textContent = '🦴 ' + fmt(totalProd) + ' /h';
+
+  // Liste des chiens actifs
+  const list = document.getElementById('dogPanelList');
+  if (!list) return;
+
+  if (activeDogs.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:11px;padding:20px;">Aucun chien actif</div>';
+    return;
+  }
+
+  list.innerHTML = activeDogs.map(dog => {
+    const prod = getProduction(dog.rarity, dog.level, dog.id);
+    const color = RARITY_COLORS[dog.rarity] || '#9D9D9D';
+    const label = RARITY_LABELS[dog.rarity] || dog.rarity;
+    const xpPct = Math.min(100, Math.floor((dog.xp || 0) % 100));
+    return `<div class="dog-panel-row">
+      <div class="dog-panel-avatar">
+        <span style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">${dog.emoji}</span>
+        <div class="dog-rarity-badge" style="background:${color}"></div>
+      </div>
+      <div class="dog-panel-info">
+        <div class="dog-panel-name">${dog.name}</div>
+        <div class="dog-panel-level">Niv. ${dog.level} · ${label}</div>
+        <div class="dog-panel-xp"><div class="dog-panel-xp-fill" style="width:${xpPct}%"></div></div>
+      </div>
+      <div class="dog-panel-prod">+${fmt(prod)}/h</div>
+    </div>`;
+  }).join('');
+
+  // Emplacements vides
+  const emptySlots = MAX_ACTIVE - activeDogs.length;
+  for (let i = 0; i < emptySlots; i++) {
+    list.innerHTML += `<div class="dog-panel-locked"><span style="font-size:22px;opacity:0.3">🔒</span><div style="font-size:11px;color:var(--text-muted)">Emplacement libre</div></div>`;
+  }
+}
+
+function openDogsPanel() {
+  _renderDogsPanel();
   document.getElementById('dogsPanel').classList.add('open');
   document.getElementById('panelBackdrop').classList.add('open');
 }
