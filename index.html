@@ -92,6 +92,7 @@
     <button onclick="devForceOs();toggleMenu()" style="width:100%;background:rgba(139,69,19,0.15);border:1px solid #CD7F32;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#CD7F32;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">🦴 Forcer Os (Chasse)</button>
     <button onclick="devForceOs();toggleMenu()" style="width:100%;background:rgba(139,69,19,0.15);border:1px solid #CD7F32;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#CD7F32;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">🦴 Forcer Os (Chasse)</button>
     <button onclick="devUnlockAll()"        style="width:100%;background:rgba(243,156,18,0.15);border:1px solid #F39C12;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#F39C12;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">🐕 Débloquer tous les chiens</button>
+    <button onclick="devAddReferral();toggleMenu()" style="width:100%;background:rgba(39,174,96,0.15);border:1px solid #27AE60;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#27AE60;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">👥 +1 Filleul (test)</button>
     <div id="devStatus" style="font-size:9px;color:#E67E22;text-align:center;margin-top:4px;">Tap ×1 | Passif ×1</div>
   </div>
 
@@ -665,6 +666,7 @@
           <div class="tab active" id="ctab-chasse"   onclick="switchCadeauTab('chasse')" style="position:relative;">🦴 Chasse aux Os<span id="badge-chasse" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
           <div class="tab"        id="ctab-coffres"  onclick="switchCadeauTab('coffres')" style="position:relative;">📦 Coffres<span id="badge-coffres" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
           <div class="tab"        id="ctab-rewards"  onclick="switchCadeauTab('rewards')" style="position:relative;">🎁 Récompenses<span id="badge-rewards" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
+          <div class="tab"        id="ctab-inviter"  onclick="switchCadeauTab('inviter')">👥 Inviter</div>
           <div class="tab"        id="ctab-inventaire" onclick="switchCadeauTab('inventaire')">🎒 Inventaire</div>
         </div>
 
@@ -849,6 +851,81 @@
                 <div style="font-size:10px;color:var(--text-muted);">Événement associatif — Bientôt disponible</div>
               </div>
               <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;font-size:16px;">🔒</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ===== TAB : INVITER ===== -->
+        <div id="cadeau-inviter" style="display:none;">
+
+          <!-- Bloc hero -->
+          <div style="background:linear-gradient(135deg,#1A0A00,#2D1500);border:2px solid rgba(245,166,35,0.4);border-radius:16px;padding:14px;margin-bottom:12px;text-align:center;">
+            <div style="font-size:40px;margin-bottom:6px;">👥</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);margin-bottom:4px;">INVITER DES AMIS</div>
+            <div style="font-size:10px;color:var(--text-muted);line-height:1.6;">Partage Packoo et débloque des récompenses exclusives.<br><span style="color:var(--gold);font-weight:800;">Toi et ton ami recevez des bonus !</span></div>
+          </div>
+
+          <!-- Code de parrainage -->
+          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.25);border-radius:14px;padding:14px;margin-bottom:12px;">
+            <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1.5px;margin-bottom:8px;">🔑 TON CODE DE PARRAINAGE</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="flex:1;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.3);border-radius:10px;padding:10px 14px;font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);letter-spacing:2px;" id="referralCodeDisplay">PACKOO-????</div>
+              <button onclick="copyReferralCode()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;" id="copyCodeBtn">📋 Copier</button>
+            </div>
+            <button onclick="shareReferral()" style="width:100%;margin-top:8px;background:rgba(39,174,96,0.15);border:1px solid rgba(39,174,96,0.4);border-radius:10px;padding:10px;font-size:12px;font-weight:900;color:#2ECC71;cursor:pointer;font-family:'Nunito',sans-serif;">📤 Partager le lien d'invitation</button>
+          </div>
+
+          <!-- Progression filleuls -->
+          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:14px;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1px;">👥 FILLEULS ACTIFS</div>
+              <div style="font-size:22px;font-weight:900;color:var(--gold);" id="referralCountDisplay">0</div>
+            </div>
+            <!-- Barre prochain palier -->
+            <div style="font-size:9px;color:var(--text-muted);margin-bottom:4px;display:flex;justify-content:space-between;">
+              <span id="referralNextLabel">Prochain : 📦 Coffre Bronze (1 ami)</span>
+              <span id="referralNextProgress">0 / 1</span>
+            </div>
+            <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:12px;">
+              <div id="referralProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#8B4513,var(--gold));border-radius:4px;transition:width 0.4s;"></div>
+            </div>
+
+            <!-- Activité récente -->
+            <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1px;margin-bottom:8px;">📋 ACTIVITÉ RÉCENTE</div>
+            <div id="referralActivity" style="display:flex;flex-direction:column;gap:6px;">
+              <div style="font-size:10px;color:var(--text-muted);text-align:center;padding:8px;">Aucun filleul pour l'instant. Invite tes amis !</div>
+            </div>
+          </div>
+
+          <!-- Paliers -->
+          <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:14px;margin-bottom:12px;">
+            <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1px;margin-bottom:10px;">🏅 PALIERS DE RÉCOMPENSES</div>
+            <div style="display:flex;flex-direction:column;gap:6px;" id="referralPaliers">
+              <!-- généré par JS -->
+            </div>
+          </div>
+
+          <!-- Comment ça marche -->
+          <div style="background:rgba(245,166,35,0.05);border:1px solid rgba(245,166,35,0.15);border-radius:12px;padding:12px;margin-bottom:12px;">
+            <div style="font-size:10px;font-weight:900;color:var(--gold);margin-bottom:8px;">📋 COMMENT ÇA MARCHE ?</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:flex-start;gap:8px;">
+                <span style="font-size:16px;flex-shrink:0;">1️⃣</span>
+                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;">Partage ton code à un ami. Il l'entre au démarrage de Packoo et reçoit <strong style="color:var(--gold);">150 Bones + 1 Coffre Bronze + boost 12h</strong>.</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:8px;">
+                <span style="font-size:16px;flex-shrink:0;">2️⃣</span>
+                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;">Une fois que ton ami atteint le <strong style="color:var(--gold);">niveau 5</strong> ou joue <strong style="color:var(--gold);">3 jours</strong>, il devient un filleul actif.</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:8px;">
+                <span style="font-size:16px;flex-shrink:0;">3️⃣</span>
+                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;">Tu reçois <strong style="color:var(--gold);">1 Coffre Argent</strong> + progression vers les paliers de prestige.</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:8px;">
+                <span style="font-size:16px;flex-shrink:0;">🤝</span>
+                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;">Jalons coopératifs : si ton ami joue encore après 7 jours ou atteint le niveau 10, vous recevez <strong style="color:var(--gold);">tous les deux</strong> un bonus !</span>
+              </div>
             </div>
           </div>
 
