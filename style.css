@@ -131,7 +131,7 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#
 .level-bar-txt{font-size:11px;font-weight:800;color:var(--text-muted);white-space:nowrap;flex-shrink:0;}
 
 /* DOGS PANEL */
-.dogs-panel{position:absolute;top:0;right:0;bottom:0;width:72vw;max-width:280px;background:rgba(12,5,0,0.96);border-left:1px solid rgba(245,166,35,0.25);z-index:50;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;padding:16px 12px;backdrop-filter:blur(16px);}
+.dogs-panel{position:fixed;top:0;right:0;bottom:0;width:72vw;max-width:280px;background:rgba(12,5,0,0.97);border-left:1px solid rgba(245,166,35,0.25);z-index:200;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;padding:16px 12px;backdrop-filter:blur(16px);}
 .dogs-panel.open{transform:translateX(0);}
 .dogs-panel-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
 .dogs-panel-close{width:28px;height:28px;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--gold);}
@@ -146,7 +146,7 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;padding:0;background:#
 .dog-panel-xp-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:2px;}
 .dog-panel-prod{font-size:13px;font-weight:900;color:var(--gold-light);white-space:nowrap;}
 .dog-panel-locked{display:flex;align-items:center;gap:10px;background:rgba(15,7,1,0.6);border:1px dashed rgba(245,166,35,0.1);border-radius:12px;padding:10px;margin-bottom:8px;opacity:0.6;}
-.panel-backdrop{position:absolute;inset:0;z-index:49;display:none;}
+.panel-backdrop{position:fixed;inset:0;z-index:199;display:none;background:rgba(0,0,0,0.5);}
 .panel-backdrop.open{display:block;}
 
 /* COLLECTION GRID */
