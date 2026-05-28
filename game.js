@@ -83,14 +83,6 @@ let state = {
   // Founder Event
   founderTickets: 0,
   founderCommunityBones: 10000000,
-  // Stats profil
-  totalCoffresOpened: 0,
-  totalDaysConnected: 1,
-  totalPlayTime: 0,        // en minutes
-  sessionStart: Date.now(),
-  playerName: 'DogMaster',
-  profileTitleEquipped: 'FOUNDER',
-  joinDate: new Date().toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}),
 };
 
 let currentScreen = 'home';
@@ -99,11 +91,6 @@ let dogFilter     = 'all';
 
 // ===== SAUVEGARDE =====
 function saveState() {
-  // Tracker temps de jeu
-  const now = Date.now();
-  const sessionMinutes = Math.floor((now - (state.sessionStart || now)) / 60000);
-  state.totalPlayTime = (state.totalPlayTime || 0) + sessionMinutes;
-  state.sessionStart = now;
   try {
     const save = Object.assign({}, state, {
       bones: Math.floor(state.bones),
@@ -240,17 +227,12 @@ function claimAllPendingRewards() {
   updateUI(); updateAllBadges(); saveState();
 }
 function getProduction(rarity, level, dogId) {
-  // Production niveau 1 = baseProduction de la rareté
-  // Production niveau 50 = DOG_PRODUCTION[dogId] (valeur cible)
-  // On interpole linéairement entre les deux
-  const baseProd = RARITY[rarity] ? RARITY[rarity].baseProduction : 50;
+  // Si DOG_PRODUCTION existe (nouveau data.js), on utilise la valeur niveau 50 comme base
   if (dogId && typeof DOG_PRODUCTION !== 'undefined' && DOG_PRODUCTION[dogId]) {
     const maxProd = DOG_PRODUCTION[dogId];
-    // Interpolation linéaire : niveau 1 → baseProd, niveau 50 → maxProd
-    const t = (level - 1) / 49;
-    return Math.round(baseProd + (maxProd - baseProd) * t);
+    return Math.round(maxProd * Math.pow(1.0 / Math.pow(1.08, 49), 1) * Math.pow(1.08, level - 1));
   }
-  return Math.round(baseProd * Math.pow(1.08, level - 1));
+  return Math.round(RARITY[rarity].baseProduction * Math.pow(1.08, level - 1));
 }
 function getLevelCost(rarity, level, dogId) {
   if (level >= MAX_LEVEL) return null;
@@ -1001,7 +983,6 @@ function navigate(screen) {
   if (screen === 'classement')   renderClassement();
   if (screen === 'evenements')   startEventCountdown();
   if (screen === 'cadeaux')      renderCadeaux();
-  if (screen === 'profil')       renderProfil();
   if (screen === 'shop') {
     // Mettre à jour le label Pack Bones dynamiquement
     const el = document.getElementById('packBonesQty');
@@ -1328,54 +1309,7 @@ function updatePass() {
   renderPassQuests();
 }
 
-
-function _renderDogsPanel() {
-  const activeDogs = ALL_DOGS.filter(d => d.active && d.unlocked);
-  const totalProd = getTotalProduction();
-  const RARITY_COLORS = { COMMON:'#9D9D9D', UNCOMMON:'#27AE60', RARE:'#3498DB', EPIC:'#9B59B6', LEGENDARY:'#E67E22' };
-  const RARITY_LABELS = { COMMON:'Commun', UNCOMMON:'Peu Commun', RARE:'Rare', EPIC:'Épique', LEGENDARY:'Légendaire' };
-
-  // Production totale
-  const prodEl = document.getElementById('dogPanelProdTotal');
-  if (prodEl) prodEl.textContent = '🦴 ' + fmt(totalProd) + ' /h';
-
-  // Liste des chiens actifs
-  const list = document.getElementById('dogPanelList');
-  if (!list) return;
-
-  if (activeDogs.length === 0) {
-    list.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:11px;padding:20px;">Aucun chien actif</div>';
-    return;
-  }
-
-  list.innerHTML = activeDogs.map(dog => {
-    const prod = getProduction(dog.rarity, dog.level, dog.id);
-    const color = RARITY_COLORS[dog.rarity] || '#9D9D9D';
-    const label = RARITY_LABELS[dog.rarity] || dog.rarity;
-    const xpPct = Math.min(100, Math.floor((dog.xp || 0) % 100));
-    return `<div class="dog-panel-row">
-      <div class="dog-panel-avatar">
-        <span style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">${dog.emoji}</span>
-        <div class="dog-rarity-badge" style="background:${color}"></div>
-      </div>
-      <div class="dog-panel-info">
-        <div class="dog-panel-name">${dog.name}</div>
-        <div class="dog-panel-level">Niv. ${dog.level} · ${label}</div>
-        <div class="dog-panel-xp"><div class="dog-panel-xp-fill" style="width:${xpPct}%"></div></div>
-      </div>
-      <div class="dog-panel-prod">+${fmt(prod)}/h</div>
-    </div>`;
-  }).join('');
-
-  // Emplacements vides
-  const emptySlots = MAX_ACTIVE - activeDogs.length;
-  for (let i = 0; i < emptySlots; i++) {
-    list.innerHTML += `<div class="dog-panel-locked"><span style="font-size:22px;opacity:0.3">🔒</span><div style="font-size:11px;color:var(--text-muted)">Emplacement libre</div></div>`;
-  }
-}
-
-function openDogsPanel() {
-  _renderDogsPanel();
+function openDogsPanel()  {
   document.getElementById('dogsPanel').classList.add('open');
   document.getElementById('panelBackdrop').classList.add('open');
 }
@@ -2036,7 +1970,6 @@ const CHEST_CONFIG = {
 };
 
 function openCoffre(type) {
-  state.totalCoffresOpened = (state.totalCoffresOpened || 0) + 1;
   state.coffres = state.coffres || {};
   if ((state.coffres[type] || 0) <= 0) {
     showToast('📦 Tu n\'as pas de coffre ' + type + ' !');
@@ -2748,174 +2681,39 @@ function devAddFounderTickets(n) {
   toggleMenu();
 }
 
-
 // ============================================================
-// PACKOO — PAGE PROFIL
+// LANGUE — helpers game.js
 // ============================================================
-
-function editProfileName() {
-  const newName = prompt('Nouveau nom :', state.playerName || 'DogMaster');
-  if (newName && newName.trim().length > 0 && newName.trim().length <= 20) {
-    state.playerName = newName.trim();
-    saveState();
-    renderProfil();
-    showToast('✅ Nom mis à jour !');
+function updateLangButtons() {
+  const lang = window.PACKOO_LANG || 'fr';
+  const fr = document.getElementById('langBtnFr');
+  const en = document.getElementById('langBtnEn');
+  if (!fr || !en) return;
+  if (lang === 'fr') {
+    fr.style.background = 'rgba(245,166,35,0.25)';
+    fr.style.borderColor = 'rgba(245,166,35,0.7)';
+    fr.style.color = 'var(--gold)';
+    en.style.background = 'rgba(255,255,255,0.05)';
+    en.style.borderColor = 'rgba(255,255,255,0.1)';
+    en.style.color = 'var(--text-muted)';
+  } else {
+    en.style.background = 'rgba(245,166,35,0.25)';
+    en.style.borderColor = 'rgba(245,166,35,0.7)';
+    en.style.color = 'var(--gold)';
+    fr.style.background = 'rgba(255,255,255,0.05)';
+    fr.style.borderColor = 'rgba(255,255,255,0.1)';
+    fr.style.color = 'var(--text-muted)';
   }
 }
 
-function renderProfil() {
-  _updateProfileHeader();
-  _renderProfileTitres();
-  _renderProfileBadges();
-  _renderProfileStats();
-  _renderProfileCollection();
-  _updateProfileSeason();
-}
-
-function _updateProfileHeader() {
-  const lvl = state.playerLevel || 1;
-  const xp = state.playerXP || 0;
-  const xpNext = lvl * 1000;
-  const pct = Math.min(100, Math.floor((xp % 1000) / 10));
-
-  const el = (id) => document.getElementById(id);
-  if (el('profileLevel'))   el('profileLevel').textContent   = lvl;
-  if (el('profileName'))    el('profileName').textContent    = state.playerName || 'DogMaster';
-  if (el('profileTitle'))   el('profileTitle').textContent   = state.profileTitleEquipped || 'FOUNDER';
-  if (el('profileSince'))   el('profileSince').textContent   = 'Saison 1 · ' + (state.joinDate || '27 mai 2026');
-  if (el('profileNFTCount')) el('profileNFTCount').textContent = (state.wonNFTs ? state.wonNFTs.length : 0) + ' / 1014';
-  if (el('profileXPLabel')) el('profileXPLabel').textContent = fmt(xp % 1000) + ' / 1 000 XP';
-  if (el('profileXPBar'))   el('profileXPBar').style.width   = pct + '%';
-  if (el('profilePlayerId')) el('profilePlayerId').textContent = '#PCK' + String(lvl * 17 + 1).padStart(4, '0');
-}
-
-function _renderProfileTitres() {
-  const cont = document.getElementById('profileTitres');
-  if (!cont) return;
-
-  const TITRES = [
-    { key:'founder',      label:'FOUNDER',      icon:'👑', color:'#00CFFF',  unlocked: true  },
-    { key:'firstpack',    label:'FIRST PACK',   icon:'🐾', color:'#9B59B6',  unlocked: true  },
-    { key:'bonehunter',   label:'BONE HUNTER',  icon:'🦴', color:'#00AAFF',  unlocked: (state.totalBonesEarned||0) >= 10000 },
-    { key:'earlyplayer',  label:'EARLY PLAYER', icon:'⭐', color:'#00CFFF',  unlocked: true  },
-    { key:'season1',      label:'SEASON 1',     icon:'🏅', color:'rgba(150,200,255,0.3)', unlocked: false },
-    { key:'dogmaster',    label:'DOG MASTER',   icon:'🐕', color:'rgba(150,200,255,0.3)', unlocked: false },
-  ];
-
-  cont.innerHTML = TITRES.map(t => {
-    const equipped = state.profileTitleEquipped === t.label;
-    const opacity = t.unlocked ? '1' : '0.4';
-    const border = equipped ? '2px solid #00CFFF' : (t.unlocked ? '1px solid rgba(0,140,255,0.4)' : '1px solid rgba(0,60,120,0.3)');
-    const bg = t.unlocked ? 'rgba(0,60,120,0.3)' : 'rgba(0,20,40,0.3)';
-    const lock = t.unlocked ? '' : '<div style="font-size:10px;opacity:0.5;">🔒</div>';
-    const equip = equipped ? '<div style="font-size:7px;font-weight:900;color:#00CFFF;margin-top:2px;">ÉQUIPÉ ✓</div>' : '';
-    return `<div onclick="${t.unlocked ? `equipTitle('${t.label}')` : ''}" style="flex-shrink:0;width:70px;background:${bg};border:${border};border-radius:10px;padding:8px 4px;text-align:center;cursor:${t.unlocked?'pointer':'default'};opacity:${opacity};">
-      <div style="font-size:18px;">${t.icon}</div>
-      <div style="font-size:7px;font-weight:900;color:${t.unlocked?t.color:'rgba(150,200,255,0.4)'};margin-top:3px;line-height:1.2;">${t.label}</div>
-      ${lock}${equip}
-    </div>`;
-  }).join('');
-}
-
-function equipTitle(label) {
-  state.profileTitleEquipped = label;
-  saveState();
-  renderProfil();
-  showToast('✅ Titre équipé : ' + label);
-}
-
-function _renderProfileBadges() {
-  const cont = document.getElementById('profileBadges');
-  if (!cont) return;
-
-  const nfts = (state.wonNFTs || []).length;
-  const coffres = state.totalCoffresOpened || 0;
-  const days = state.totalDaysConnected || 1;
-  const bones = state.totalBonesEarned || 0;
-
-  const BADGES = [
-    { label:'FOUNDER',      sub:'S1',           icon:'🐾', color:'#00CFFF', unlocked: true },
-    { label:'SEASON 1',     sub:'PARTICIPANT',   icon:'⭐', color:'#9B59B6', unlocked: true },
-    { label:'BONE HUNTER',  sub:'10K+ BONES',    icon:'🦴', color:'#00AAFF', unlocked: bones >= 10000 },
-    { label:'CHEST MASTER', sub:'10+ COFFRES',   icon:'📦', color:'#E67E22', unlocked: coffres >= 10 },
-    { label:'DAILY',        sub:'LEGEND',        icon:'📅', color:'#27AE60', unlocked: days >= 7 },
-    { label:'COLLECTOR',    sub:'1er NFT',       icon:'🃏', color:'#00CFFF', unlocked: nfts >= 1 },
-  ];
-
-  const unlocked = BADGES.filter(b => b.unlocked);
-  const badgeCount = document.getElementById('profileBadgesCount');
-  if (badgeCount) badgeCount.textContent = 'VOIR TOUT (' + unlocked.length + ') ›';
-
-  cont.innerHTML = BADGES.map(b => {
-    const op = b.unlocked ? '1' : '0.35';
-    return `<div style="flex-shrink:0;width:68px;text-align:center;opacity:${op};">
-      <div style="width:52px;height:52px;margin:0 auto 4px;background:linear-gradient(135deg,rgba(0,40,80,0.8),rgba(0,20,50,0.9));border:2px solid ${b.unlocked ? b.color : 'rgba(0,60,120,0.3)'};border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;">${b.icon}</div>
-      <div style="font-size:8px;font-weight:900;color:${b.unlocked ? b.color : 'rgba(150,200,255,0.3)'};">${b.label}</div>
-      <div style="font-size:7px;color:rgba(150,200,255,0.5);">${b.sub}</div>
-    </div>`;
-  }).join('');
-}
-
-function _renderProfileStats() {
-  const cont = document.getElementById('profileStats');
-  if (!cont) return;
-
-  const dogs = ALL_DOGS.filter(d => d.unlocked).length;
-  const nfts = (state.wonNFTs || []).length;
-  const coffres = state.totalCoffresOpened || 0;
-  const days = state.totalDaysConnected || 1;
-  const bones = state.totalBonesEarned || 0;
-  const playTime = Math.floor((state.totalPlayTime || 0) / 60); // en heures
-
-  const STATS = [
-    { icon:'🦴', label:'BONES PRODUITS', value: fmt(bones), sub:'Total' },
-    { icon:'🐾', label:'CHIENS DÉBLOQUÉS', value: dogs + ' / ' + ALL_DOGS.length, sub:'/' + ALL_DOGS.length },
-    { icon:'📦', label:'COFFRES OUVERTS', value: fmt(coffres), sub:'Total' },
-    { icon:'🃏', label:'NFT POSSÉDÉS', value: nfts + ' / 1 014', sub:'/ 1 014' },
-    { icon:'📅', label:'JOURS CONNECTÉS', value: days, sub:'Meilleur Streak' },
-    { icon:'⏱️', label:'TEMPS DE JEU', value: playTime + 'h', sub:'Total' },
-    { icon:'⭐', label:'SAISON ACTUELLE', value: 'Saison 1', sub:'En cours' },
-    { icon:'📊', label:'RANG COLLECTION', value: nfts > 0 ? 'Top 50%' : '—', sub:'Cette saison' },
-  ];
-
-  cont.innerHTML = STATS.map(s => `
-    <div style="background:rgba(0,30,60,0.4);border:1px solid rgba(0,100,180,0.2);border-radius:10px;padding:10px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <span style="font-size:16px;">${s.icon}</span>
-        <span style="font-size:8px;color:rgba(150,200,255,0.5);font-weight:800;text-transform:uppercase;letter-spacing:0.5px;">${s.label}</span>
-      </div>
-      <div style="font-size:18px;font-weight:900;color:white;">${s.value}</div>
-    </div>
-  `).join('');
-}
-
-function _renderProfileCollection() {
-  const cont = document.getElementById('profileCollection');
-  if (!cont) return;
-
-  const lastNFT = state.wonNFTs && state.wonNFTs.length > 0 ? state.wonNFTs[state.wonNFTs.length-1] : null;
-  const activeDog = ALL_DOGS.find(d => d.active) || ALL_DOGS[0];
-
-  const COLLECTION = [
-    { label:'NFT ÉQUIPÉ',     sub: lastNFT ? lastNFT.name : '—',       sub2: lastNFT ? lastNFT.rarity : 'Aucun NFT', icon:'🃏',  color:'#00CFFF' },
-    { label:'CHIEN FAVORI',   sub: activeDog ? activeDog.name : 'Paco', sub2: 'Niveau ' + (activeDog ? activeDog.level : 1), icon: activeDog ? activeDog.emoji : '🐶', color:'#27AE60' },
-    { label:'CADRE',          sub:'Founder Frame',  sub2:'Équipé',  icon:'🖼️',  color:'#E67E22' },
-    { label:'BACKGROUND',     sub:'Neon Room',      sub2:'Équipé',  icon:'🌌',  color:'#9B59B6' },
-    { label:'AURA',           sub:'Blue Glow',      sub2:'Équipé',  icon:'✨',  color:'#00AAFF' },
-  ];
-
-  cont.innerHTML = COLLECTION.map(c => `
-    <div style="flex-shrink:0;width:80px;text-align:center;">
-      <div style="width:70px;height:70px;margin:0 auto 4px;background:linear-gradient(135deg,rgba(0,40,80,0.6),rgba(0,20,50,0.8));border:1px solid rgba(0,140,255,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;">${c.icon}</div>
-      <div style="font-size:7px;font-weight:900;color:${c.color};letter-spacing:0.5px;">${c.label}</div>
-      <div style="font-size:8px;font-weight:900;color:white;margin-top:1px;">${c.sub}</div>
-      <div style="font-size:7px;color:rgba(150,200,255,0.5);">${c.sub2}</div>
-    </div>
-  `).join('');
-}
-
-function _updateProfileSeason() {
-  const nfts = (state.wonNFTs || []).filter(n => n.rarity && n.rarity.toLowerCase().includes('mythic')).length;
-  const el = document.getElementById('profileMythicCount');
-  if (el) el.textContent = nfts + ' obtenu' + (nfts > 1 ? 's' : '');
+// Override setLang pour update boutons + UI dynamique
+const _origSetLang = (typeof setLang !== 'undefined') ? setLang : null;
+function setLang(lang) {
+  window.PACKOO_LANG = lang;
+  localStorage.setItem('packoo_lang', lang);
+  if (typeof applyLang === 'function') applyLang();
+  updateLangButtons();
+  // Rafraîchir les textes dynamiques
+  updateUI();
+  if (typeof renderCadeaux === 'function') renderCadeaux();
 }
