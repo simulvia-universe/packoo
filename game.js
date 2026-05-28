@@ -1386,8 +1386,15 @@ function closeDogsPanel() {
 
 // ===== INIT =====
 loadState();
-if (typeof applyLang === "function") applyLang();
-setTimeout(() => { if (typeof updateLangButtons === "function") updateLangButtons(); }, 100);
+// Langue — init
+window.PACKOO_LANG = (function() {
+  const saved = localStorage.getItem('packoo_lang');
+  if (saved === 'fr' || saved === 'en') return saved;
+  const nav = (navigator.language || 'fr').toLowerCase();
+  return nav.startsWith('fr') ? 'fr' : 'en';
+})();
+applyLang();
+setTimeout(updateLangButtons, 100);
 updateUI();
 // Popup offline earnings
 if (state._offlineEarned > 0) {
@@ -2920,4 +2927,69 @@ function _updateProfileSeason() {
   const nfts = (state.wonNFTs || []).filter(n => n.rarity && n.rarity.toLowerCase().includes('mythic')).length;
   const el = document.getElementById('profileMythicCount');
   if (el) el.textContent = nfts + ' obtenu' + (nfts > 1 ? 's' : '');
+}
+
+// ============================================================
+// SYSTÈME BILINGUE FR / EN
+// ============================================================
+
+const LANG = {
+  fr: {
+    nav_accueil: 'Accueil', nav_chiens: 'Chiens', nav_collection: 'Collection', nav_classement: 'Classement',
+    sb_quetes: 'Quêtes', sb_pass: 'Pass', sb_shop: 'Shop', sb_cosmetiques: 'Cosmétiques',
+    sb_evenements: 'Événements', sb_cadeaux: 'Cadeaux', sb_nouveau: 'NOUVEAU',
+    tapTitle: 'TAP PACKOO !', tapSubtitle: 'Tape pour gagner des Bones 🦴',
+    cadeau_chasse: 'Chasse<br>aux Os', cadeau_coffres: 'Coffres',
+    cadeau_recompenses: 'Récom-<br>penses', cadeau_inviter: 'Inviter', cadeau_inventaire: 'Inventaire',
+    dogs_unlock: 'Débloquer', dogs_upgrade: 'Améliorer', dogs_maxed: 'MAX',
+    settings_lang: 'Langue / Language',
+  },
+  en: {
+    nav_accueil: 'Home', nav_chiens: 'Dogs', nav_collection: 'Collection', nav_classement: 'Ranking',
+    sb_quetes: 'Quests', sb_pass: 'Pass', sb_shop: 'Shop', sb_cosmetiques: 'Cosmetics',
+    sb_evenements: 'Events', sb_cadeaux: 'Gifts', sb_nouveau: 'NEW',
+    tapTitle: 'TAP PACKOO!', tapSubtitle: 'Tap to earn Bones 🦴',
+    cadeau_chasse: 'Bone<br>Hunt', cadeau_coffres: 'Chests',
+    cadeau_recompenses: 'Rewards', cadeau_inviter: 'Invite', cadeau_inventaire: 'Inventory',
+    dogs_unlock: 'Unlock', dogs_upgrade: 'Upgrade', dogs_maxed: 'MAX',
+    settings_lang: 'Langue / Language',
+  }
+};
+
+function t(key) {
+  const lang = window.PACKOO_LANG || 'fr';
+  return (LANG[lang] && LANG[lang][key]) || (LANG['fr'] && LANG['fr'][key]) || key;
+}
+
+function applyLang() {
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const val = t(el.getAttribute('data-t'));
+    if (el.tagName === 'INPUT') el.placeholder = val;
+    else el.textContent = val;
+  });
+  document.querySelectorAll('[data-t-html]').forEach(el => {
+    el.innerHTML = t(el.getAttribute('data-t-html'));
+  });
+}
+
+function setLang(lang) {
+  window.PACKOO_LANG = lang;
+  localStorage.setItem('packoo_lang', lang);
+  applyLang();
+  updateLangButtons();
+  updateUI();
+}
+
+function updateLangButtons() {
+  const lang = window.PACKOO_LANG || 'fr';
+  const fr = document.getElementById('langBtnFr');
+  const en = document.getElementById('langBtnEn');
+  if (!fr || !en) return;
+  if (lang === 'fr') {
+    fr.style.background = 'rgba(245,166,35,0.3)'; fr.style.borderColor = 'rgba(245,166,35,0.7)'; fr.style.color = 'var(--gold)';
+    en.style.background = 'rgba(255,255,255,0.05)'; en.style.borderColor = 'rgba(255,255,255,0.1)'; en.style.color = '#888';
+  } else {
+    en.style.background = 'rgba(245,166,35,0.3)'; en.style.borderColor = 'rgba(245,166,35,0.7)'; en.style.color = 'var(--gold)';
+    fr.style.background = 'rgba(255,255,255,0.05)'; fr.style.borderColor = 'rgba(255,255,255,0.1)'; fr.style.color = '#888';
+  }
 }
