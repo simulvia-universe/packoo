@@ -159,13 +159,13 @@
     <!-- ===== COLLECTION ===== -->
     <div class="screen" id="screen-collection">
       <div class="scroll-content">
-        <div class="page-title">🃏 COLLECTION NFT</div>
+        <div class="page-title" data-t="collection_title">🃏 COLLECTION NFT</div>
 
         <!-- Compteur NFT -->
         <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.22);border-radius:14px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
           <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🏆</div>
           <div style="flex:1;">
-            <div style="font-size:10px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">NFT collectés</div>
+            <div style="font-size:10px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;" data-t="collection_count">NFT collectés</div>
             <div style="font-size:22px;font-weight:900;margin-top:2px;" id="nftCount">0 NFT</div>
           </div>
         </div>
@@ -183,15 +183,15 @@
           <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#5C3A1E,#3A2010);border:2px solid rgba(180,120,40,0.5);border-radius:16px;padding:10px 20px;">
             <span style="font-size:28px">📋</span>
             <div>
-              <div style="font-family:'Fredoka One',cursive;font-size:28px;color:#F5DEB3;">QUÊTES</div>
+              <div style="font-family:'Fredoka One',cursive;font-size:28px;color:#F5DEB3;" data-t="quests_title">QUÊTES</div>
               <div id="quetesSubtitle" style="font-size:11px;font-weight:900;color:var(--gold);letter-spacing:2px;">QUOTIDIENNES</div>
             </div>
           </div>
         </div>
         <div class="filter-tabs">
-          <div class="tab active" id="qtab-daily"   onclick="switchQueteTab('daily')" style="position:relative;">Quotidiennes<span id="badge-daily" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
-          <div class="tab"        id="qtab-weekly"  onclick="switchQueteTab('weekly')" style="position:relative;">Hebdomadaires<span id="badge-weekly" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
-          <div class="tab"        id="qtab-defis"   onclick="switchQueteTab('defis')" style="position:relative;">Défis<span id="badge-defis" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
+          <div class="tab active" id="qtab-daily"   onclick="switchQueteTab('daily')" style="position:relative;"><span data-t="quests_daily">Quotidiennes</span><span id="badge-daily" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
+          <div class="tab"        id="qtab-weekly"  onclick="switchQueteTab('weekly')" style="position:relative;"><span data-t="quests_weekly">Hebdomadaires</span><span id="badge-weekly" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
+          <div class="tab"        id="qtab-defis"   onclick="switchQueteTab('defis')" style="position:relative;"><span data-t="quests_challenges">Défis</span><span id="badge-defis" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span></div>
         </div>
         <div id="quetes-daily"><div id="quetes-daily-content"></div></div>
         <div id="quetes-weekly" style="display:none;"><div id="quetes-weekly-content"></div></div>
@@ -205,11 +205,11 @@
         <!-- HERO BANNER -->
         <div style="background:linear-gradient(160deg,#1a0a00,#2d1500,#1a0a00);border-bottom:2px solid rgba(245,166,35,0.4);padding:20px 16px 16px;text-align:center;position:relative;overflow:hidden;">
           <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 70% 50%,rgba(245,166,35,0.08),transparent 70%);pointer-events:none;"></div>
-          <div style="font-family:'Fredoka One',cursive;font-size:34px;color:var(--gold);text-shadow:0 2px 12px rgba(245,166,35,0.4);line-height:1;margin-bottom:2px;">PASS PACKOO</div>
-          <div style="font-size:13px;font-weight:900;color:#F5DEB3;letter-spacing:2px;margin-bottom:10px;">SAISON 1</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:34px;color:var(--gold);text-shadow:0 2px 12px rgba(245,166,35,0.4);line-height:1;margin-bottom:2px;" data-t="pass_title">PASS PACKOO</div>
+          <div style="font-size:13px;font-weight:900;color:#F5DEB3;letter-spacing:2px;margin-bottom:10px;" data-t="pass_season">SAISON 1</div>
           <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,0.4);border:1px solid rgba(245,166,35,0.3);border-radius:20px;padding:5px 14px;">
             <span style="font-size:12px;">⏱️</span>
-            <span style="font-size:11px;color:var(--text-muted);">FIN DANS :</span>
+            <span style="font-size:11px;color:var(--text-muted);" data-t="pass_ends">FIN DANS :</span>
             <span id="passTimerDisplay" style="font-size:12px;font-weight:900;color:var(--gold);">37J 12H</span>
           </div>
         </div>
@@ -235,8 +235,8 @@
 
         <!-- TABS RÉCOMPENSES / QUÊTES -->
         <div style="display:flex;gap:0;margin-bottom:14px;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;">
-          <div onclick="switchPassTab('rewards')" id="passTab-rewards" style="flex:1;text-align:center;padding:10px;font-size:12px;font-weight:900;color:var(--gold);background:rgba(245,166,35,0.15);cursor:pointer;">🎁 RÉCOMPENSES</div>
-          <div onclick="switchPassTab('quetes')" id="passTab-quetes" style="flex:1;text-align:center;padding:10px;font-size:12px;font-weight:900;color:var(--text-muted);cursor:pointer;position:relative;">🔄 QUÊTES<span id="passQuestTabBadge" style="display:none;position:absolute;top:4px;right:8px;background:#E74C3C;color:white;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:900;align-items:center;justify-content:center;"></span></div>
+          <div onclick="switchPassTab('rewards')" id="passTab-rewards" style="flex:1;text-align:center;padding:10px;font-size:12px;font-weight:900;color:var(--gold);background:rgba(245,166,35,0.15);cursor:pointer;" data-t="pass_tab_rewards">🎁 RÉCOMPENSES</div>
+          <div onclick="switchPassTab('quetes')" id="passTab-quetes" style="flex:1;text-align:center;padding:10px;font-size:12px;font-weight:900;color:var(--text-muted);cursor:pointer;position:relative;"><span data-t="pass_tab_quests">🔄 QUÊTES</span><span id="passQuestTabBadge" style="display:none;position:absolute;top:4px;right:8px;background:#E74C3C;color:white;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:900;align-items:center;justify-content:center;"></span></div>
         </div>
 
         <!-- SECTION RÉCOMPENSES -->
@@ -246,14 +246,14 @@
           <div style="margin-bottom:10px;">
             <!-- Bouton activation centré en haut -->
             <div style="text-align:center;margin-bottom:10px;">
-              <button id="passActivateBtn" onclick="activatePass()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:8px 20px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">ACTIVER LE PASS — 4,99 €</button>
+              <button id="passActivateBtn" onclick="activatePass()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:8px 20px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;" data-t="pass_activate">ACTIVER LE PASS — 4,99 €</button>
             </div>
             <!-- En-têtes colonnes alignés sur le tableau -->
             <div style="display:flex;gap:8px;align-items:center;">
               <!-- Colonne GRATUIT -->
               <div style="flex:1;text-align:center;">
                 <div style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.06);border-radius:8px;padding:4px 10px;">
-                  <span style="font-size:13px;">🐾</span><span style="font-size:11px;font-weight:900;color:var(--text-muted);">GRATUIT</span>
+                  <span style="font-size:13px;">🐾</span><span style="font-size:11px;font-weight:900;color:var(--text-muted);" data-t="pass_free">GRATUIT</span>
                 </div>
               </div>
               <!-- Spacer numéro palier -->
@@ -261,7 +261,7 @@
               <!-- Colonne PREMIUM -->
               <div style="flex:1;text-align:center;">
                 <div style="display:inline-flex;align-items:center;gap:4px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.3);border-radius:8px;padding:4px 10px;">
-                  <span style="font-size:13px;">👑</span><span style="font-size:11px;font-weight:900;color:var(--gold);">PREMIUM</span>
+                  <span style="font-size:13px;">👑</span><span style="font-size:11px;font-weight:900;color:var(--gold);" data-t="pass_premium">PREMIUM</span>
                 </div>
               </div>
             </div>
@@ -274,8 +274,8 @@
           <div style="background:linear-gradient(135deg,rgba(40,20,0,0.9),rgba(20,10,0,0.95));border:1px solid rgba(245,166,35,0.35);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;margin-top:4px;">
             <div style="font-size:40px;">🐕</div>
             <div style="flex:1;">
-              <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:6px;">PACKOO PASS PREMIUM</div>
-              <div style="font-size:10px;color:var(--text-muted);line-height:1.6;">• Récompenses exclusives<br>• Progression plus rapide<br>• Quêtes spéciales<br>• Soutiens Packoo</div>
+              <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:6px;" data-t="pass_premium_title">PACKOO PASS PREMIUM</div>
+              <div style="font-size:10px;color:var(--text-muted);line-height:1.6;" data-t-html="pass_premium_benefits">• Récompenses exclusives<br>• Progression plus rapide<br>• Quêtes spéciales<br>• Soutiens Packoo</div>
             </div>
             <div style="font-size:32px;">🪙</div>
           </div>
@@ -286,7 +286,7 @@
         <div id="passSection-quetes" style="display:none;">
           <div style="text-align:center;padding:30px 0;color:var(--text-muted);font-size:13px;">
             <div style="font-size:32px;margin-bottom:8px;">🔄</div>
-            Quêtes Pass — Bientôt disponible
+            <span data-t="pass_quests_soon">Quêtes Pass — Bientôt disponible</span>
           </div>
         </div>
 
@@ -297,17 +297,17 @@
     <!-- ===== SHOP ===== -->
     <div class="screen" id="screen-shop">
       <div class="scroll-content">
-        <div class="page-title">🏪 SHOP</div>
+        <div class="page-title" data-t="shop_title">🏪 SHOP</div>
 
         <!-- Mes ressources -->
         <div style="display:flex;gap:8px;margin-bottom:16px;">
           <div style="flex:1;background:var(--bg-card);border:1px solid rgba(245,166,35,0.28);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:8px;">
             <span style="font-size:24px">🦴</span>
-            <div><div style="font-size:10px;color:var(--text-muted);font-weight:700;">MES BONES</div><div style="font-size:18px;font-weight:900;color:var(--gold-light);" id="shopBones">0</div></div>
+            <div><div style="font-size:10px;color:var(--text-muted);font-weight:700;" data-t="shop_bones">MES BONES</div><div style="font-size:18px;font-weight:900;color:var(--gold-light);" id="shopBones">0</div></div>
           </div>
           <div style="flex:1;background:var(--bg-card);border:1px solid rgba(74,158,232,0.35);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:8px;">
             <span style="font-size:24px">💎</span>
-            <div><div style="font-size:10px;color:var(--text-muted);font-weight:700;">MES DIAMANTS</div><div style="font-size:18px;font-weight:900;color:#7DD4FC;" id="shopDiamonds">0</div></div>
+            <div><div style="font-size:10px;color:var(--text-muted);font-weight:700;" data-t="shop_diamonds">MES DIAMANTS</div><div style="font-size:18px;font-weight:900;color:#7DD4FC;" id="shopDiamonds">0</div></div>
           </div>
         </div>
 
@@ -318,16 +318,16 @@
             <div style="flex:1;">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
                 <span style="font-size:22px;">👑</span>
-                <div style="font-size:18px;font-weight:900;color:#C39BD3;">PASS SAISON 1</div>
+                <div style="font-size:18px;font-weight:900;color:#C39BD3;" data-t="shop_pass_title">PASS SAISON 1</div>
               </div>
-              <div style="font-size:11px;color:rgba(200,150,255,0.8);margin-bottom:10px;">Récompenses exclusives toute la saison !</div>
+              <div style="font-size:11px;color:rgba(200,150,255,0.8);margin-bottom:10px;" data-t="shop_pass_sub">Récompenses exclusives toute la saison !</div>
               <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-                <div style="font-size:11px;color:rgba(255,255,255,0.8);">🐾 Chiens exclusifs</div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.8);">📦 Coffres bonus</div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.8);">⚡ Boosts premium</div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.8);">💎 Diamants et + encore !</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.8);" data-t="shop_pass_dogs">🐾 Chiens exclusifs</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.8);" data-t="shop_pass_chests">📦 Coffres bonus</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.8);" data-t="shop_pass_boosts">⚡ Boosts premium</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.8);" data-t="shop_pass_more">💎 Diamants et + encore !</div>
               </div>
-              <button onclick="navigate('pass')" style="background:linear-gradient(135deg,#7D3C98,#9B59B6);border:none;border-radius:12px;padding:10px 20px;font-size:13px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">VOIR LE PASS 👑</button>
+              <button onclick="navigate('pass')" style="background:linear-gradient(135deg,#7D3C98,#9B59B6);border:none;border-radius:12px;padding:10px 20px;font-size:13px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;" data-t="shop_pass_see">VOIR LE PASS 👑</button>
             </div>
             <div style="font-size:56px;opacity:0.9;">🛡️</div>
           </div>
@@ -336,31 +336,31 @@
         <!-- BOOSTS -->
         <div id="shop-section-boosts" style="margin-bottom:20px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">⚡</span><span style="font-size:13px;font-weight:900;color:var(--gold);">BOOSTS</span></div>
-            <div style="font-size:10px;color:var(--text-muted);">Tous les boosts sont cumulables</div>
+            <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">⚡</span><span style="font-size:13px;font-weight:900;color:var(--gold);" data-t="shop_boosts">BOOSTS</span></div>
+            <div style="font-size:10px;color:var(--text-muted);" data-t="shop_boosts_stack">Tous les boosts sont cumulables</div>
           </div>
-          <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;">Accélérez votre progression !</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;" data-t="shop_boosts_sub">Accélérez votre progression !</div>
           <div style="display:flex;gap:8px;">
 
             <div onclick="buyBoost('production')" style="flex:1;background:linear-gradient(135deg,rgba(60,35,0,0.9),rgba(40,20,0,0.95));border:1px solid rgba(245,166,35,0.35);border-radius:14px;padding:12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;">
-              <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:4px;">PRODUCTION x2</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">Double votre production de Bones</div>
+              <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:4px;" data-t="shop_boost_prod_title">PRODUCTION x2</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;" data-t="shop_boost_prod">Double votre production de Bones</div>
               <div style="font-size:32px;margin-bottom:8px;">🦴</div>
               <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">⏱️ 2h</div>
               <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;padding:8px;font-size:13px;font-weight:900;color:#1A0F00;margin-top:auto;">💎 150</div>
             </div>
 
             <div onclick="buyBoost('chance')" style="flex:1;background:linear-gradient(135deg,rgba(0,40,10,0.9),rgba(0,25,5,0.95));border:1px solid rgba(39,174,96,0.4);border-radius:14px;padding:12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;">
-              <div style="font-size:13px;font-weight:900;color:#2ECC71;margin-bottom:4px;">CHANCE NFT x3</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">Triple vos chances de drop NFT</div>
+              <div style="font-size:13px;font-weight:900;color:#2ECC71;margin-bottom:4px;" data-t="shop_boost_nft_title">CHANCE NFT x3</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;" data-t="shop_boost_nft">Triple vos chances de drop NFT</div>
               <div style="font-size:32px;margin-bottom:8px;">🍀</div>
               <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">⏱️ 1h</div>
               <div style="background:linear-gradient(135deg,#1E8449,#27AE60);border-radius:10px;padding:8px;font-size:13px;font-weight:900;color:white;margin-top:auto;">💎 200</div>
             </div>
 
             <div onclick="buyBones()" style="flex:1;background:linear-gradient(135deg,rgba(0,20,50,0.9),rgba(0,10,30,0.95));border:1px solid rgba(52,152,219,0.4);border-radius:14px;padding:12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;">
-              <div style="font-size:13px;font-weight:900;color:#3498DB;margin-bottom:4px;">PACK BONES</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">Obtenez 500,000 Bones immédiatement</div>
+              <div style="font-size:13px;font-weight:900;color:#3498DB;margin-bottom:4px;" data-t="shop_boost_bones_title">PACK BONES</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;" data-t="shop_boost_bones">Obtenez 500,000 Bones immédiatement</div>
               <div style="font-size:32px;margin-bottom:8px;">💰</div>
               <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;"> </div>
               <div style="background:linear-gradient(135deg,#2A7FB8,#3498DB);border-radius:10px;padding:8px;font-size:13px;font-weight:900;color:white;margin-top:auto;">💎 100</div>
@@ -372,9 +372,9 @@
         <!-- COFFRES -->
         <div id="shop-section-coffres" style="margin-bottom:20px;">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-            <span style="font-size:16px;">📦</span><span style="font-size:13px;font-weight:900;color:var(--gold);">COFFRES</span>
+            <span style="font-size:16px;">📦</span><span style="font-size:13px;font-weight:900;color:var(--gold);" data-t="shop_coffres">COFFRES</span>
           </div>
-          <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;">Ouvre un coffre pour gagner des récompenses !</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;" data-t="shop_coffres_sub">Ouvre un coffre pour gagner des récompenses !</div>
           <div style="display:flex;gap:8px;">
 
             <div onclick="buyChest('COMMON')" style="flex:1;background:var(--bg-card);border:1px solid rgba(157,157,157,0.4);border-radius:14px;padding:12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;">
@@ -406,10 +406,10 @@
         <!-- PACKS -->
         <div id="shop-section-packs" style="margin-bottom:20px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-            <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">🎒</span><span style="font-size:13px;font-weight:900;color:var(--gold);">PACKS</span></div>
-            <div style="font-size:10px;color:var(--gold);">⭐ Meilleures offres</div>
+            <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">🎒</span><span style="font-size:13px;font-weight:900;color:var(--gold);" data-t="shop_packs">PACKS</span></div>
+            <div style="font-size:10px;color:var(--gold);" data-t="shop_packs_best">⭐ Meilleures offres</div>
           </div>
-          <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;">Des offres avantageuses pour progresser plus vite !</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;" data-t="shop_packs_sub">Des offres avantageuses pour progresser plus vite !</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
 
             <div onclick="buyPack('starter')" style="background:var(--bg-card);border:2px solid rgba(245,166,35,0.5);border-radius:14px;padding:12px;cursor:pointer;position:relative;display:flex;flex-direction:column;">
@@ -448,9 +448,9 @@
         <!-- COSMÉTIQUES -->
         <div id="shop-section-cosmetiques" style="margin-bottom:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-            <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">✨</span><span style="font-size:13px;font-weight:900;color:var(--gold);">COSMÉTIQUES</span></div>
+            <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">✨</span><span style="font-size:13px;font-weight:900;color:var(--gold);" data-t="shop_cosmetics">COSMÉTIQUES</span></div>
           </div>
-          <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;">Personnalisez votre expérience !</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;" data-t="shop_cosmetics_sub">Personnalisez votre expérience !</div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
 
             <div style="background:var(--bg-card);border:1px solid rgba(155,89,182,0.3);border-radius:14px;padding:10px;text-align:center;cursor:pointer;display:flex;flex-direction:column;">
@@ -555,8 +555,8 @@
           <div style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(0,30,60,0.95),rgba(0,15,40,0.98));border:2px solid rgba(0,180,255,0.4);border-radius:18px;padding:10px 20px;">
             <span style="font-size:26px;">📅</span>
             <div>
-              <div style="font-family:'Fredoka One',cursive;font-size:26px;color:#00CFFF;text-shadow:0 0 20px rgba(0,180,255,0.5);">ÉVÉNEMENTS</div>
-              <div style="font-size:10px;color:rgba(0,200,255,0.7);font-weight:700;letter-spacing:1px;">Participez et gagnez des récompenses exclusives !</div>
+              <div style="font-family:'Fredoka One',cursive;font-size:26px;color:#00CFFF;text-shadow:0 0 20px rgba(0,180,255,0.5);" data-t="events_title">ÉVÉNEMENTS</div>
+              <div style="font-size:10px;color:rgba(0,200,255,0.7);font-weight:700;letter-spacing:1px;" data-t="events_subtitle">Participez et gagnez des récompenses exclusives !</div>
             </div>
             <div style="font-size:22px;opacity:0.7;">🐾</div>
           </div>
@@ -572,15 +572,15 @@
 
           <div style="padding:12px 14px 0;">
             <div style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,rgba(0,100,200,0.8),rgba(0,150,255,0.8));color:white;font-size:9px;font-weight:900;padding:4px 14px;border-radius:20px;letter-spacing:1.5px;border:1px solid rgba(0,200,255,0.4);">
-              ● ÉVÉNEMENT EN COURS
+              <span data-t="events_current">● ÉVÉNEMENT EN COURS</span>
             </div>
           </div>
 
           <div style="display:flex;align-items:flex-start;padding:10px 14px 0;gap:10px;">
             <div style="flex:1;">
               <div style="font-family:'Fredoka One',cursive;font-size:32px;color:white;line-height:1.1;text-shadow:0 0 30px rgba(0,160,255,0.6);">FOUNDER<br>EVENT</div>
-              <div style="font-size:10px;color:#00CFFF;font-weight:800;letter-spacing:1px;margin-top:4px;">✦ THE BEGINNING OF OUR PACK ✦</div>
-              <div style="font-size:11px;color:rgba(200,235,255,0.8);margin-top:8px;line-height:1.6;">Rejoignez les premiers Packoos<br>et gagnez des récompenses exclusives !</div>
+              <div style="font-size:10px;color:#00CFFF;font-weight:800;letter-spacing:1px;margin-top:4px;" data-t="events_tagline">✦ THE BEGINNING OF OUR PACK ✦</div>
+              <div style="font-size:11px;color:rgba(200,235,255,0.8);margin-top:8px;line-height:1.6;" data-t-html="events_join">Rejoignez les premiers Packoos<br>et gagnez des récompenses exclusives !</div>
               <div style="display:flex;align-items:center;gap:6px;margin-top:10px;background:rgba(0,100,200,0.2);border:1px solid rgba(0,160,255,0.3);border-radius:10px;padding:6px 10px;display:inline-flex;">
                 <span style="font-size:13px;">⏱️</span>
                 <span style="font-size:13px;font-weight:900;color:#00CFFF;">Fin dans : <span id="eventCountdown">6j 14h 32m</span></span>
@@ -597,7 +597,7 @@
 
           <!-- Récompenses -->
           <div style="padding:0 14px;">
-            <div style="font-size:10px;font-weight:900;color:rgba(0,180,255,0.6);letter-spacing:1.5px;margin:12px 0 8px;">RÉCOMPENSES EXCLUSIVES</div>
+            <div style="font-size:10px;font-weight:900;color:rgba(0,180,255,0.6);letter-spacing:1.5px;margin:12px 0 8px;" data-t="events_exclusive">RÉCOMPENSES EXCLUSIVES</div>
             <div style="display:flex;gap:8px;margin-bottom:14px;">
               <div style="flex:1;background:rgba(0,80,160,0.3);border:1px solid rgba(0,140,255,0.4);border-radius:12px;padding:10px 6px;text-align:center;">
                 <div style="font-size:26px;">🛡️</div>
@@ -613,16 +613,16 @@
               </div>
             </div>
           </div>
-          <button onclick="navigate('founder-event')" style="width:100%;background:linear-gradient(90deg,#004A90,#0077CC,#00A0FF);border:none;padding:14px;font-size:15px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;letter-spacing:0.5px;">Voir l'événement →</button>
+          <button onclick="navigate('founder-event')" style="width:100%;background:linear-gradient(90deg,#004A90,#0077CC,#00A0FF);border:none;padding:14px;font-size:15px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;letter-spacing:0.5px;" data-t="events_see">Voir l'événement →</button>
         </div>
 
         <!-- PROGRESSION FOUNDER -->
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
             <span style="font-size:18px;">🦴</span>
-            <div style="font-size:12px;font-weight:900;color:#00CFFF;">PROGRESSION FOUNDER</div>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="events_progression">PROGRESSION FOUNDER</div>
           </div>
-          <div style="font-size:10px;color:rgba(150,200,255,0.6);margin-bottom:14px;">Produisez des Bones et débloquez des récompenses collector !</div>
+          <div style="font-size:10px;color:rgba(150,200,255,0.6);margin-bottom:14px;" data-t="events_prog_sub">Produisez des Bones et débloquez des récompenses collector !</div>
 
           <!-- Palier 1 — complété -->
           <div id="fp1" style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,160,80,0.08);border:1px solid rgba(0,200,100,0.3);border-radius:12px;margin-bottom:8px;">
@@ -685,18 +685,18 @@
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.35);border-radius:16px;overflow:hidden;margin-bottom:12px;">
           <div style="display:flex;">
             <div style="flex:1;padding:14px;">
-              <div style="font-size:11px;font-weight:900;color:#00CFFF;letter-spacing:0.5px;margin-bottom:8px;">VOS FOUNDER TICKETS</div>
+              <div style="font-size:11px;font-weight:900;color:#00CFFF;letter-spacing:0.5px;margin-bottom:8px;" data-t="events_your_tickets">VOS FOUNDER TICKETS</div>
               <div style="display:flex;align-items:center;gap:10px;">
                 <span style="font-size:34px;filter:drop-shadow(0 0 8px rgba(0,180,255,0.5));">🎟️</span>
                 <div>
                   <div style="font-size:30px;font-weight:900;color:white;" id="founderTicketsDisplay">0</div>
-                  <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;line-height:1.4;">Ouvrez des coffres Founder<br>et gagnez des récompenses rares !</div>
+                  <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;line-height:1.4;" data-t-html="events_tickets_sub">Ouvrez des coffres Founder<br>et gagnez des récompenses rares !</div>
                 </div>
               </div>
             </div>
             <button onclick="openFounderCrate()" style="background:linear-gradient(135deg,#001830,#003060);border:none;border-left:2px solid rgba(0,140,255,0.4);padding:14px 12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:118px;">
               <div style="font-size:38px;filter:drop-shadow(0 0 10px rgba(0,160,255,0.6));">📦</div>
-              <div style="font-size:11px;font-weight:900;color:white;line-height:1.3;">Ouvrir un<br>coffre Founder</div>
+              <div style="font-size:11px;font-weight:900;color:white;line-height:1.3;" data-t-html="events_open_crate">Ouvrir un<br>coffre Founder</div>
               <div style="display:flex;align-items:center;gap:4px;margin-top:4px;background:rgba(0,100,200,0.3);border:1px solid rgba(0,160,255,0.3);border-radius:8px;padding:3px 8px;">
                 <span style="font-size:12px;">🎟️</span>
                 <span style="font-size:13px;font-weight:900;color:#00CFFF;">1</span>
@@ -709,7 +709,7 @@
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.25);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
             <span style="font-size:16px;">📅</span>
-            <div style="font-size:12px;font-weight:900;color:#00CFFF;">CONNEXION FOUNDER</div>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="events_login">CONNEXION FOUNDER</div>
           </div>
           <div style="display:flex;gap:6px;">
             <div style="flex:1;text-align:center;">
@@ -768,7 +768,7 @@
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.25);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
             <span style="font-size:16px;">⚡</span>
-            <div style="font-size:12px;font-weight:900;color:#00CFFF;">MISSIONS FOUNDER</div>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="events_missions">MISSIONS FOUNDER</div>
           </div>
           <div style="display:flex;flex-direction:column;gap:8px;">
             <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(0,160,80,0.08);border:1px solid rgba(0,180,80,0.25);border-radius:10px;">
@@ -822,19 +822,19 @@
           <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#3A1A00,#5C2E00);border:2px solid rgba(245,166,35,0.5);border-radius:16px;padding:10px 20px;">
             <span style="font-size:28px">🎁</span>
             <div>
-              <div style="font-family:'Fredoka One',cursive;font-size:26px;color:var(--gold);">CADEAUX</div>
-              <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:2px;">TES RÉCOMPENSES T'ATTENDENT</div>
+              <div style="font-family:'Fredoka One',cursive;font-size:26px;color:var(--gold);" data-t="cadeaux_title">CADEAUX</div>
+              <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:2px;" data-t="cadeaux_subtitle">TES RÉCOMPENSES T'ATTENDENT</div>
             </div>
           </div>
         </div>
 
         <!-- TABS -->
         <div class="filter-tabs" style="margin-bottom:14px;">
-          <div class="tab active" id="ctab-chasse" onclick="switchCadeauTab('chasse')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-chasse" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">🦴</span><span style="font-size:9px;text-align:center;line-height:1.2;">Chasse<br>aux Os</span></div>
-          <div class="tab" id="ctab-coffres" onclick="switchCadeauTab('coffres')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-coffres" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">📦</span><span style="font-size:9px;text-align:center;line-height:1.2;">Coffres</span></div>
-          <div class="tab" id="ctab-rewards" onclick="switchCadeauTab('rewards')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-rewards" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">🎁</span><span style="font-size:9px;text-align:center;line-height:1.2;">Récom-<br>penses</span></div>
-          <div class="tab" id="ctab-inviter" onclick="switchCadeauTab('inviter')" style="flex-direction:column;gap:2px;padding:6px 2px;"><span style="font-size:16px;">👥</span><span style="font-size:9px;text-align:center;line-height:1.2;">Inviter</span></div>
-          <div class="tab" id="ctab-inventaire" onclick="switchCadeauTab('inventaire')" style="flex-direction:column;gap:2px;padding:6px 2px;"><span style="font-size:16px;">🎒</span><span style="font-size:9px;text-align:center;line-height:1.2;">Inventaire</span></div>
+          <div class="tab active" id="ctab-chasse" onclick="switchCadeauTab('chasse')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-chasse" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">🦴</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t-html="cadeau_chasse">Chasse<br>aux Os</span></div>
+          <div class="tab" id="ctab-coffres" onclick="switchCadeauTab('coffres')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-coffres" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">📦</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t="cadeau_coffres">Coffres</span></div>
+          <div class="tab" id="ctab-rewards" onclick="switchCadeauTab('rewards')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-rewards" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">🎁</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t-html="cadeau_recompenses">Récom-<br>penses</span></div>
+          <div class="tab" id="ctab-inviter" onclick="switchCadeauTab('inviter')" style="flex-direction:column;gap:2px;padding:6px 2px;"><span style="font-size:16px;">👥</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t="cadeau_inviter">Inviter</span></div>
+          <div class="tab" id="ctab-inventaire" onclick="switchCadeauTab('inventaire')" style="flex-direction:column;gap:2px;padding:6px 2px;"><span style="font-size:16px;">🎒</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t="cadeau_inventaire">Inventaire</span></div>
         </div>
 
         <!-- ===== TAB : CHASSE AUX OS ===== -->
@@ -1002,7 +1002,7 @@
                 <div style="font-size:44px;">🎟️</div>
               </div>
               <div style="flex:1;">
-                <div style="font-size:13px;font-weight:900;color:#00CFFF;margin-bottom:2px;">RÉCOMPENSES ÉVÉNEMENT</div>
+                <div style="font-size:13px;font-weight:900;color:#00CFFF;margin-bottom:2px;" data-t="cadeaux_event_rewards">RÉCOMPENSES ÉVÉNEMENT</div>
                 <div style="font-size:10px;color:var(--text-muted);">Participe aux événements pour gagner des tickets !</div>
               </div>
               <button onclick="navigate('evenements')" style="background:linear-gradient(135deg,#004A90,#0077CC);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">VOIR</button>
@@ -1014,7 +1014,7 @@
             <div style="display:flex;align-items:center;gap:12px;">
               <div style="font-size:44px;">🐾</div>
               <div style="flex:1;">
-                <div style="font-size:13px;font-weight:900;color:#2ECC71;margin-bottom:2px;">CADEAU ASSOCIATION</div>
+                <div style="font-size:13px;font-weight:900;color:#2ECC71;margin-bottom:2px;" data-t="cadeaux_assoc">CADEAU ASSOCIATION</div>
                 <div style="font-size:10px;color:var(--text-muted);">Événement associatif — Bientôt disponible</div>
               </div>
               <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;font-size:16px;">🔒</div>
@@ -1156,7 +1156,7 @@
 
         <!-- HEADER PROFIL -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-          <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#00CFFF;">MON PROFIL</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#00CFFF;" data-t="profil_title">MON PROFIL</div>
           <div style="font-size:10px;color:rgba(150,200,255,0.6);background:rgba(0,60,120,0.3);border:1px solid rgba(0,140,255,0.2);border-radius:8px;padding:4px 10px;" id="profilePlayerId">#PCK001</div>
         </div>
 
@@ -1186,7 +1186,7 @@
               <div style="background:linear-gradient(90deg,rgba(0,80,160,0.4),rgba(0,140,255,0.2));border:1px solid rgba(0,160,255,0.4);border-radius:10px;padding:6px 10px;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
                 <span style="font-size:14px;">🐾</span>
                 <div>
-                  <div style="font-size:8px;color:rgba(150,200,255,0.6);letter-spacing:1px;">TITRE ACTUEL</div>
+                  <div style="font-size:8px;color:rgba(150,200,255,0.6);letter-spacing:1px;" data-t="profil_current_title">TITRE ACTUEL</div>
                   <div style="font-size:13px;font-weight:900;color:#00CFFF;" id="profileTitle">FOUNDER</div>
                 </div>
               </div>
@@ -1194,11 +1194,11 @@
               <!-- Stats rapides -->
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
                 <div style="background:rgba(0,40,80,0.4);border-radius:8px;padding:6px 8px;">
-                  <div style="font-size:8px;color:rgba(150,200,255,0.5);">MEMBRE DEPUIS</div>
+                  <div style="font-size:8px;color:rgba(150,200,255,0.5);" data-t="profil_member_since">MEMBRE DEPUIS</div>
                   <div style="font-size:10px;font-weight:900;color:#00CFFF;" id="profileSince">Saison 1</div>
                 </div>
                 <div style="background:rgba(0,40,80,0.4);border-radius:8px;padding:6px 8px;">
-                  <div style="font-size:8px;color:rgba(150,200,255,0.5);">NFT POSSÉDÉS</div>
+                  <div style="font-size:8px;color:rgba(150,200,255,0.5);" data-t="profil_nft_owned">NFT POSSÉDÉS</div>
                   <div style="font-size:10px;font-weight:900;color:#00CFFF;" id="profileNFTCount">0 / 1014</div>
                 </div>
               </div>
@@ -1208,7 +1208,7 @@
           <!-- Barre XP -->
           <div style="padding:0 14px 14px;">
             <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-              <span style="font-size:9px;color:rgba(150,200,255,0.6);">XP JOUEUR</span>
+              <span style="font-size:9px;color:rgba(150,200,255,0.6);" data-t="profil_xp">XP JOUEUR</span>
               <span style="font-size:9px;font-weight:900;color:#00CFFF;" id="profileXPLabel">0 / 1000 XP</span>
             </div>
             <div style="height:6px;background:rgba(0,60,120,0.4);border-radius:3px;overflow:hidden;">
@@ -1220,7 +1220,7 @@
         <!-- TITRES -->
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <div style="font-size:12px;font-weight:900;color:#00CFFF;">TITRES</div>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="profil_titles">TITRES</div>
             <div style="font-size:10px;color:rgba(150,200,255,0.5);">VOIR TOUT (8) ›</div>
           </div>
           <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;" id="profileTitres">
@@ -1231,7 +1231,7 @@
         <!-- BADGES -->
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <div style="font-size:12px;font-weight:900;color:#00CFFF;">BADGES</div>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="profil_badges">BADGES</div>
             <div style="font-size:10px;color:rgba(150,200,255,0.5);" id="profileBadgesCount">VOIR TOUT ›</div>
           </div>
           <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;" id="profileBadges">
@@ -1241,7 +1241,7 @@
 
         <!-- STATISTIQUES -->
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
-          <div style="font-size:12px;font-weight:900;color:#00CFFF;margin-bottom:10px;">STATISTIQUES</div>
+          <div style="font-size:12px;font-weight:900;color:#00CFFF;margin-bottom:10px;" data-t="profil_stats">STATISTIQUES</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="profileStats">
             <!-- généré par JS -->
           </div>
@@ -1250,7 +1250,7 @@
         <!-- COLLECTION FAVORITE -->
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <div style="font-size:12px;font-weight:900;color:#00CFFF;">COLLECTION FAVORITE</div>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="profil_fav_collection">COLLECTION FAVORITE</div>
             <div style="font-size:10px;color:rgba(150,200,255,0.5);cursor:pointer;" onclick="showToast('✏️ Éditer la collection — bientôt disponible !')">ÉDITER</div>
           </div>
           <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;" id="profileCollection">
@@ -1261,7 +1261,7 @@
         <!-- HISTORIQUE SAISONS -->
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <div style="font-size:12px;font-weight:900;color:#00CFFF;">HISTORIQUE DES SAISONS</div>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="profil_history">HISTORIQUE DES SAISONS</div>
             <div style="font-size:10px;color:rgba(150,200,255,0.5);">VOIR TOUT ›</div>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:rgba(0,40,80,0.3);border:1px solid rgba(0,100,200,0.25);border-radius:12px;padding:12px;">
