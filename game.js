@@ -31,7 +31,7 @@ const LANG = {
     shop_cosmetics:'COSMÉTIQUES', shop_cosmetics_sub:'Personnalisez votre expérience !',
     pass_title:'PASS PACKOO', pass_season:'SAISON 1', pass_ends:'FIN DANS :',
     pass_tab_rewards:'🎁 RÉCOMPENSES', pass_tab_quests:'🔄 QUÊTES',
-    pass_activate:'ACTIVER LE PASS — 4,99 €', pass_free:'GRATUIT', pass_premium:'PREMIUM',
+    pass_activate:'ACTIVER LE PASS — 4,99 €', pass_activated_btn:'✅ Pass activé', pass_claim:'RÉCLAMER', pass_free:'GRATUIT', pass_premium:'PREMIUM',
     pass_premium_title:'PACKOO PASS PREMIUM',
     pass_premium_benefits:'• Récompenses exclusives<br>• Progression plus rapide<br>• Quêtes spéciales<br>• Soutiens Packoo',
     pass_quests_soon:'Quêtes Pass — Bientôt disponible',
@@ -127,7 +127,7 @@ const LANG = {
     shop_cosmetics:'COSMETICS', shop_cosmetics_sub:'Customize your experience!',
     pass_title:'PACKOO PASS', pass_season:'SEASON 1', pass_ends:'ENDS IN:',
     pass_tab_rewards:'🎁 REWARDS', pass_tab_quests:'🔄 QUESTS',
-    pass_activate:'ACTIVATE PASS — €4.99', pass_free:'FREE', pass_premium:'PREMIUM',
+    pass_activate:'ACTIVATE PASS — €4.99', pass_activated_btn:'✅ Pass activated', pass_claim:'CLAIM', pass_free:'FREE', pass_premium:'PREMIUM',
     pass_premium_title:'PACKOO PASS PREMIUM',
     pass_premium_benefits:'• Exclusive rewards<br>• Faster progression<br>• Special quests<br>• Support Packoo',
     pass_quests_soon:'Pass Quests — Coming soon',
@@ -229,6 +229,8 @@ function setLang(lang) {
   if (typeof renderInviter === 'function') renderInviter();
   if (typeof renderOsChasse === 'function') renderOsChasse();
   if (typeof renderInventaire === 'function') renderInventaire();
+  if (typeof renderPassRewards === 'function') renderPassRewards();
+  if (typeof updatePass === 'function') updatePass();
 }
 
 function updateLangButtons() {
@@ -1477,6 +1479,34 @@ const PASS_REWARDS = [
   { tier:49, free:{icon:'🦴', label:'250K Bones',         type:'bones',    value:'prod_28h'},  premium:{icon:'🦴', label:'700K Bones',          type:'bones',    value:'prod_72h'} },
   { tier:50, free:{icon:'🏆', label:'Récompense Finale S1',type:'cosmetic',value:'final_free'},premium:{icon:'🌟',label:'Récompense Finale Exclusive',type:'cosmetic',value:'final_premium'} },
 ];
+
+// Traduction des labels de récompenses (Pass, coffres, etc.)
+const REWARD_LABELS = {
+  'Coffre Commun':{en:'Common Chest'}, 'Coffre Rare':{en:'Rare Chest'},
+  'Coffre Épique':{en:'Epic Chest'}, 'Coffre Mythique':{en:'Mythic Chest'},
+  'Coffre Légendaire':{en:'Legendary Chest'},
+  'Cadre Profil S1':{en:'Profile Frame S1'}, 'Aura Lumineuse':{en:'Glowing Aura'},
+  'Skin Paco Exclusif':{en:'Exclusive Paco Skin'}, 'Cosmétique Simple':{en:'Simple Cosmetic'},
+  'Cosmétique Animé':{en:'Animated Cosmetic'}, 'Badge Premium S1':{en:'Premium Badge S1'},
+  'Badge S1':{en:'Badge S1'}, 'Emote Exclusive':{en:'Exclusive Emote'},
+  'Animation Spéciale':{en:'Special Animation'}, 'Titre Exclusif S1':{en:'Exclusive Title S1'},
+  'Fond Profil Animé':{en:'Animated Profile Background'},
+  'Récompense Finale S1':{en:'Final Reward S1'}, 'Récompense Finale Exclusive':{en:'Exclusive Final Reward'},
+  'Skin Paco Exclusif':{en:'Exclusive Paco Skin'},
+  'Boost ×2 (30min)':{en:'Boost ×2 (30min)'}, 'Boost ×2 (2h)':{en:'Boost ×2 (2h)'},
+  'Boost ×2 (1h)':{en:'Boost ×2 (1h)'}, 'Boost ×2 (3h)':{en:'Boost ×2 (3h)'},
+  'Boost ×2 (4h)':{en:'Boost ×2 (4h)'},
+  'Boost NFT +25% 1h':{en:'NFT Boost +25% 1h'}, 'Boost NFT +25% 2h':{en:'NFT Boost +25% 2h'},
+};
+function tReward(label) {
+  const lang = window.PACKOO_LANG || 'fr';
+  if (lang === 'fr') return label;
+  // Diamants -> Diamonds
+  if (/Diamants?$/.test(label)) return label.replace('Diamants','Diamonds').replace('Diamant','Diamond');
+  const e = REWARD_LABELS[label];
+  return (e && e.en) ? e.en : label;
+}
+
 function renderPassRewards() {
   const el = document.getElementById('passRewardsList');
   if (!el) return;
@@ -1500,9 +1530,9 @@ function renderPassRewards() {
         <span style="font-size:10px;font-weight:900;color:${done ? 'var(--gold-light)' : 'var(--text-muted)'};">
           ${r.free.type==='bones' && typeof r.free.value==='string' && r.free.value.startsWith('prod_')
             ? getBonesLabel(parseFloat(r.free.value.replace('prod_','').replace('h','')))
-            : r.free.label}
+            : tReward(r.free.label)}
         </span>
-        ${canClaimFree ? `<button onclick="claimPassReward(${r.tier},'free')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>` : done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : ''}
+        ${canClaimFree ? `<button onclick="claimPassReward(${r.tier},'free')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">${t('pass_claim')}</button>` : done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : ''}
       </div>
       <!-- Numéro palier -->
       <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#1A0F00;font-size:10px;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${r.tier}</div>
@@ -1512,9 +1542,9 @@ function renderPassRewards() {
         <span style="font-size:10px;font-weight:900;color:${activated && done ? 'var(--gold-light)' : 'var(--text-muted)'};">
           ${r.premium.type==='bones' && typeof r.premium.value==='string' && r.premium.value.startsWith('prod_')
             ? getBonesLabel(parseFloat(r.premium.value.replace('prod_','').replace('h','')))
-            : r.premium.label}
+            : tReward(r.premium.label)}
         </span>
-        ${activated && canClaimPremium ? `<button onclick="claimPassReward(${r.tier},'premium')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">RÉCLAMER</button>` : activated && done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : '<span style="font-size:14px;opacity:0.4">🔒</span>'}
+        ${activated && canClaimPremium ? `<button onclick="claimPassReward(${r.tier},'premium')" style="margin-top:2px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:900;color:#1A0F00;cursor:pointer;">${t('pass_claim')}</button>` : activated && done ? '<span style="font-size:12px;color:#2ECC71;">✓</span>' : '<span style="font-size:14px;opacity:0.4">🔒</span>'}
       </div>
     </div>`;
   }).join('');
@@ -1581,7 +1611,7 @@ function updatePass() {
 
   const elBtn = document.getElementById('passActivateBtn');
   if (elBtn) {
-    elBtn.textContent  = state.passActivated ? '✅ Pass activé' : 'ACTIVER LE PASS — 4,99 €';
+    elBtn.textContent  = state.passActivated ? t('pass_activated_btn') : t('pass_activate');
     elBtn.style.opacity = state.passActivated ? '0.6' : '1';
     elBtn.style.cursor  = state.passActivated ? 'default' : 'pointer';
   }
