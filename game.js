@@ -477,7 +477,13 @@ function showToast(msg) {
 // ===== PRODUCTION PASSIVE =====
 setInterval(() => {
   const prod = getTotalProduction() * getStreakMult() * (window.devPassifMult || 1);
-  if (prod > 0) { state.bones += prod / 3600; updateUI(); }
+  if (prod > 0) {
+    const g = prod / 3600;
+    state.bones += g;
+    state.totalBonesEarned = (state.totalBonesEarned||0) + g;
+    if (!state.defis.earn100k.done && (state.totalBonesEarned||0) >= 100000) state.defis.earn100k.done = true;
+    updateUI();
+  }
 }, 1000);
 setInterval(saveState, 30000);
 
@@ -505,8 +511,8 @@ function tapPaco(e) {
   if (!state.defis.reach10.done && state.playerLevel >= 10) state.defis.reach10.done = true;
   const _unlockedCount = ALL_DOGS.filter(d => d.unlocked).length;
   if (!state.defis.unlock5.done && _unlockedCount >= 5) state.defis.unlock5.done = true;
+  state.totalBonesEarned = (state.totalBonesEarned||0) + gain;
   if (!state.defis.earn100k.done && (state.totalBonesEarned||0) >= 100000) state.defis.earn100k.done = true;
-  if (!state.defis.earn100k.done) state.totalBonesEarned = (state.totalBonesEarned||0) + gain;
 
   // Niveau joueur
   const xpMax = state.playerLevel * 100;
@@ -2591,6 +2597,8 @@ function _updateDailyStreak() {
   }
   state.dailyStreakDate    = today;
   state.dailyStreakClaimed = false;
+  // Compteur total de jours connectés (stat profil)
+  state.totalDaysConnected = (state.totalDaysConnected || 0) + 1;
   // XP Pass pour connexion hebdo
   _resetPassQuestWeekly();
   const qw = state.passQuestWeekly;
