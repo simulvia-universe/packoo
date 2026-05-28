@@ -1386,15 +1386,6 @@ function closeDogsPanel() {
 
 // ===== INIT =====
 loadState();
-// Langue — init
-window.PACKOO_LANG = (function() {
-  const saved = localStorage.getItem('packoo_lang');
-  if (saved === 'fr' || saved === 'en') return saved;
-  const nav = (navigator.language || 'fr').toLowerCase();
-  return nav.startsWith('fr') ? 'fr' : 'en';
-})();
-applyLang();
-setTimeout(updateLangButtons, 100);
 updateUI();
 // Popup offline earnings
 if (state._offlineEarned > 0) {
@@ -2997,3 +2988,17 @@ function updateLangButtons() {
     pair[1].style.color       = s.c;
   });
 }
+
+
+// ===== INIT LANGUE (après définition de LANG) =====
+(function() {
+  const saved = localStorage.getItem('packoo_lang');
+  if (saved === 'fr' || saved === 'en') {
+    window.PACKOO_LANG = saved;
+  } else {
+    const nav = (navigator.language || 'fr').toLowerCase();
+    window.PACKOO_LANG = nav.startsWith('fr') ? 'fr' : 'en';
+  }
+  applyLang();
+  setTimeout(updateLangButtons, 100);
+})();
