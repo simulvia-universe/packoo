@@ -72,6 +72,35 @@ const LANG = {
     stat_bones_produced:'BONES PRODUITS', stat_dogs_unlocked:'CHIENS DÉBLOQUÉS', stat_chests_opened:'COFFRES OUVERTS',
     stat_nft_owned:'NFT POSSÉDÉS', stat_days_connected:'JOURS CONNECTÉS', stat_playtime:'TEMPS DE JEU',
     stat_current_season:'SAISON ACTUELLE', stat_collection_rank:'RANG COLLECTION',
+    dogs_filter_rarity:'⭐ Rareté', dogs_active:'Chiens actifs', dogs_upgrade_all:'Améliorer tout ⬆️',
+    dogs_my_dogs:'🐾 Mes Chiens',
+    cosm_aura_neon:'Aura Néon', cosm_badge_alpha:'Badge Alpha', cosm_tapis_cyber:'Tapis Cyber', cosm_cadre_electrik:'Cadre Électrik',
+    rank_promo_title:'DEVENEZ LE MEILLEUR DOGMASTER !', rank_promo_sub:'Tape, gagne des Bones et grimpe dans le classement pour atteindre le sommet !',
+    inv_owned:'Objets possédés', inv_ticket:'Ticket Événement', inv_key:'Clé Coffre',
+    inv_empty:'🎒 Les objets s\'accumulent via la Chasse aux Os, les événements et les quêtes.',
+    toast_no_reward:'Aucune récompense en attente.', toast_no_bones:'Pas assez de Bones ! 🦴',
+    toast_no_diamonds:'Pas assez de Diamants ! 💎', toast_paco_locked:'Paco ne peut pas être désactivé !',
+    toast_team_full:'Équipe pleine !', toast_challenge_incomplete:'Défi pas encore complété !',
+    toast_payment_soon:'💳 Paiement bientôt disponible via Telegram Stars !',
+    toast_offer_soon:'🔥 Offre spéciale bientôt disponible !', toast_pass_already:'✅ Pass déjà activé !',
+    toast_pass_activated:'👑 Pass Saison activé ! Bienvenue dans le Premium !',
+    toast_link_copied:'📤 Lien copié dans le presse-papiers !', toast_referral_added:'👥 +1 filleul actif !',
+    toast_already_claimed:'🎁 Déjà réclamé aujourd\'hui !', toast_quest_incomplete:'Quête pas encore complétée !',
+    toast_unknown_chest:'📦 Coffre inconnu !', toast_ad_running3:'📺 Pub en cours… 3 secondes',
+    toast_ad_running:'📺 Pub en cours…', toast_dev_bone:'🦴 [DEV] Os forcé !',
+    dog_active:'ACTIF', dog_reserve:'RÉSERVE', dog_production:'Production', dog_lvl:'Niv.',
+    dog_level_max:'NIVEAU MAX', dog_details:'Détails', dog_base_prod:'Production de base :',
+    dog_drop_only:'Drop uniquement — joue pour l\'obtenir !', dog_random_drop:'🎲 Drop aléatoire',
+    dog_empty_slot:'Emplacement libre',
+    nft_congrats:'Félicitations ! Tu as obtenu', nft_claim:'🎉 Réclamer mon NFT',
+    settings_title:'⚙️ Paramètres',
+    os_explain1:'Des os tombent du ciel pendant que tu joues. Clique dessus pour déclencher une pub et gagner une récompense surprise.',
+    os_explain2:'La série dure 7 jours. Plus tu récupères d\'os, meilleures sont les récompenses : Bronze → Argent → Or → Diamant.',
+    os_explain3:'Maximum 4 os par jour, soit 28 os par semaine pour atteindre les récompenses Diamant.',
+    coffres_reserve:'Coffres en réserve', coffres_buy_shop:'🏪 Acheter des coffres dans le Shop →',
+    assoc_soon:'Événement associatif — Bientôt disponible',
+    invite_share_desc:'Partage Packoo et débloque des récompenses exclusives.<br><span style="color:var(--gold);font-weight:800;">Toi et ton ami recevez des bonus !</span>',
+    invite_none:'Aucun filleul pour l\'instant. Invite tes amis !',
   },
   en: {
     nav_accueil:'Home', nav_chiens:'Dogs', nav_collection:'Collection', nav_classement:'Ranking',
@@ -139,6 +168,35 @@ const LANG = {
     stat_bones_produced:'BONES PRODUCED', stat_dogs_unlocked:'DOGS UNLOCKED', stat_chests_opened:'CHESTS OPENED',
     stat_nft_owned:'NFTs OWNED', stat_days_connected:'DAYS CONNECTED', stat_playtime:'PLAYTIME',
     stat_current_season:'CURRENT SEASON', stat_collection_rank:'COLLECTION RANK',
+    dogs_filter_rarity:'⭐ Rarity', dogs_active:'Active dogs', dogs_upgrade_all:'Upgrade all ⬆️',
+    dogs_my_dogs:'🐾 My Dogs',
+    cosm_aura_neon:'Neon Aura', cosm_badge_alpha:'Alpha Badge', cosm_tapis_cyber:'Cyber Mat', cosm_cadre_electrik:'Electric Frame',
+    rank_promo_title:'BECOME THE BEST DOGMASTER!', rank_promo_sub:'Tap, earn Bones and climb the ranking to reach the top!',
+    inv_owned:'Owned items', inv_ticket:'Event Ticket', inv_key:'Chest Key',
+    inv_empty:'🎒 Items accumulate through the Bone Hunt, events and quests.',
+    toast_no_reward:'No reward pending.', toast_no_bones:'Not enough Bones! 🦴',
+    toast_no_diamonds:'Not enough Diamonds! 💎', toast_paco_locked:'Paco cannot be deactivated!',
+    toast_team_full:'Team full!', toast_challenge_incomplete:'Challenge not completed yet!',
+    toast_payment_soon:'💳 Payment coming soon via Telegram Stars!',
+    toast_offer_soon:'🔥 Special offer coming soon!', toast_pass_already:'✅ Pass already activated!',
+    toast_pass_activated:'👑 Season Pass activated! Welcome to Premium!',
+    toast_link_copied:'📤 Link copied to clipboard!', toast_referral_added:'👥 +1 active referral!',
+    toast_already_claimed:'🎁 Already claimed today!', toast_quest_incomplete:'Quest not completed yet!',
+    toast_unknown_chest:'📦 Unknown chest!', toast_ad_running3:'📺 Ad playing… 3 seconds',
+    toast_ad_running:'📺 Ad playing…', toast_dev_bone:'🦴 [DEV] Bone forced!',
+    dog_active:'ACTIVE', dog_reserve:'RESERVE', dog_production:'Production', dog_lvl:'Lvl.',
+    dog_level_max:'MAX LEVEL', dog_details:'Details', dog_base_prod:'Base production:',
+    dog_drop_only:'Drop only — play to get it!', dog_random_drop:'🎲 Random drop',
+    dog_empty_slot:'Empty slot',
+    nft_congrats:'Congratulations! You obtained', nft_claim:'🎉 Claim my NFT',
+    settings_title:'⚙️ Settings',
+    os_explain1:'Bones fall from the sky while you play. Click them to trigger an ad and win a surprise reward.',
+    os_explain2:'The streak lasts 7 days. The more bones you collect, the better the rewards: Bronze → Silver → Gold → Diamond.',
+    os_explain3:'Maximum 4 bones per day, i.e. 28 bones per week to reach the Diamond rewards.',
+    coffres_reserve:'Chests in reserve', coffres_buy_shop:'🏪 Buy chests in the Shop →',
+    assoc_soon:'Charity event — Coming soon',
+    invite_share_desc:'Share Packoo and unlock exclusive rewards.<br><span style="color:var(--gold);font-weight:800;">You and your friend both get bonuses!</span>',
+    invite_none:'No referrals yet. Invite your friends!',
   }
 };
 
@@ -167,6 +225,10 @@ function setLang(lang) {
   if (typeof renderQuests === 'function') renderQuests();
   if (typeof renderCollection === 'function') renderCollection();
   if (typeof renderProfil === 'function') renderProfil();
+  if (typeof renderDogCards === 'function') renderDogCards();
+  if (typeof renderInviter === 'function') renderInviter();
+  if (typeof renderOsChasse === 'function') renderOsChasse();
+  if (typeof renderInventaire === 'function') renderInventaire();
 }
 
 function updateLangButtons() {
@@ -420,7 +482,7 @@ function addPendingReward(hours, source) {
 function claimAllPendingRewards() {
   applyDegressiveRewards();
   if (!state.pendingRewards || state.pendingRewards.length === 0) {
-    showToast('Aucune récompense en attente.');
+    showToast(t('toast_no_reward'));
     return;
   }
   let totalBones = 0;
@@ -825,7 +887,7 @@ function upgradeAll() {
     const cost = getLevelCost(dog.rarity, dog.level, dog.id);
     if (cost && state.bones >= cost) { state.bones -= cost; dog.level++; n++; }
   });
-  if (n === 0) { showToast('Pas assez de Bones !'); return; }
+  if (n === 0) { showToast(t('toast_no_bones')); return; }
   showToast('⬆️ ' + n + ' chien' + (n > 1 ? 's améliorés' : ' amélioré') + ' !');
   updateUI(); renderDogCards(); saveState();
 }
@@ -833,10 +895,10 @@ function toggleActive(dogId) {
   const dog = ALL_DOGS.find(d => d.id === dogId);
   if (!dog || !dog.unlocked) return;
   if (dog.active) {
-    if (dog.id === 'paco') { showToast('Paco ne peut pas être désactivé !'); return; }
+    if (dog.id === 'paco') { showToast(t('toast_paco_locked')); return; }
     dog.active = false;
   } else {
-    if (ALL_DOGS.filter(d => d.active).length >= MAX_ACTIVE) { showToast('Équipe pleine !'); return; }
+    if (ALL_DOGS.filter(d => d.active).length >= MAX_ACTIVE) { showToast(t('toast_team_full')); return; }
     dog.active = true;
   }
   showToast(dog.emoji + ' ' + dog.name + (dog.active ? ' activé !' : ' en réserve'));
@@ -890,14 +952,14 @@ function renderDogCards() {
         <div class="dog-card-header">
           <div class="dog-card-name">${dog.name}</div>
           <div class="actif-badge" onclick="toggleActive('${dog.id}')" style="${dog.active?'':'background:rgba(255,255,255,0.05);color:var(--text-muted);'}">
-            <div class="actif-dot" style="${dog.active?'':'background:#666;'}"></div>${dog.active?'ACTIF':'RÉSERVE'}
+            <div class="actif-dot" style="${dog.active?'':'background:#666;'}"></div>${dog.active?t('dog_active'):t('dog_reserve')}
           </div>
         </div>
-        <div><div class="prod-label">Production</div><div class="prod-val">🦴 +${fmt(prod)} /h</div></div>
-        <div class="xp-bar-wrap"><div class="xp-bar-outer"><div class="xp-bar-inner" style="width:${xpPct}%"></div></div><div class="xp-txt">Niv.${dog.level} / ${MAX_LEVEL}</div></div>
+        <div><div class="prod-label">${t('dog_production')}</div><div class="prod-val">🦴 +${fmt(prod)} /h</div></div>
+        <div class="xp-bar-wrap"><div class="xp-bar-outer"><div class="xp-bar-inner" style="width:${xpPct}%"></div></div><div class="xp-txt">${t('dog_lvl')}${dog.level} / ${MAX_LEVEL}</div></div>
         <div class="dog-card-btns">
-          ${cost ? `<button class="btn-ameliorer" onclick="upgradeDog('${dog.id}')">⬆️ ${fmt(cost)} 🦴</button>` : '<button class="btn-ameliorer" style="opacity:0.5;cursor:default;">NIVEAU MAX</button>'}
-          <button class="btn-details">Détails</button>
+          ${cost ? `<button class="btn-ameliorer" onclick="upgradeDog('${dog.id}')">⬆️ ${fmt(cost)} 🦴</button>` : '<button class="btn-ameliorer" style="opacity:0.5;cursor:default;">'+t('dog_level_max')+'</button>'}
+          <button class="btn-details">${t('dog_details')}</button>
         </div>
       </div>
     </div>`;
@@ -916,7 +978,7 @@ function renderDogCards() {
         </div>
         <div class="dog-card-info">
           <div class="dog-card-name">${dog.name}</div>
-          <div style="font-size:11px;color:var(--text-muted);margin:4px 0;">Production de base : +${fmt(RARITY[dog.rarity].baseProduction)}/h</div>
+          <div style="font-size:11px;color:var(--text-muted);margin:4px 0;">${t('dog_base_prod')} +${fmt(RARITY[dog.rarity].baseProduction)}/h</div>
           <button class="${can?'btn-ameliorer':'btn-verrouille'}" onclick="${can?`unlockDog('${dog.id}')`:''}" style="${can?'':'cursor:default;'}">
             ${can?'🔓':'🔒'} ${fmt(dog.unlockCost)} 🦴
           </button>
@@ -934,8 +996,8 @@ function renderDogCards() {
         </div>
         <div class="dog-card-info">
           <div class="dog-card-name">Luna</div>
-          <div style="font-size:11px;color:var(--text-muted);margin:4px 0;">Drop uniquement — joue pour l'obtenir !</div>
-          <button class="btn-verrouille" style="cursor:default;">🎲 Drop aléatoire</button>
+          <div style="font-size:11px;color:var(--text-muted);margin:4px 0;">${t('dog_drop_only')}</div>
+          <button class="btn-verrouille" style="cursor:default;">${t('dog_random_drop')}</button>
         </div>
       </div>`;
     }
@@ -1091,7 +1153,7 @@ function collectQuest(key) {
   } else {
     isDone = q.done || (q.progress !== undefined && q.progress >= (key === 'tap50' ? 50 : key === 'tap200' ? 200 : key === 'unlock' ? 1 : key === 'w_tap1000' ? 1000 : key === 'w_tap5000' ? 5000 : key === 'w_unlock3' ? 3 : 1));
   }
-  if (!isDone) { showToast('Défi pas encore complété !'); return; }
+  if (!isDone) { showToast(t('toast_challenge_incomplete')); return; }
   q.claimed = true;
   q.done    = true;
   const r = QUEST_REWARDS[key];
@@ -1287,8 +1349,8 @@ function navigateShopSection(section) {
 function buyChest(type) {
   const costs = { COMMON:{ bones:2000, diamonds:0 }, RARE:{ bones:0, diamonds:200 }, LEGENDARY:{ bones:0, diamonds:500 } };
   const c = costs[type];
-  if (c.bones > 0 && state.bones < c.bones) { showToast('Pas assez de Bones ! 🦴'); return; }
-  if (c.diamonds > 0 && state.diamonds < c.diamonds) { showToast('Pas assez de Diamants ! 💎'); return; }
+  if (c.bones > 0 && state.bones < c.bones) { showToast(t('toast_no_bones')); return; }
+  if (c.diamonds > 0 && state.diamonds < c.diamonds) { showToast(t('toast_no_diamonds')); return; }
   state.bones -= c.bones;
   state.diamonds -= c.diamonds;
   const bonusMap = { COMMON:1000, UNCOMMON:3000, RARE:8000, EPIC:25000, LEGENDARY:80000 };
@@ -1326,11 +1388,11 @@ function buyBones() {
 
 function buyPack(type) {
   // Les packs nécessiteront Telegram Stars — pour l'instant message info
-  showToast('💳 Paiement bientôt disponible via Telegram Stars !');
+  showToast(t('toast_payment_soon'));
 }
 
 function buySpecialOffer() {
-  showToast('🔥 Offre spéciale bientôt disponible !');
+  showToast(t('toast_offer_soon'));
 }
 
 function resetGame() {
@@ -1347,14 +1409,14 @@ function toggleMenu() {
 
 // ===== PASS SAISON =====
 function activatePass() {
-  if (state.passActivated) { showToast('✅ Pass déjà activé !'); return; }
+  if (state.passActivated) { showToast(t('toast_pass_already')); return; }
   // Simulation achat — en production : paiement Telegram Stars / Stripe
   const confirmed = confirm('Activer le Pass Saison 1 pour 4,99 € ?\n\n(Simulation — aucun paiement réel)');
   if (!confirmed) return;
   state.passActivated = true;
   updateUI();
   saveState();
-  showToast('👑 Pass Saison activé ! Bienvenue dans le Premium !');
+  showToast(t('toast_pass_activated'));
   window._state = state;
   if (typeof renderPassRewards === 'function') renderPassRewards();
   // Cacher le bouton d'achat dans le Shop
@@ -1569,7 +1631,7 @@ function _renderDogsPanel() {
   // Emplacements vides
   const emptySlots = MAX_ACTIVE - activeDogs.length;
   for (let i = 0; i < emptySlots; i++) {
-    list.innerHTML += `<div class="dog-panel-locked"><span style="font-size:22px;opacity:0.3">🔒</span><div style="font-size:11px;color:var(--text-muted)">Emplacement libre</div></div>`;
+    list.innerHTML += `<div class="dog-panel-locked"><span style="font-size:22px;opacity:0.3">🔒</span><div style="font-size:11px;color:var(--text-muted)">${t('dog_empty_slot')}</div></div>`;
   }
 }
 
@@ -1613,7 +1675,7 @@ function devForceOs() {
   const lbl = document.getElementById('os-label');
   if (lbl) lbl.remove();
   _spawnOsAnimation();
-  showToast('🦴 [DEV] Os forcé !');
+  showToast(t('toast_dev_bone'));
 }
 
 // ============================================================
@@ -1758,7 +1820,7 @@ function shareReferral() {
     navigator.share({ title: 'Packoo', text: msg }).catch(() => {});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(msg).catch(() => {});
-    showToast('📤 Lien copié dans le presse-papiers !');
+    showToast(t('toast_link_copied'));
   } else {
     showToast('📤 Code : ' + state.referralCode);
   }
@@ -1799,7 +1861,7 @@ function devAddReferral(name) {
   });
   saveState();
   renderInviter();
-  showToast('👥 +1 filleul actif !');
+  showToast(t('toast_referral_added'));
 }
 
 // ============================================================
@@ -2041,7 +2103,7 @@ function collectOs() {
   }
 
   // Simuler la pub (dans le prototype : 3s de délai)
-  showToast('📺 Pub en cours… 3 secondes');
+  showToast(t('toast_ad_running3'));
   setTimeout(() => {
     state.osDailyCount  = (state.osDailyCount  || 0) + 1;
     state.osWeeklyCount = (state.osWeeklyCount  || 0) + 1;
@@ -2245,7 +2307,7 @@ function openCoffre(type) {
   }
   state.coffres[type]--;
   const config = CHEST_CONFIG[type];
-  if (!config) { showToast('📦 Coffre inconnu !'); return; }
+  if (!config) { showToast(t('toast_unknown_chest')); return; }
 
   // Récompense garantie : Bones (en heures de prod)
   const hours = config.bonesMin + Math.random() * (config.bonesMax - config.bonesMin);
@@ -2327,7 +2389,7 @@ function renderDailyGift() {
 function claimDailyGift() {
   const today = new Date().toDateString();
   if (state.dailyGiftDate === today && state.dailyGiftClaimed) {
-    showToast('🎁 Déjà réclamé aujourd\'hui !');
+    showToast(t('toast_already_claimed'));
     return;
   }
   // Récompense quotidienne
@@ -2447,7 +2509,7 @@ function collectOfflinePub() {
   if (overlay) overlay.remove();
 
   // Simuler la pub (3 secondes)
-  showToast('📺 Pub en cours…');
+  showToast(t('toast_ad_running'));
   setTimeout(() => {
     const hasPass    = state.passActivated  || false;
     const full       = state._offlineEarned100 || 0;
@@ -2634,7 +2696,7 @@ function claimPassQuest(type, key) {
     : PASS_QUEST_WEEKLY_DEF.find(d => d.key === key);
   const q    = type === 'daily' ? state.passQuestDaily[key] : state.passQuestWeekly[key];
   if (!def || !q) return;
-  if (!q.done)    { showToast('Quête pas encore complétée !'); return; }
+  if (!q.done)    { showToast(t('toast_quest_incomplete')); return; }
   if (q.claimed)  { showToast('Déjà réclamée !'); return; }
   q.claimed = true;
 
