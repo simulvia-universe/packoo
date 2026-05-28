@@ -117,7 +117,7 @@
           <div class="side-btn" onclick="navigate('shop')" style="position:relative;"><div class="sb-badge" id="shopBadge" style="display:none;">!</div><span class="sb-icon">🏪</span><span class="sb-label" data-t="sb_shop">Shop</span></div>
 
           <div class="side-btn" onclick="navigateShopSection('cosmetiques')"><span class="sb-icon">✨</span><span class="sb-label" data-t="sb_cosmetiques">Cosmétiques</span></div>
-          <div class="side-btn" onclick="navigate('evenements')" style="position:relative;"><div class="sb-badge" id="evenementsBadge" style="display:none;">!</div><span class="nouveau-tag">NOUVEAU</span><span class="sb-icon">🎉</span><span class="sb-label" data-t="sb_evenements">Événements</span></div>
+          <div class="side-btn" onclick="navigate('evenements')" style="position:relative;"><div class="sb-badge" id="evenementsBadge" style="display:none;">!</div><span class="nouveau-tag" data-t="sb_nouveau">NOUVEAU</span><span class="sb-icon">🎉</span><span class="sb-label" data-t="sb_evenements">Événements</span></div>
           <div class="side-btn" onclick="navigate('cadeaux')" style="position:relative;"><div class="sb-badge" id="cadeauBadge" style="display:flex;">1</div><span class="sb-icon">🎁</span><span class="sb-label" data-t="sb_cadeaux">Cadeaux</span></div>
         </div>
         <div class="right-col">
@@ -126,8 +126,8 @@
         <div class="paco-glow-ring"></div>
         <div class="paco-tap-area" onclick="tapPaco(event)">
           <img src='image/paco.png' class="paco-img" alt="Paco" draggable="false"/>
-          <div class="tap-title">🐾 TAP PACO !</div>
-          <div class="tap-subtitle">Tape pour gagner des Bones</div>
+          <div class="tap-title" data-t="tapTitle">🐾 TAP PACO !</div>
+          <div class="tap-subtitle" data-t="tapSubtitle">Tape pour gagner des Bones</div>
         </div>
         <div class="level-section">
           <div class="level-tag" id="playerLvlTag">NIVEAU 1</div>
@@ -1304,11 +1304,11 @@
   </div>
 
   <nav class="bottom-nav">
-    <div class="nav-item active" id="nav-home" onclick="navigate('home')"><span class="nav-icon">🏠</span><span class="nav-label">Accueil</span></div>
-    <div class="nav-item" id="nav-chiens" onclick="navigate('chiens')" style="position:relative;"><div id="upgradeBadge" style="display:none;position:absolute;top:2px;right:6px;background:#E74C3C;color:white;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:900;align-items:center;justify-content:center;z-index:10;">⬆</div><span class="nav-icon">🐾</span><span class="nav-label">Chiens</span></div>
+    <div class="nav-item active" id="nav-home" onclick="navigate('home')"><span class="nav-icon">🏠</span><span class="nav-label" data-t="nav_accueil">Accueil</span></div>
+    <div class="nav-item" id="nav-chiens" onclick="navigate('chiens')" style="position:relative;"><div id="upgradeBadge" style="display:none;position:absolute;top:2px;right:6px;background:#E74C3C;color:white;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:900;align-items:center;justify-content:center;z-index:10;">⬆</div><span class="nav-icon">🐾</span><span class="nav-label" data-t="nav_chiens">Chiens</span></div>
     <div class="nav-tap" onclick="openDogsPanel()"><div class="nav-tap-btn"><span style="font-size:18px">🦴</span><span id="navProdDisplay" style="font-size:10px;font-weight:900;color:#1A0F00;">900/h</span></div></div>
-    <div class="nav-item" id="nav-collection" onclick="navigate('collection')" style="position:relative;"><div id="collectionBadge" style="display:none;position:absolute;top:2px;right:6px;background:#E74C3C;color:white;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:900;align-items:center;justify-content:center;z-index:10;">!</div><span class="nav-icon">🃏</span><span class="nav-label">Collection</span></div>
-    <div class="nav-item" id="nav-classement" onclick="navigate('classement')"><span class="nav-icon">🏆</span><span class="nav-label">Classement</span></div>
+    <div class="nav-item" id="nav-collection" onclick="navigate('collection')" style="position:relative;"><div id="collectionBadge" style="display:none;position:absolute;top:2px;right:6px;background:#E74C3C;color:white;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:900;align-items:center;justify-content:center;z-index:10;">!</div><span class="nav-icon">🃏</span><span class="nav-label" data-t="nav_collection">Collection</span></div>
+    <div class="nav-item" id="nav-classement" onclick="navigate('classement')"><span class="nav-icon">🏆</span><span class="nav-label" data-t="nav_classement">Classement</span></div>
   </nav>
 </div>
 
