@@ -1,4 +1,197 @@
 // ============================================================
+// SYSTÈME BILINGUE FR / EN
+// ============================================================
+
+// ============================================================
+// SYSTÈME BILINGUE FR / EN
+// ============================================================
+const LANG = {
+  fr: {
+    nav_accueil:'Accueil', nav_chiens:'Chiens', nav_collection:'Collection', nav_classement:'Classement',
+    sb_quetes:'Quêtes', sb_pass:'Pass', sb_shop:'Shop', sb_cosmetiques:'Cosmétiques',
+    sb_evenements:'Événements', sb_cadeaux:'Cadeaux', sb_nouveau:'NOUVEAU',
+    tapTitle:'🐾 TAP PACO !', tapSubtitle:'Tape pour gagner des Bones',
+    cadeau_chasse:'Chasse<br>aux Os', cadeau_coffres:'Coffres',
+    cadeau_recompenses:'Récom-<br>penses', cadeau_inviter:'Inviter', cadeau_inventaire:'Inventaire',
+    dogs_unlock:'Débloquer', dogs_upgrade:'Améliorer', dogs_maxed:'MAX',
+    settings_lang:'Langue / Language',
+    shop_title:'🏪 SHOP', shop_bones:'MES BONES', shop_diamonds:'MES DIAMANTS',
+    shop_pass_title:'PASS SAISON 1', shop_pass_sub:'Récompenses exclusives toute la saison !',
+    shop_pass_dogs:'🐾 Chiens exclusifs', shop_pass_chests:'📦 Coffres bonus',
+    shop_pass_boosts:'⚡ Boosts premium', shop_pass_more:'💎 Diamants et + encore !',
+    shop_pass_see:'VOIR LE PASS 👑',
+    shop_boosts:'BOOSTS', shop_boosts_stack:'Tous les boosts sont cumulables',
+    shop_boosts_sub:'Accélérez votre progression !',
+    shop_boost_prod_title:'PRODUCTION x2', shop_boost_prod:'Double votre production de Bones',
+    shop_boost_nft_title:'CHANCE NFT x3', shop_boost_nft:'Triple vos chances de drop NFT',
+    shop_boost_bones_title:'PACK BONES', shop_boost_bones:'Obtenez 500,000 Bones immédiatement',
+    shop_coffres:'COFFRES', shop_coffres_sub:'Ouvre un coffre pour gagner des récompenses !',
+    shop_packs:'PACKS', shop_packs_best:'⭐ Meilleures offres',
+    shop_packs_sub:'Des offres avantageuses pour progresser plus vite !',
+    shop_cosmetics:'COSMÉTIQUES', shop_cosmetics_sub:'Personnalisez votre expérience !',
+    pass_title:'PASS PACKOO', pass_season:'SAISON 1', pass_ends:'FIN DANS :',
+    pass_tab_rewards:'🎁 RÉCOMPENSES', pass_tab_quests:'🔄 QUÊTES',
+    pass_activate:'ACTIVER LE PASS — 4,99 €', pass_free:'GRATUIT', pass_premium:'PREMIUM',
+    pass_premium_title:'PACKOO PASS PREMIUM',
+    pass_premium_benefits:'• Récompenses exclusives<br>• Progression plus rapide<br>• Quêtes spéciales<br>• Soutiens Packoo',
+    pass_quests_soon:'Quêtes Pass — Bientôt disponible',
+    events_title:'ÉVÉNEMENTS', events_subtitle:'Participez et gagnez des récompenses exclusives !',
+    events_current:'● ÉVÉNEMENT EN COURS', events_tagline:'✦ THE BEGINNING OF OUR PACK ✦',
+    events_join:'Rejoignez les premiers Packoos<br>et gagnez des récompenses exclusives !',
+    events_exclusive:'RÉCOMPENSES EXCLUSIVES', events_see:'Voir l\'événement →',
+    events_progression:'PROGRESSION FOUNDER',
+    events_prog_sub:'Produisez des Bones et débloquez des récompenses collector !',
+    events_your_tickets:'VOS FOUNDER TICKETS',
+    events_tickets_sub:'Ouvrez des coffres Founder<br>et gagnez des récompenses rares !',
+    events_open_crate:'Ouvrir un<br>coffre Founder',
+    events_login:'CONNEXION FOUNDER', events_missions:'MISSIONS FOUNDER',
+    quests_title:'QUÊTES', quests_daily:'Quotidiennes', quests_weekly:'Hebdomadaires', quests_challenges:'Défis',
+    quests_sub_daily:'QUOTIDIENNES', quests_sub_weekly:'HEBDOMADAIRES', quests_sub_defis:'DÉFIS',
+    quests_new_in:'NOUVELLES QUÊTES DANS :', quests_reset_in:'RESET DANS :',
+    quests_defis_header:'🏅 DÉFIS — Permanents, à compléter une seule fois',
+    quests_claim:'RÉCLAMER !', quests_inprogress:'En cours…',
+    q_tap50_t:'Taper 50 fois', q_tap50_d:'Tape sur Paco 50 fois.',
+    q_tap200_t:'Taper 200 fois', q_tap200_d:'Deviens un vrai DogMaster !',
+    q_unlock_t:'Débloquer un chien', q_unlock_d:'Ajoute un nouveau chien.',
+    q_login_t:'Connexion du jour', q_login_d:'Tu es là — bien joué !',
+    q_wtap1000_t:'Taper 1 000 fois', q_wtap1000_d:'Tape Paco 1000 fois cette semaine.',
+    q_wtap5000_t:'Taper 5 000 fois', q_wtap5000_d:'Un vrai champion du tap !',
+    q_wunlock3_t:'Débloquer 3 chiens', q_wunlock3_d:'Agrandis ta meute cette semaine.',
+    q_dreach10_t:'Atteindre le niveau 10', q_dreach10_d:'Monte jusqu\'au niveau 10 joueur.',
+    q_dunlock5_t:'Débloquer 5 chiens', q_dunlock5_d:'Constitue une vraie meute.',
+    q_dearn100k_t:'Gagner 100 000 Bones', q_dearn100k_d:'Accumule 100 000 Bones au total.',
+    collection_title:'🃏 COLLECTION NFT', collection_count:'NFT collectés',
+    collection_empty_title:'Aucun NFT pour l\'instant',
+    collection_empty_sub:'Continue à taper sur Paco —<br>un NFT peut tomber à tout moment !',
+    collection_gained:'Gagné le',
+    cadeaux_title:'CADEAUX', cadeaux_subtitle:'TES RÉCOMPENSES T\'ATTENDENT',
+    cadeaux_event_rewards:'RÉCOMPENSES ÉVÉNEMENT', cadeaux_assoc:'CADEAU ASSOCIATION',
+    profil_title:'MON PROFIL', profil_current_title:'TITRE ACTUEL', profil_member_since:'MEMBRE DEPUIS',
+    profil_nft_owned:'NFT POSSÉDÉS', profil_xp:'XP JOUEUR', profil_titles:'TITRES', profil_badges:'BADGES',
+    profil_stats:'STATISTIQUES', profil_fav_collection:'COLLECTION FAVORITE', profil_history:'HISTORIQUE DES SAISONS',
+    stat_bones_produced:'BONES PRODUITS', stat_dogs_unlocked:'CHIENS DÉBLOQUÉS', stat_chests_opened:'COFFRES OUVERTS',
+    stat_nft_owned:'NFT POSSÉDÉS', stat_days_connected:'JOURS CONNECTÉS', stat_playtime:'TEMPS DE JEU',
+    stat_current_season:'SAISON ACTUELLE', stat_collection_rank:'RANG COLLECTION',
+  },
+  en: {
+    nav_accueil:'Home', nav_chiens:'Dogs', nav_collection:'Collection', nav_classement:'Ranking',
+    sb_quetes:'Quests', sb_pass:'Pass', sb_shop:'Shop', sb_cosmetiques:'Cosmetics',
+    sb_evenements:'Events', sb_cadeaux:'Gifts', sb_nouveau:'NEW',
+    tapTitle:'🐾 TAP PACO!', tapSubtitle:'Tap to earn Bones',
+    cadeau_chasse:'Bone<br>Hunt', cadeau_coffres:'Chests',
+    cadeau_recompenses:'Rewards', cadeau_inviter:'Invite', cadeau_inventaire:'Inventory',
+    dogs_unlock:'Unlock', dogs_upgrade:'Upgrade', dogs_maxed:'MAX',
+    settings_lang:'Langue / Language',
+    shop_title:'🏪 SHOP', shop_bones:'MY BONES', shop_diamonds:'MY DIAMONDS',
+    shop_pass_title:'SEASON 1 PASS', shop_pass_sub:'Exclusive rewards all season long!',
+    shop_pass_dogs:'🐾 Exclusive dogs', shop_pass_chests:'📦 Bonus chests',
+    shop_pass_boosts:'⚡ Premium boosts', shop_pass_more:'💎 Diamonds and more!',
+    shop_pass_see:'VIEW PASS 👑',
+    shop_boosts:'BOOSTS', shop_boosts_stack:'All boosts are stackable',
+    shop_boosts_sub:'Speed up your progression!',
+    shop_boost_prod_title:'PRODUCTION x2', shop_boost_prod:'Double your Bones production',
+    shop_boost_nft_title:'NFT CHANCE x3', shop_boost_nft:'Triple your NFT drop chance',
+    shop_boost_bones_title:'BONES PACK', shop_boost_bones:'Get 500,000 Bones instantly',
+    shop_coffres:'CHESTS', shop_coffres_sub:'Open a chest to win rewards!',
+    shop_packs:'PACKS', shop_packs_best:'⭐ Best offers',
+    shop_packs_sub:'Great deals to progress faster!',
+    shop_cosmetics:'COSMETICS', shop_cosmetics_sub:'Customize your experience!',
+    pass_title:'PACKOO PASS', pass_season:'SEASON 1', pass_ends:'ENDS IN:',
+    pass_tab_rewards:'🎁 REWARDS', pass_tab_quests:'🔄 QUESTS',
+    pass_activate:'ACTIVATE PASS — €4.99', pass_free:'FREE', pass_premium:'PREMIUM',
+    pass_premium_title:'PACKOO PASS PREMIUM',
+    pass_premium_benefits:'• Exclusive rewards<br>• Faster progression<br>• Special quests<br>• Support Packoo',
+    pass_quests_soon:'Pass Quests — Coming soon',
+    events_title:'EVENTS', events_subtitle:'Join events and win exclusive rewards!',
+    events_current:'● ONGOING EVENT', events_tagline:'✦ THE BEGINNING OF OUR PACK ✦',
+    events_join:'Join the first Packoos<br>and win exclusive rewards!',
+    events_exclusive:'EXCLUSIVE REWARDS', events_see:'See the event →',
+    events_progression:'FOUNDER PROGRESSION',
+    events_prog_sub:'Produce Bones and unlock collector rewards!',
+    events_your_tickets:'YOUR FOUNDER TICKETS',
+    events_tickets_sub:'Open Founder crates<br>and win rare rewards!',
+    events_open_crate:'Open a<br>Founder crate',
+    events_login:'FOUNDER LOGIN', events_missions:'FOUNDER MISSIONS',
+    quests_title:'QUESTS', quests_daily:'Daily', quests_weekly:'Weekly', quests_challenges:'Challenges',
+    quests_sub_daily:'DAILY', quests_sub_weekly:'WEEKLY', quests_sub_defis:'CHALLENGES',
+    quests_new_in:'NEW QUESTS IN:', quests_reset_in:'RESET IN:',
+    quests_defis_header:'🏅 CHALLENGES — Permanent, complete once',
+    quests_claim:'CLAIM!', quests_inprogress:'In progress…',
+    q_tap50_t:'Tap 50 times', q_tap50_d:'Tap Paco 50 times.',
+    q_tap200_t:'Tap 200 times', q_tap200_d:'Become a true DogMaster!',
+    q_unlock_t:'Unlock a dog', q_unlock_d:'Add a new dog.',
+    q_login_t:'Daily login', q_login_d:'You\'re here — well done!',
+    q_wtap1000_t:'Tap 1,000 times', q_wtap1000_d:'Tap Paco 1000 times this week.',
+    q_wtap5000_t:'Tap 5,000 times', q_wtap5000_d:'A true tapping champion!',
+    q_wunlock3_t:'Unlock 3 dogs', q_wunlock3_d:'Grow your pack this week.',
+    q_dreach10_t:'Reach level 10', q_dreach10_d:'Climb to player level 10.',
+    q_dunlock5_t:'Unlock 5 dogs', q_dunlock5_d:'Build a real pack.',
+    q_dearn100k_t:'Earn 100,000 Bones', q_dearn100k_d:'Accumulate 100,000 Bones total.',
+    collection_title:'🃏 NFT COLLECTION', collection_count:'NFTs collected',
+    collection_empty_title:'No NFTs yet',
+    collection_empty_sub:'Keep tapping Paco —<br>an NFT can drop at any moment!',
+    collection_gained:'Earned on',
+    cadeaux_title:'GIFTS', cadeaux_subtitle:'YOUR REWARDS ARE WAITING',
+    cadeaux_event_rewards:'EVENT REWARDS', cadeaux_assoc:'CHARITY GIFT',
+    profil_title:'MY PROFILE', profil_current_title:'CURRENT TITLE', profil_member_since:'MEMBER SINCE',
+    profil_nft_owned:'NFTs OWNED', profil_xp:'PLAYER XP', profil_titles:'TITLES', profil_badges:'BADGES',
+    profil_stats:'STATISTICS', profil_fav_collection:'FAVORITE COLLECTION', profil_history:'SEASON HISTORY',
+    stat_bones_produced:'BONES PRODUCED', stat_dogs_unlocked:'DOGS UNLOCKED', stat_chests_opened:'CHESTS OPENED',
+    stat_nft_owned:'NFTs OWNED', stat_days_connected:'DAYS CONNECTED', stat_playtime:'PLAYTIME',
+    stat_current_season:'CURRENT SEASON', stat_collection_rank:'COLLECTION RANK',
+  }
+};
+
+function t(key) {
+  const lang = window.PACKOO_LANG || 'fr';
+  return (LANG[lang] && LANG[lang][key]) || LANG.fr[key] || key;
+}
+
+function applyLang() {
+  document.querySelectorAll('[data-t]').forEach(function(el) {
+    const val = t(el.getAttribute('data-t'));
+    if (el.tagName === 'INPUT') el.placeholder = val;
+    else el.textContent = val;
+  });
+  document.querySelectorAll('[data-t-html]').forEach(function(el) {
+    el.innerHTML = t(el.getAttribute('data-t-html'));
+  });
+}
+
+function setLang(lang) {
+  window.PACKOO_LANG = lang;
+  localStorage.setItem('packoo_lang', lang);
+  applyLang();
+  updateLangButtons();
+  updateUI();
+  if (typeof renderQuests === 'function') renderQuests();
+  if (typeof renderCollection === 'function') renderCollection();
+  if (typeof renderProfil === 'function') renderProfil();
+}
+
+function updateLangButtons() {
+  const lang = window.PACKOO_LANG || 'fr';
+  const fr = document.getElementById('langBtnFr');
+  const en = document.getElementById('langBtnEn');
+  if (!fr || !en) return;
+  const on  = {bg:'rgba(245,166,35,0.3)',  bc:'rgba(245,166,35,0.7)',  c:'#F5A623'};
+  const off = {bg:'rgba(255,255,255,0.05)', bc:'rgba(255,255,255,0.15)', c:'#888'};
+  [['fr', fr], ['en', en]].forEach(function(pair) {
+    const s = pair[0] === lang ? on : off;
+    pair[1].style.background  = s.bg;
+    pair[1].style.borderColor = s.bc;
+    pair[1].style.color       = s.c;
+  });
+}
+
+// ===== INIT LANGUE =====
+(function() {
+  var saved = (typeof localStorage !== 'undefined') ? localStorage.getItem('packoo_lang') : null;
+  if (saved === 'fr' || saved === 'en') { window.PACKOO_LANG = saved; }
+  else { var nav = (navigator.language || 'fr').toLowerCase(); window.PACKOO_LANG = nav.startsWith('fr') ? 'fr' : 'en'; }
+})();
+
+// ============================================================
 // PACKOO — GAME.JS
 // Toute la logique du jeu
 // ============================================================
@@ -779,13 +972,13 @@ function renderQuestsDaily() {
   const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000);
   container.innerHTML = `
     <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:10px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-      <span>⏱️</span><span style="font-size:11px;color:var(--text-muted);">NOUVELLES QUÊTES DANS :</span>
+      <span>⏱️</span><span style="font-size:11px;color:var(--text-muted);">${t('quests_new_in')}</span>
       <span style="font-size:12px;font-weight:900;color:var(--gold);">${h}h ${m}m</span>
     </div>
-    ${questCard('🐾','Taper 50 fois','Tape sur Paco 50 fois.',q.tap50.progress,50,'🦴 '+getBonesLabel(0.5),q.tap50.claimed||false,'tap50')}
-    ${questCard('🏆','Taper 200 fois','Deviens un vrai DogMaster !',q.tap200.progress,200,'💎 15',q.tap200.claimed||false,'tap200')}
-    ${questCard('🔓','Débloquer un chien','Ajoute un nouveau chien.',q.unlock.done?1:0,1,'🦴 '+getBonesLabel(1)+' + 💎 5',q.unlock.claimed||false,'unlock')}
-    ${questCard('📅','Connexion du jour','Tu es là — bien joué !',1,1,'🦴 1,000',q.login?.claimed||false,'login')}
+    ${questCard('🐾',t('q_tap50_t'),t('q_tap50_d'),q.tap50.progress,50,'🦴 '+getBonesLabel(0.5),q.tap50.claimed||false,'tap50')}
+    ${questCard('🏆',t('q_tap200_t'),t('q_tap200_d'),q.tap200.progress,200,'💎 15',q.tap200.claimed||false,'tap200')}
+    ${questCard('🔓',t('q_unlock_t'),t('q_unlock_d'),q.unlock.done?1:0,1,'🦴 '+getBonesLabel(1)+' + 💎 5',q.unlock.claimed||false,'unlock')}
+    ${questCard('📅',t('q_login_t'),t('q_login_d'),1,1,'🦴 1,000',q.login?.claimed||false,'login')}
   `;
 }
 
@@ -802,12 +995,12 @@ function renderQuestsWeekly() {
   const hrs  = Math.floor((diff%86400000)/3600000);
   container.innerHTML = `
     <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:10px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-      <span>📅</span><span style="font-size:11px;color:var(--text-muted);">RESET DANS :</span>
+      <span>📅</span><span style="font-size:11px;color:var(--text-muted);">${t('quests_reset_in')}</span>
       <span style="font-size:12px;font-weight:900;color:var(--gold);">${days}j ${hrs}h</span>
     </div>
-    ${questCard('🐾','Taper 1 000 fois','Tape Paco 1000 fois cette semaine.',q.tap1000.progress,1000,'🦴 '+getBonesLabel(2)+' + 💎 50',q.tap1000.done,'w_tap1000')}
-    ${questCard('🏆','Taper 5 000 fois','Un vrai champion du tap !',q.tap5000.progress,5000,'💎 150',q.tap5000.done,'w_tap5000')}
-    ${questCard('🔓','Débloquer 3 chiens','Agrandis ta meute cette semaine.',q.unlock3.progress,3,'🦴 '+getBonesLabel(3)+' + 💎 30',q.unlock3.done,'w_unlock3')}
+    ${questCard('🐾',t('q_wtap1000_t'),t('q_wtap1000_d'),q.tap1000.progress,1000,'🦴 '+getBonesLabel(2)+' + 💎 50',q.tap1000.done,'w_tap1000')}
+    ${questCard('🏆',t('q_wtap5000_t'),t('q_wtap5000_d'),q.tap5000.progress,5000,'💎 150',q.tap5000.done,'w_tap5000')}
+    ${questCard('🔓',t('q_wunlock3_t'),t('q_wunlock3_d'),q.unlock3.progress,3,'🦴 '+getBonesLabel(3)+' + 💎 30',q.unlock3.done,'w_unlock3')}
   `;
 }
 
@@ -824,11 +1017,11 @@ function renderQuestsDefis() {
 
   container.innerHTML = `
     <div style="background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);border-radius:10px;padding:8px 12px;margin-bottom:10px;">
-      <span style="font-size:11px;color:#C39BD3;font-weight:800;">🏅 DÉFIS — Permanents, à compléter une seule fois</span>
+      <span style="font-size:11px;color:#C39BD3;font-weight:800;">${t('quests_defis_header')}</span>
     </div>
-    ${questCard('🎯','Atteindre le niveau 10','Monte jusqu\'au niveau 10 joueur.',Math.min(state.playerLevel,10),10,'💎 100',d.reach10.claimed||false,'d_reach10')}
-    ${questCard('🐕','Débloquer 5 chiens','Constitue une vraie meute.',Math.min(unlockedCount,5),5,'💎 200 + 🦴 '+getBonesLabel(3),d.unlock5.claimed||false,'d_unlock5')}
-    ${questCard('💰','Gagner 100 000 Bones','Accumule 100 000 Bones au total.',Math.min(state.totalBonesEarned||0,100000),100000,'💎 300',d.earn100k.claimed||false,'d_earn100k')}
+    ${questCard('🎯',t('q_dreach10_t'),t('q_dreach10_d'),Math.min(state.playerLevel,10),10,'💎 100',d.reach10.claimed||false,'d_reach10')}
+    ${questCard('🐕',t('q_dunlock5_t'),t('q_dunlock5_d'),Math.min(unlockedCount,5),5,'💎 200 + 🦴 '+getBonesLabel(3),d.unlock5.claimed||false,'d_unlock5')}
+    ${questCard('💰',t('q_dearn100k_t'),t('q_dearn100k_d'),Math.min(state.totalBonesEarned||0,100000),100000,'💎 300',d.earn100k.claimed||false,'d_earn100k')}
   `;
 
   // Badge sur l onglet Defis
@@ -840,8 +1033,8 @@ function questCard(icon,title,desc,prog,max,reward,done,key) {
   let btn = done
     ? '<div style="font-size:22px;color:#2ECC71;">✅</div>'
     : complete
-      ? `<button onclick="collectQuest('${key}')" style="background:linear-gradient(135deg,#27AE60,#2ECC71);border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:900;color:white;cursor:pointer;">RÉCLAMER !</button>`
-      : '<span style="font-size:11px;color:var(--text-muted);">En cours…</span>';
+      ? `<button onclick="collectQuest('${key}')" style="background:linear-gradient(135deg,#27AE60,#2ECC71);border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:900;color:white;cursor:pointer;">${t('quests_claim')}</button>`
+      : '<span style="font-size:11px;color:var(--text-muted);">'+t('quests_inprogress')+'</span>';
   return `
   <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;${done?'opacity:0.7':''}">
     <div style="width:48px;height:48px;background:linear-gradient(135deg,#3a1500,#6a3000);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">${icon}</div>
@@ -929,8 +1122,8 @@ function renderCollection() {
     container.innerHTML = `
     <div style="text-align:center;padding:40px 20px;">
       <div style="font-size:48px;margin-bottom:12px;">🎲</div>
-      <div style="font-size:16px;font-weight:900;color:var(--gold);margin-bottom:8px;">Aucun NFT pour l'instant</div>
-      <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Continue à taper sur Paco —<br>un NFT peut tomber à tout moment !</div>
+      <div style="font-size:16px;font-weight:900;color:var(--gold);margin-bottom:8px;">${t('collection_empty_title')}</div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">${t('collection_empty_sub')}</div>
     </div>`;
     return;
   }
@@ -977,7 +1170,7 @@ function renderCollection() {
           <div style="font-size:36px;">🐶</div>
           <div style="font-size:10px;font-weight:900;color:${color};text-align:center;">${nft.rarity.split('·')[0].trim()}</div>
           <div style="font-size:12px;font-weight:900;text-align:center;line-height:1.3;">${nft.name}</div>
-          <div style="font-size:9px;color:var(--text-muted);">Gagné le ${nft.date}</div>
+          <div style="font-size:9px;color:var(--text-muted);">${t('collection_gained')} ${nft.date}</div>
         </div>`;
     });
 
@@ -1023,7 +1216,7 @@ function switchQueteTab(tab) {
   document.querySelectorAll('#screen-quetes .tab').forEach(t => t.classList.remove('active'));
   const tabEl = document.getElementById('qtab-' + tab);
   if (tabEl) tabEl.classList.add('active');
-  const labels = { daily:'QUOTIDIENNES', weekly:'HEBDOMADAIRES', defis:'DÉFIS' };
+  const labels = { daily:t('quests_sub_daily'), weekly:t('quests_sub_weekly'), defis:t('quests_sub_defis') };
   const sub = document.getElementById('quetesSubtitle');
   if (sub) sub.textContent = labels[tab];
   renderQuests();
@@ -1392,6 +1585,8 @@ function closeDogsPanel() {
 
 // ===== INIT =====
 loadState();
+applyLang();
+setTimeout(() => { if (typeof updateLangButtons === 'function') updateLangButtons(); }, 100);
 updateUI();
 // Popup offline earnings
 if (state._offlineEarned > 0) {
@@ -2876,14 +3071,14 @@ function _renderProfileStats() {
   const playTime = Math.floor((state.totalPlayTime || 0) / 60); // en heures
 
   const STATS = [
-    { icon:'🦴', label:'BONES PRODUITS', value: fmt(bones), sub:'Total' },
-    { icon:'🐾', label:'CHIENS DÉBLOQUÉS', value: dogs + ' / ' + ALL_DOGS.length, sub:'/' + ALL_DOGS.length },
-    { icon:'📦', label:'COFFRES OUVERTS', value: fmt(coffres), sub:'Total' },
-    { icon:'🃏', label:'NFT POSSÉDÉS', value: nfts + ' / 1 014', sub:'/ 1 014' },
-    { icon:'📅', label:'JOURS CONNECTÉS', value: days, sub:'Meilleur Streak' },
-    { icon:'⏱️', label:'TEMPS DE JEU', value: playTime + 'h', sub:'Total' },
-    { icon:'⭐', label:'SAISON ACTUELLE', value: 'Saison 1', sub:'En cours' },
-    { icon:'📊', label:'RANG COLLECTION', value: nfts > 0 ? 'Top 50%' : '—', sub:'Cette saison' },
+    { icon:'🦴', label:t('stat_bones_produced'), value: fmt(bones), sub:'Total' },
+    { icon:'🐾', label:t('stat_dogs_unlocked'), value: dogs + ' / ' + ALL_DOGS.length, sub:'/' + ALL_DOGS.length },
+    { icon:'📦', label:t('stat_chests_opened'), value: fmt(coffres), sub:'Total' },
+    { icon:'🃏', label:t('stat_nft_owned'), value: nfts + ' / 1 014', sub:'/ 1 014' },
+    { icon:'📅', label:t('stat_days_connected'), value: days, sub:'Meilleur Streak' },
+    { icon:'⏱️', label:t('stat_playtime'), value: playTime + 'h', sub:'Total' },
+    { icon:'⭐', label:t('stat_current_season'), value: 'Saison 1', sub:'En cours' },
+    { icon:'📊', label:t('stat_collection_rank'), value: nfts > 0 ? 'Top 50%' : '—', sub:'Cette saison' },
   ];
 
   cont.innerHTML = STATS.map(s => `
@@ -2928,85 +3123,6 @@ function _updateProfileSeason() {
   if (el) el.textContent = nfts + ' obtenu' + (nfts > 1 ? 's' : '');
 }
 
-// ============================================================
-// SYSTÈME BILINGUE FR / EN
-// ============================================================
-
-// ============================================================
-// SYSTÈME BILINGUE FR / EN
-// ============================================================
-const LANG = {
-  fr: {
-    nav_accueil:'Accueil', nav_chiens:'Chiens', nav_collection:'Collection', nav_classement:'Classement',
-    sb_quetes:'Quêtes', sb_pass:'Pass', sb_shop:'Shop', sb_cosmetiques:'Cosmétiques',
-    sb_evenements:'Événements', sb_cadeaux:'Cadeaux', sb_nouveau:'NOUVEAU',
-    tapTitle:'🐾 TAP PACO !', tapSubtitle:'Tape pour gagner des Bones',
-    cadeau_chasse:'Chasse<br>aux Os', cadeau_coffres:'Coffres',
-    cadeau_recompenses:'Récom-<br>penses', cadeau_inviter:'Inviter', cadeau_inventaire:'Inventaire',
-    dogs_unlock:'Débloquer', dogs_upgrade:'Améliorer', dogs_maxed:'MAX',
-    settings_lang:'Langue / Language',
-  },
-  en: {
-    nav_accueil:'Home', nav_chiens:'Dogs', nav_collection:'Collection', nav_classement:'Ranking',
-    sb_quetes:'Quests', sb_pass:'Pass', sb_shop:'Shop', sb_cosmetiques:'Cosmetics',
-    sb_evenements:'Events', sb_cadeaux:'Gifts', sb_nouveau:'NEW',
-    tapTitle:'🐾 TAP PACO!', tapSubtitle:'Tap to earn Bones',
-    cadeau_chasse:'Bone<br>Hunt', cadeau_coffres:'Chests',
-    cadeau_recompenses:'Rewards', cadeau_inviter:'Invite', cadeau_inventaire:'Inventory',
-    dogs_unlock:'Unlock', dogs_upgrade:'Upgrade', dogs_maxed:'MAX',
-    settings_lang:'Langue / Language',
-  }
-};
-
-function t(key) {
-  const lang = window.PACKOO_LANG || 'fr';
-  return (LANG[lang] && LANG[lang][key]) || LANG.fr[key] || key;
-}
-
-function applyLang() {
-  document.querySelectorAll('[data-t]').forEach(function(el) {
-    const val = t(el.getAttribute('data-t'));
-    if (el.tagName === 'INPUT') el.placeholder = val;
-    else el.textContent = val;
-  });
-  document.querySelectorAll('[data-t-html]').forEach(function(el) {
-    el.innerHTML = t(el.getAttribute('data-t-html'));
-  });
-}
-
-function setLang(lang) {
-  window.PACKOO_LANG = lang;
-  localStorage.setItem('packoo_lang', lang);
-  applyLang();
-  updateLangButtons();
-  updateUI();
-}
-
-function updateLangButtons() {
-  const lang = window.PACKOO_LANG || 'fr';
-  const fr = document.getElementById('langBtnFr');
-  const en = document.getElementById('langBtnEn');
-  if (!fr || !en) return;
-  const on  = {bg:'rgba(245,166,35,0.3)',  bc:'rgba(245,166,35,0.7)',  c:'#F5A623'};
-  const off = {bg:'rgba(255,255,255,0.05)', bc:'rgba(255,255,255,0.15)', c:'#888'};
-  [['fr', fr], ['en', en]].forEach(function(pair) {
-    const s = pair[0] === lang ? on : off;
-    pair[1].style.background  = s.bg;
-    pair[1].style.borderColor = s.bc;
-    pair[1].style.color       = s.c;
-  });
-}
 
 
-// ===== INIT LANGUE (après définition de LANG) =====
-(function() {
-  const saved = localStorage.getItem('packoo_lang');
-  if (saved === 'fr' || saved === 'en') {
-    window.PACKOO_LANG = saved;
-  } else {
-    const nav = (navigator.language || 'fr').toLowerCase();
-    window.PACKOO_LANG = nav.startsWith('fr') ? 'fr' : 'en';
-  }
-  applyLang();
-  setTimeout(updateLangButtons, 100);
-})();
+
