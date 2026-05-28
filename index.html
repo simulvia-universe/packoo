@@ -51,7 +51,7 @@
 <div class="app" id="app-wrapper">
   <!-- TOPBAR -->
   <div class="topbar home-bar" id="topbar">
-    <div class="player-avatar">🐕</div>
+    <div class="player-avatar" onclick="navigate('profil')" style="cursor:pointer;position:relative;" title="Mon Profil"><div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;background:var(--gold);border-radius:50%;border:2px solid #1A0F00;display:flex;align-items:center;justify-content:center;font-size:7px;">✏️</div>🐕</div>
     <div class="player-info">
       <div class="player-name">DogMaster</div>
       <div class="player-level">
@@ -94,13 +94,6 @@
     <button onclick="devUnlockAll()"        style="width:100%;background:rgba(243,156,18,0.15);border:1px solid #F39C12;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#F39C12;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">🐕 Débloquer tous les chiens</button>
     <button onclick="devAddReferral();toggleMenu()" style="width:100%;background:rgba(39,174,96,0.15);border:1px solid #27AE60;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#27AE60;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">👥 +1 Filleul (test)</button>
     <button onclick="devAddFounderTickets(5)" style="width:100%;background:rgba(0,150,200,0.15);border:1px solid #00AACC;border-radius:8px;padding:8px;font-size:11px;font-weight:900;color:#00CFFF;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:5px;text-align:left;">🎟️ +5 Founder Tickets</button>
-    <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;">
-      <div style="font-size:10px;font-weight:900;color:var(--text-muted);margin-bottom:6px;" data-t="settings_lang">Langue / Language</div>
-      <div style="display:flex;gap:6px;">
-        <button onclick="setLang('fr');toggleMenu()" id="langBtnFr" style="flex:1;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.4);border-radius:8px;padding:7px;font-size:12px;font-weight:900;color:var(--gold);cursor:pointer;font-family:'Nunito',sans-serif;">🇫🇷 FR</button>
-        <button onclick="setLang('en');toggleMenu()" id="langBtnEn" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px;font-size:12px;font-weight:900;color:var(--text-muted);cursor:pointer;font-family:'Nunito',sans-serif;">🇬🇧 EN</button>
-      </div>
-    </div>
     <div id="devStatus" style="font-size:9px;color:#E67E22;text-align:center;margin-top:4px;">Tap ×1 | Passif ×1</div>
   </div>
 
@@ -116,38 +109,12 @@
           <div class="side-btn" onclick="navigate('shop')" style="position:relative;"><div class="sb-badge" id="shopBadge" style="display:none;">!</div><span class="sb-icon">🏪</span><span class="sb-label" data-t="sb_shop">Shop</span></div>
 
           <div class="side-btn" onclick="navigateShopSection('cosmetiques')"><span class="sb-icon">✨</span><span class="sb-label" data-t="sb_cosmetiques">Cosmétiques</span></div>
-          <div class="side-btn" onclick="navigate('evenements')" style="position:relative;"><div class="sb-badge" id="evenementsBadge" style="display:none;">!</div><span class="nouveau-tag" data-t="sb_nouveau">NOUVEAU</span><span class="sb-icon">🎉</span><span class="sb-label" data-t="sb_evenements">Événements</span></div>
+          <div class="side-btn" onclick="navigate('evenements')" style="position:relative;"><div class="sb-badge" id="evenementsBadge" style="display:none;">!</div><span class="nouveau-tag">NOUVEAU</span><span class="sb-icon">🎉</span><span class="sb-label" data-t="sb_evenements">Événements</span></div>
           <div class="side-btn" onclick="navigate('cadeaux')" style="position:relative;"><div class="sb-badge" id="cadeauBadge" style="display:flex;">1</div><span class="sb-icon">🎁</span><span class="sb-label" data-t="sb_cadeaux">Cadeaux</span></div>
         </div>
         <div class="right-col">
         </div>
-        <div class="panel-backdrop" id="panelBackdrop" onclick="closeDogsPanel()"></div>
-        <div class="dogs-panel" id="dogsPanel">
-          <div class="dogs-panel-title">🐾 Mes Chiens <div class="dogs-panel-close" onclick="closeDogsPanel()">✕</div></div>
-          <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
-            <span style="font-size:10px;color:var(--text-muted);font-weight:700">Production totale</span>
-            <span style="font-size:16px;font-weight:900;color:var(--gold-light)">🦴 12,350 /h</span>
-          </div>
-          <div class="dog-panel-row">
-            <div class="dog-panel-avatar"><span class="dimg" style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">🐶</span><div class="dog-rarity-badge" style="background:#9B59B6"></div></div>
-            <div class="dog-panel-info"><div class="dog-panel-name">Paco</div><div class="dog-panel-level">Niv. 25 · Épique</div><div class="dog-panel-xp"><div class="dog-panel-xp-fill" style="width:82%"></div></div></div>
-            <div class="dog-panel-prod">+5,000/h</div>
-          </div>
-          <div class="dog-panel-row">
-            <div class="dog-panel-avatar"><span class="dimg" style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">🐶</span><div class="dog-rarity-badge" style="background:#E67E22"></div></div>
-            <div class="dog-panel-info"><div class="dog-panel-name">Luna</div><div class="dog-panel-level">Niv. 20 · Légendaire</div><div class="dog-panel-xp"><div class="dog-panel-xp-fill" style="width:72%"></div></div></div>
-            <div class="dog-panel-prod">+3,200/h</div>
-          </div>
-          <div class="dog-panel-row">
-            <div class="dog-panel-avatar"><span class="dimg" style="display:flex;align-items:center;justify-content:center;font-size:2.4em;width:100%;height:100%;background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border-radius:50%;">🐶</span><div class="dog-rarity-badge" style="background:#3498DB"></div></div>
-            <div class="dog-panel-info"><div class="dog-panel-name">Snow Paco</div><div class="dog-panel-level">Niv. 15 · Rare</div><div class="dog-panel-xp"><div class="dog-panel-xp-fill" style="width:50%"></div></div></div>
-            <div class="dog-panel-prod">+2,150/h</div>
-          </div>
-          <div class="dog-panel-locked"><span style="font-size:22px;opacity:0.3">🔒</span><div style="font-size:11px;color:var(--text-muted)">Emplacement verrouillé<br><span style="font-size:10px;opacity:0.7">Débloque au Niveau 30</span></div></div>
-          <div style="margin-top:auto;padding-top:10px;">
-            <button onclick="navigate('chiens');closeDogsPanel();" style="width:100%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">Voir tous mes chiens →</button>
-          </div>
-        </div>
+
         <div class="paco-glow-ring"></div>
         <div class="paco-tap-area" onclick="tapPaco(event)">
           <img src='image/paco.png' class="paco-img" alt="Paco" draggable="false"/>
@@ -575,238 +542,263 @@
     <div class="screen" id="screen-evenements">
       <div class="scroll-content">
 
-        <div style="text-align:center;margin-bottom:14px;">
-          <div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);">🎉 ÉVÉNEMENTS</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Participez et gagnez des récompenses exclusives !</div>
+        <!-- HEADER -->
+        <div style="text-align:center;margin-bottom:16px;position:relative;">
+          <div style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(0,30,60,0.95),rgba(0,15,40,0.98));border:2px solid rgba(0,180,255,0.4);border-radius:18px;padding:10px 20px;">
+            <span style="font-size:26px;">📅</span>
+            <div>
+              <div style="font-family:'Fredoka One',cursive;font-size:26px;color:#00CFFF;text-shadow:0 0 20px rgba(0,180,255,0.5);">ÉVÉNEMENTS</div>
+              <div style="font-size:10px;color:rgba(0,200,255,0.7);font-weight:700;letter-spacing:1px;">Participez et gagnez des récompenses exclusives !</div>
+            </div>
+            <div style="font-size:22px;opacity:0.7;">🐾</div>
+          </div>
+          <!-- Packoo watermark -->
+          <div style="position:absolute;right:0;top:50%;transform:translateY(-50%);font-family:'Pacifico',cursive;font-size:18px;color:rgba(0,180,255,0.25);pointer-events:none;">Packoo</div>
         </div>
 
-        <!-- FOUNDER EVENT -->
-        <div style="background:linear-gradient(160deg,#0D0020,#1A0040,#0D0020);border:2px solid rgba(120,60,220,0.7);border-radius:20px;overflow:hidden;margin-bottom:14px;">
+        <!-- FOUNDER EVENT CARD -->
+        <div style="background:linear-gradient(160deg,#010B1A,#021830,#010B1A);border:2px solid rgba(0,160,255,0.6);border-radius:20px;overflow:hidden;margin-bottom:14px;position:relative;">
+
+          <!-- Glow top accent -->
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00AAFF,#00CFFF,#00AAFF,transparent);"></div>
+
           <div style="padding:12px 14px 0;">
-            <div style="display:inline-block;background:linear-gradient(90deg,#5B2DB5,#7B3FD8);color:white;font-size:9px;font-weight:900;padding:4px 14px;border-radius:20px;letter-spacing:1px;">ÉVÉNEMENT EN COURS</div>
+            <div style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,rgba(0,100,200,0.8),rgba(0,150,255,0.8));color:white;font-size:9px;font-weight:900;padding:4px 14px;border-radius:20px;letter-spacing:1.5px;border:1px solid rgba(0,200,255,0.4);">
+              ● ÉVÉNEMENT EN COURS
+            </div>
           </div>
-          <div style="display:flex;align-items:flex-start;padding:8px 14px 0;gap:8px;">
+
+          <div style="display:flex;align-items:flex-start;padding:10px 14px 0;gap:10px;">
             <div style="flex:1;">
-              <div style="font-family:'Fredoka One',cursive;font-size:30px;color:white;line-height:1;text-shadow:0 0 30px rgba(150,80,255,0.8);">FOUNDER EVENT</div>
-              <div style="font-size:10px;color:#BB88FF;font-weight:800;letter-spacing:1px;margin-top:2px;">✦ THE BEGINNING OF OUR PACK ✦</div>
-              <div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:8px;line-height:1.5;">Rejoignez les premiers Packoos<br>et gagnez des récompenses exclusives !</div>
-              <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
+              <div style="font-family:'Fredoka One',cursive;font-size:32px;color:white;line-height:1.1;text-shadow:0 0 30px rgba(0,160,255,0.6);">FOUNDER<br>EVENT</div>
+              <div style="font-size:10px;color:#00CFFF;font-weight:800;letter-spacing:1px;margin-top:4px;">✦ THE BEGINNING OF OUR PACK ✦</div>
+              <div style="font-size:11px;color:rgba(200,235,255,0.8);margin-top:8px;line-height:1.6;">Rejoignez les premiers Packoos<br>et gagnez des récompenses exclusives !</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:10px;background:rgba(0,100,200,0.2);border:1px solid rgba(0,160,255,0.3);border-radius:10px;padding:6px 10px;display:inline-flex;">
                 <span style="font-size:13px;">⏱️</span>
-                <span style="font-size:13px;font-weight:900;color:#00CFFF;">Fin dans : <span id="eventCountdown">9j 14h 32m</span></span>
+                <span style="font-size:13px;font-weight:900;color:#00CFFF;">Fin dans : <span id="eventCountdown">6j 14h 32m</span></span>
               </div>
             </div>
-            <div style="position:relative;width:120px;flex-shrink:0;text-align:center;">
-              <div style="font-size:82px;line-height:1;filter:drop-shadow(0 0 20px rgba(130,60,255,0.8));">🐺</div>
-              <div style="position:absolute;top:4px;right:-4px;background:linear-gradient(135deg,#1A0040,#2D0060);border:2px solid rgba(130,60,255,0.7);border-radius:12px;padding:5px 7px;text-align:center;">
+            <div style="position:relative;width:110px;flex-shrink:0;text-align:center;">
+              <div style="font-size:78px;line-height:1;filter:drop-shadow(0 0 18px rgba(0,160,255,0.7));">🐶</div>
+              <div style="position:absolute;top:4px;right:-4px;background:linear-gradient(135deg,#001830,#002D50);border:2px solid rgba(0,150,255,0.7);border-radius:12px;padding:5px 7px;text-align:center;">
                 <div style="font-size:16px;">🐾</div>
-                <div style="font-size:8px;font-weight:900;color:#BB88FF;letter-spacing:1px;">FOUNDERS</div>
+                <div style="font-size:8px;font-weight:900;color:#00CFFF;letter-spacing:1px;">FOUNDERS</div>
               </div>
             </div>
           </div>
 
-          <!-- Récompenses principales -->
+          <!-- Récompenses -->
           <div style="padding:0 14px;">
-            <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,0.5);letter-spacing:1.5px;margin:12px 0 8px;">RÉCOMPENSES EXCLUSIVES</div>
+            <div style="font-size:10px;font-weight:900;color:rgba(0,180,255,0.6);letter-spacing:1.5px;margin:12px 0 8px;">RÉCOMPENSES EXCLUSIVES</div>
             <div style="display:flex;gap:8px;margin-bottom:14px;">
-              <div style="flex:1;background:rgba(90,40,180,0.3);border:1px solid rgba(120,60,220,0.4);border-radius:12px;padding:10px 6px;text-align:center;">
+              <div style="flex:1;background:rgba(0,80,160,0.3);border:1px solid rgba(0,140,255,0.4);border-radius:12px;padding:10px 6px;text-align:center;">
                 <div style="font-size:26px;">🛡️</div>
-                <div style="font-size:9px;color:rgba(255,255,255,0.7);margin-top:4px;line-height:1.3;">Badge<br>Founder</div>
+                <div style="font-size:9px;color:rgba(200,235,255,0.8);margin-top:4px;line-height:1.3;">Badge<br>Founder</div>
               </div>
-              <div style="flex:1;background:rgba(90,40,180,0.3);border:1px solid rgba(120,60,220,0.4);border-radius:12px;padding:10px 6px;text-align:center;">
+              <div style="flex:1;background:rgba(0,80,160,0.3);border:1px solid rgba(0,140,255,0.4);border-radius:12px;padding:10px 6px;text-align:center;">
                 <div style="font-size:26px;">🐾</div>
-                <div style="font-size:9px;color:rgba(255,255,255,0.7);margin-top:4px;line-height:1.3;">Tapis<br>Founder</div>
+                <div style="font-size:9px;color:rgba(200,235,255,0.8);margin-top:4px;line-height:1.3;">Tapis<br>Founder</div>
               </div>
-              <div style="flex:1;background:rgba(90,40,180,0.3);border:1px solid rgba(120,60,220,0.4);border-radius:12px;padding:10px 6px;text-align:center;">
-                <div style="font-size:26px;">🐺</div>
-                <div style="font-size:9px;color:#BB88FF;margin-top:4px;line-height:1.3;font-weight:900;">NFT<br>Founder</div>
+              <div style="flex:1;background:rgba(0,80,160,0.3);border:1px solid rgba(0,140,255,0.4);border-radius:12px;padding:10px 6px;text-align:center;">
+                <div style="font-size:26px;">🐶</div>
+                <div style="font-size:9px;color:#00CFFF;margin-top:4px;line-height:1.3;font-weight:900;">NFT<br>Founder</div>
               </div>
             </div>
           </div>
-          <button onclick="navigate('founder-event')" style="width:100%;background:linear-gradient(90deg,#5B2DB5,#7B3FD8);border:none;padding:14px;font-size:15px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">Voir l'événement →</button>
+          <button onclick="navigate('founder-event')" style="width:100%;background:linear-gradient(90deg,#004A90,#0077CC,#00A0FF);border:none;padding:14px;font-size:15px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;letter-spacing:0.5px;">Voir l'événement →</button>
         </div>
 
         <!-- PROGRESSION FOUNDER -->
-        <div style="background:var(--bg-card);border:1px solid rgba(120,60,220,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
-          <div style="font-size:12px;font-weight:900;color:#BB88FF;margin-bottom:4px;">🦴 PROGRESSION FOUNDER</div>
-          <div style="font-size:10px;color:var(--text-muted);margin-bottom:14px;">Produisez des Bones et débloquez des récompenses collector !</div>
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-size:18px;">🦴</span>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">PROGRESSION FOUNDER</div>
+          </div>
+          <div style="font-size:10px;color:rgba(150,200,255,0.6);margin-bottom:14px;">Produisez des Bones et débloquez des récompenses collector !</div>
 
-          <!-- Palier 1 -->
-          <div id="fp1" style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,200,100,0.08);border:1px solid rgba(0,200,100,0.3);border-radius:12px;margin-bottom:8px;">
+          <!-- Palier 1 — complété -->
+          <div id="fp1" style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,160,80,0.08);border:1px solid rgba(0,200,100,0.3);border-radius:12px;margin-bottom:8px;">
             <div style="font-size:24px;">📦</div>
             <div style="flex:1;">
               <div style="font-size:11px;font-weight:900;color:white;">1 Coffre Founder</div>
-              <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Produire 5 000 Bones</div>
+              <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;">Produire 5 000 Bones</div>
               <div style="height:5px;background:rgba(255,255,255,0.07);border-radius:3px;margin-top:6px;overflow:hidden;">
                 <div style="height:100%;width:100%;background:linear-gradient(90deg,#00AA55,#00DD77);border-radius:3px;"></div>
               </div>
             </div>
-            <div style="font-size:20px;">✅</div>
+            <div style="background:rgba(0,200,100,0.15);border:1px solid rgba(0,200,100,0.4);border-radius:8px;padding:4px 8px;font-size:16px;">✅</div>
           </div>
 
-          <!-- Palier 2 -->
-          <div id="fp2" style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(120,60,220,0.08);border:1px solid rgba(120,60,220,0.25);border-radius:12px;margin-bottom:8px;">
+          <!-- Palier 2 — en cours -->
+          <div id="fp2" style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,80,160,0.1);border:1px solid rgba(0,140,255,0.3);border-radius:12px;margin-bottom:8px;">
             <div style="font-size:24px;">🎟️</div>
             <div style="flex:1;">
               <div style="font-size:11px;font-weight:900;color:white;">3 Founder Tickets</div>
-              <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Produire 25 000 Bones</div>
+              <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;">Produire 25 000 Bones</div>
               <div style="height:5px;background:rgba(255,255,255,0.07);border-radius:3px;margin-top:6px;overflow:hidden;">
-                <div style="height:100%;width:34%;background:linear-gradient(90deg,#7B3FD8,#BB88FF);border-radius:3px;"></div>
+                <div style="height:100%;width:34%;background:linear-gradient(90deg,#0066CC,#00AAFF);border-radius:3px;"></div>
               </div>
             </div>
-            <div style="font-size:10px;font-weight:900;color:var(--text-muted);">8.5K / 25K</div>
+            <div style="font-size:10px;font-weight:900;color:#00CFFF;">8.5K / 25K</div>
           </div>
 
-          <!-- Palier 3 -->
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.15);border-radius:12px;margin-bottom:8px;opacity:0.6;">
+          <!-- Palier 3 — verrouillé -->
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,40,80,0.08);border:1px solid rgba(0,100,180,0.2);border-radius:12px;margin-bottom:8px;opacity:0.6;">
             <div style="font-size:24px;">🛡️</div>
             <div style="flex:1;">
               <div style="font-size:11px;font-weight:900;color:white;">Badge Founder</div>
-              <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Produire 100 000 Bones</div>
+              <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;">Produire 100 000 Bones</div>
             </div>
             <div style="font-size:16px;">🔒</div>
           </div>
 
           <!-- Palier 4 -->
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(245,166,35,0.04);border:1px solid rgba(245,166,35,0.1);border-radius:12px;margin-bottom:8px;opacity:0.45;">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,40,80,0.05);border:1px solid rgba(0,80,140,0.15);border-radius:12px;margin-bottom:8px;opacity:0.45;">
             <div style="font-size:24px;">🐾</div>
             <div style="flex:1;">
               <div style="font-size:11px;font-weight:900;color:white;">Tapis Founder</div>
-              <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Produire 250 000 Bones</div>
+              <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;">Produire 250 000 Bones</div>
             </div>
             <div style="font-size:16px;">🔒</div>
           </div>
 
           <!-- Palier 5 -->
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(120,60,220,0.04);border:1px solid rgba(120,60,220,0.1);border-radius:12px;opacity:0.35;">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,30,60,0.05);border:1px solid rgba(0,60,120,0.12);border-radius:12px;opacity:0.35;">
             <div style="font-size:24px;">🎁</div>
             <div style="flex:1;">
               <div style="font-size:11px;font-weight:900;color:white;">Coffre Rare Founder</div>
-              <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Produire 500 000 Bones</div>
+              <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;">Produire 500 000 Bones</div>
             </div>
             <div style="font-size:16px;">🔒</div>
           </div>
         </div>
 
-        <!-- VOS FOUNDER TICKETS -->
-        <div style="background:var(--bg-card);border:1px solid rgba(120,60,220,0.35);border-radius:16px;overflow:hidden;margin-bottom:12px;">
+        <!-- FOUNDER TICKETS -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.35);border-radius:16px;overflow:hidden;margin-bottom:12px;">
           <div style="display:flex;">
             <div style="flex:1;padding:14px;">
-              <div style="font-size:11px;font-weight:900;color:#BB88FF;letter-spacing:0.5px;margin-bottom:8px;">VOS FOUNDER TICKETS</div>
+              <div style="font-size:11px;font-weight:900;color:#00CFFF;letter-spacing:0.5px;margin-bottom:8px;">VOS FOUNDER TICKETS</div>
               <div style="display:flex;align-items:center;gap:10px;">
-                <span style="font-size:34px;">🎟️</span>
+                <span style="font-size:34px;filter:drop-shadow(0 0 8px rgba(0,180,255,0.5));">🎟️</span>
                 <div>
                   <div style="font-size:30px;font-weight:900;color:white;" id="founderTicketsDisplay">0</div>
-                  <div style="font-size:9px;color:var(--text-muted);margin-top:2px;line-height:1.4;">Ouvrez des coffres Founder<br>et gagnez des récompenses rares !</div>
+                  <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;line-height:1.4;">Ouvrez des coffres Founder<br>et gagnez des récompenses rares !</div>
                 </div>
               </div>
             </div>
-            <button onclick="openFounderCrate()" style="background:linear-gradient(135deg,#2D0060,#4A0090);border:none;border-left:2px solid rgba(120,60,220,0.4);padding:14px 12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:118px;">
-              <div style="font-size:38px;filter:drop-shadow(0 0 10px rgba(180,100,255,0.6));">📦</div>
+            <button onclick="openFounderCrate()" style="background:linear-gradient(135deg,#001830,#003060);border:none;border-left:2px solid rgba(0,140,255,0.4);padding:14px 12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:118px;">
+              <div style="font-size:38px;filter:drop-shadow(0 0 10px rgba(0,160,255,0.6));">📦</div>
               <div style="font-size:11px;font-weight:900;color:white;line-height:1.3;">Ouvrir un<br>coffre Founder</div>
-              <div style="display:flex;align-items:center;gap:4px;margin-top:4px;background:rgba(120,60,220,0.3);border-radius:8px;padding:3px 8px;">
+              <div style="display:flex;align-items:center;gap:4px;margin-top:4px;background:rgba(0,100,200,0.3);border:1px solid rgba(0,160,255,0.3);border-radius:8px;padding:3px 8px;">
                 <span style="font-size:12px;">🎟️</span>
-                <span style="font-size:13px;font-weight:900;color:#BB88FF;">1</span>
+                <span style="font-size:13px;font-weight:900;color:#00CFFF;">1</span>
               </div>
             </button>
           </div>
         </div>
 
         <!-- CONNEXION QUOTIDIENNE FOUNDER -->
-        <div style="background:var(--bg-card);border:1px solid rgba(120,60,220,0.25);border-radius:16px;padding:14px;margin-bottom:12px;">
-          <div style="font-size:12px;font-weight:900;color:#BB88FF;margin-bottom:10px;">📅 CONNEXION FOUNDER</div>
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.25);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+            <span style="font-size:16px;">📅</span>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">CONNEXION FOUNDER</div>
+          </div>
           <div style="display:flex;gap:6px;">
             <div style="flex:1;text-align:center;">
-              <div style="background:rgba(0,180,80,0.2);border:2px solid rgba(0,180,80,0.5);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
+              <div style="background:rgba(0,180,80,0.2);border:2px solid rgba(0,200,100,0.5);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">🎟️</div>
                 <div style="font-size:8px;font-weight:900;color:#2ECC71;margin-top:2px;">✅</div>
               </div>
-              <div style="font-size:8px;color:var(--text-muted);">J1</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.6);">J1</div>
             </div>
             <div style="flex:1;text-align:center;">
-              <div style="background:rgba(120,60,220,0.15);border:1px solid rgba(120,60,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
+              <div style="background:rgba(0,60,120,0.2);border:1px solid rgba(0,120,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">⚡</div>
-                <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">boost</div>
+                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;">boost</div>
               </div>
-              <div style="font-size:8px;color:var(--text-muted);">J2</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.6);">J2</div>
             </div>
             <div style="flex:1;text-align:center;">
-              <div style="background:rgba(120,60,220,0.15);border:1px solid rgba(120,60,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
+              <div style="background:rgba(0,60,120,0.2);border:1px solid rgba(0,120,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">📦</div>
-                <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">coffre</div>
+                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;">coffre</div>
               </div>
-              <div style="font-size:8px;color:var(--text-muted);">J3</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.6);">J3</div>
             </div>
             <div style="flex:1;text-align:center;">
-              <div style="background:rgba(120,60,220,0.15);border:1px solid rgba(120,60,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
+              <div style="background:rgba(0,60,120,0.2);border:1px solid rgba(0,120,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">🎟️</div>
-                <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">×3</div>
+                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;">×3</div>
               </div>
-              <div style="font-size:8px;color:var(--text-muted);">J4</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.6);">J4</div>
             </div>
             <div style="flex:1;text-align:center;">
-              <div style="background:rgba(120,60,220,0.15);border:1px solid rgba(120,60,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
+              <div style="background:rgba(0,60,120,0.2);border:1px solid rgba(0,120,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">🖼️</div>
-                <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">cadre</div>
+                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;">cadre</div>
               </div>
-              <div style="font-size:8px;color:var(--text-muted);">J5</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.6);">J5</div>
             </div>
             <div style="flex:1;text-align:center;">
-              <div style="background:rgba(120,60,220,0.15);border:1px solid rgba(120,60,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
+              <div style="background:rgba(0,60,120,0.2);border:1px solid rgba(0,120,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">📦</div>
-                <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">rare</div>
+                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;">rare</div>
               </div>
-              <div style="font-size:8px;color:var(--text-muted);">J6</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.6);">J6</div>
             </div>
             <div style="flex:1;text-align:center;">
-              <div style="background:linear-gradient(135deg,rgba(120,60,220,0.3),rgba(180,80,255,0.3));border:1px solid rgba(180,80,255,0.5);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
+              <div style="background:linear-gradient(135deg,rgba(0,80,180,0.3),rgba(0,140,255,0.3));border:1px solid rgba(0,180,255,0.5);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">🐾</div>
-                <div style="font-size:8px;color:#BB88FF;margin-top:2px;font-weight:900;">tapis</div>
+                <div style="font-size:8px;color:#00CFFF;margin-top:2px;font-weight:900;">tapis</div>
               </div>
-              <div style="font-size:8px;color:var(--gold);">J7</div>
+              <div style="font-size:8px;color:#00CFFF;font-weight:900;">J7</div>
             </div>
           </div>
         </div>
 
         <!-- MISSIONS FOUNDER -->
-        <div style="background:var(--bg-card);border:1px solid rgba(120,60,220,0.25);border-radius:16px;padding:14px;margin-bottom:12px;">
-          <div style="font-size:12px;font-weight:900;color:#BB88FF;margin-bottom:10px;">⚡ MISSIONS FOUNDER</div>
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.25);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+            <span style="font-size:16px;">⚡</span>
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">MISSIONS FOUNDER</div>
+          </div>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(0,180,80,0.08);border:1px solid rgba(0,180,80,0.25);border-radius:10px;">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(0,160,80,0.08);border:1px solid rgba(0,180,80,0.25);border-radius:10px;">
               <div style="font-size:18px;">✅</div>
-              <div style="flex:1;font-size:11px;color:rgba(255,255,255,0.6);text-decoration:line-through;">Récupérer ses Bones 5 fois</div>
+              <div style="flex:1;font-size:11px;color:rgba(200,235,255,0.5);text-decoration:line-through;">Récupérer ses Bones 5 fois</div>
               <div style="font-size:9px;font-weight:900;color:#2ECC71;">+1 🎟️</div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(120,60,220,0.08);border:1px solid rgba(120,60,220,0.2);border-radius:10px;">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(0,60,120,0.1);border:1px solid rgba(0,120,220,0.2);border-radius:10px;">
               <div style="font-size:18px;">📺</div>
               <div style="flex:1;">
                 <div style="font-size:11px;color:white;">Regarder 2 pubs</div>
-                <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">1 / 2</div>
+                <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;">1 / 2</div>
               </div>
-              <div style="font-size:9px;font-weight:900;color:#BB88FF;">+1 🎟️</div>
+              <div style="font-size:9px;font-weight:900;color:#00CFFF;">+1 🎟️</div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(120,60,220,0.08);border:1px solid rgba(120,60,220,0.2);border-radius:10px;opacity:0.6;">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(0,60,120,0.08);border:1px solid rgba(0,100,180,0.2);border-radius:10px;opacity:0.6;">
               <div style="font-size:18px;">📦</div>
               <div style="flex:1;">
                 <div style="font-size:11px;color:white;">Ouvrir 1 coffre normal</div>
-                <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">0 / 1</div>
+                <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;">0 / 1</div>
               </div>
-              <div style="font-size:9px;font-weight:900;color:#BB88FF;">+2 🎟️</div>
+              <div style="font-size:9px;font-weight:900;color:#00CFFF;">+2 🎟️</div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(120,60,220,0.08);border:1px solid rgba(120,60,220,0.2);border-radius:10px;opacity:0.6;">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(0,60,120,0.08);border:1px solid rgba(0,100,180,0.2);border-radius:10px;opacity:0.6;">
               <div style="font-size:18px;">📅</div>
               <div style="flex:1;">
                 <div style="font-size:11px;color:white;">Se connecter 3 jours</div>
-                <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">1 / 3</div>
+                <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;">1 / 3</div>
               </div>
-              <div style="font-size:9px;font-weight:900;color:#BB88FF;">+1 📦 coffre</div>
+              <div style="font-size:9px;font-weight:900;color:#00CFFF;">+1 📦 coffre</div>
             </div>
           </div>
         </div>
 
         <!-- FOOTER -->
-        <div style="background:rgba(120,60,220,0.08);border:1px solid rgba(120,60,220,0.2);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;">
+        <div style="background:rgba(0,60,120,0.08);border:1px solid rgba(0,120,220,0.2);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:8px;">
           <span style="font-size:22px;">🐾</span>
-          <div style="flex:1;font-size:11px;color:var(--text-muted);line-height:1.6;">De nouveaux événements arriveront <span style="color:var(--gold);font-weight:900;">bientôt</span> dans Packoo...</div>
+          <div style="flex:1;font-size:11px;color:rgba(150,200,255,0.6);line-height:1.6;">De nouveaux événements arriveront <span style="color:#00CFFF;font-weight:900;">bientôt</span> dans Packoo...</div>
           <span style="font-size:18px;opacity:0.4;">✨</span>
         </div>
 
@@ -830,11 +822,11 @@
 
         <!-- TABS -->
         <div class="filter-tabs" style="margin-bottom:14px;">
-          <div class="tab active" id="ctab-chasse" onclick="switchCadeauTab('chasse')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-chasse" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">🦴</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t-html="cadeau_chasse">Chasse<br>aux Os</span></div>
-          <div class="tab" id="ctab-coffres" onclick="switchCadeauTab('coffres')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-coffres" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">📦</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t="cadeau_coffres">Coffres</span></div>
-          <div class="tab" id="ctab-rewards" onclick="switchCadeauTab('rewards')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-rewards" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">🎁</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t-html="cadeau_recompenses">Récom-<br>penses</span></div>
-          <div class="tab" id="ctab-inviter" onclick="switchCadeauTab('inviter')" style="flex-direction:column;gap:2px;padding:6px 2px;"><span style="font-size:16px;">👥</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t="cadeau_inviter">Inviter</span></div>
-          <div class="tab" id="ctab-inventaire" onclick="switchCadeauTab('inventaire')" style="flex-direction:column;gap:2px;padding:6px 2px;"><span style="font-size:16px;">🎒</span><span style="font-size:9px;text-align:center;line-height:1.2;" data-t="cadeau_inventaire">Inventaire</span></div>
+          <div class="tab active" id="ctab-chasse" onclick="switchCadeauTab('chasse')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-chasse" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">🦴</span><span style="font-size:9px;text-align:center;line-height:1.2;">Chasse<br>aux Os</span></div>
+          <div class="tab" id="ctab-coffres" onclick="switchCadeauTab('coffres')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-coffres" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">📦</span><span style="font-size:9px;text-align:center;line-height:1.2;">Coffres</span></div>
+          <div class="tab" id="ctab-rewards" onclick="switchCadeauTab('rewards')" style="position:relative;flex-direction:column;gap:2px;padding:6px 2px;"><span id="badge-rewards" style="display:none;position:absolute;top:-4px;right:-4px;background:#E74C3C;color:white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:900;align-items:center;justify-content:center;"></span><span style="font-size:16px;">🎁</span><span style="font-size:9px;text-align:center;line-height:1.2;">Récom-<br>penses</span></div>
+          <div class="tab" id="ctab-inviter" onclick="switchCadeauTab('inviter')" style="flex-direction:column;gap:2px;padding:6px 2px;"><span style="font-size:16px;">👥</span><span style="font-size:9px;text-align:center;line-height:1.2;">Inviter</span></div>
+          <div class="tab" id="ctab-inventaire" onclick="switchCadeauTab('inventaire')" style="flex-direction:column;gap:2px;padding:6px 2px;"><span style="font-size:16px;">🎒</span><span style="font-size:9px;text-align:center;line-height:1.2;">Inventaire</span></div>
         </div>
 
         <!-- ===== TAB : CHASSE AUX OS ===== -->
@@ -970,15 +962,15 @@
           </div>
 
           <!-- Coffre Événement -->
-          <div style="background:linear-gradient(135deg,#1A0030,#2D0050);border:1px solid rgba(155,89,182,0.5);border-radius:14px;padding:12px;margin-bottom:10px;">
+          <div style="background:linear-gradient(135deg,#010B1A,#021830);border:1px solid rgba(0,140,255,0.5);border-radius:14px;padding:12px;margin-bottom:10px;">
             <div style="display:flex;align-items:center;gap:12px;">
               <div style="font-size:44px;">🔮</div>
               <div style="flex:1;">
-                <div style="font-size:13px;font-weight:900;color:#C39BD3;margin-bottom:2px;">COFFRE ÉVÉNEMENT</div>
+                <div style="font-size:13px;font-weight:900;color:#00CFFF;margin-bottom:2px;">COFFRE ÉVÉNEMENT</div>
                 <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">Récompenses exclusives événement</div>
                 <div style="font-size:11px;color:var(--gold);font-weight:900;">En possession : <span id="coffreEventCount">0</span></div>
               </div>
-              <button onclick="openCoffre('event')" style="background:linear-gradient(135deg,#7D3C98,#9B59B6);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">OUVRIR</button>
+              <button onclick="openCoffre('event')" style="background:linear-gradient(135deg,#004A90,#0077CC);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">OUVRIR</button>
             </div>
           </div>
 
@@ -996,16 +988,16 @@
           <div id="dailyStreakScreen" style="margin-bottom:14px;"></div>
 
           <!-- Événement -->
-          <div style="background:linear-gradient(135deg,#1A0030,#2D0050);border:1px solid rgba(155,89,182,0.4);border-radius:14px;padding:12px;margin-bottom:10px;">
+          <div style="background:linear-gradient(135deg,#010B1A,#021830);border:1px solid rgba(0,140,255,0.4);border-radius:14px;padding:12px;margin-bottom:10px;">
             <div style="display:flex;align-items:center;gap:12px;">
               <div style="position:relative;">
                 <div style="font-size:44px;">🎟️</div>
               </div>
               <div style="flex:1;">
-                <div style="font-size:13px;font-weight:900;color:#C39BD3;margin-bottom:2px;">RÉCOMPENSES ÉVÉNEMENT</div>
+                <div style="font-size:13px;font-weight:900;color:#00CFFF;margin-bottom:2px;">RÉCOMPENSES ÉVÉNEMENT</div>
                 <div style="font-size:10px;color:var(--text-muted);">Participe aux événements pour gagner des tickets !</div>
               </div>
-              <button onclick="navigate('evenements')" style="background:linear-gradient(135deg,#7D3C98,#9B59B6);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">VOIR</button>
+              <button onclick="navigate('evenements')" style="background:linear-gradient(135deg,#004A90,#0077CC);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">VOIR</button>
             </div>
           </div>
 
@@ -1150,7 +1142,158 @@
       </div>
     </div>
 
+    <!-- ===== PROFIL ===== -->
+    <div class="screen" id="screen-profil">
+      <div class="scroll-content">
+
+        <!-- HEADER PROFIL -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#00CFFF;">MON PROFIL</div>
+          <div style="font-size:10px;color:rgba(150,200,255,0.6);background:rgba(0,60,120,0.3);border:1px solid rgba(0,140,255,0.2);border-radius:8px;padding:4px 10px;" id="profilePlayerId">#PCK001</div>
+        </div>
+
+        <!-- CARTE PROFIL PRINCIPALE -->
+        <div style="background:linear-gradient(160deg,#010B1A,#021830);border:2px solid rgba(0,150,255,0.5);border-radius:20px;overflow:hidden;margin-bottom:14px;position:relative;">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00AAFF,#00CFFF,#00AAFF,transparent);"></div>
+
+          <div style="display:flex;gap:12px;padding:14px;">
+            <!-- Avatar gauche -->
+            <div style="flex-shrink:0;text-align:center;">
+              <div style="width:90px;height:90px;border-radius:16px;border:2px solid rgba(0,180,255,0.5);background:linear-gradient(135deg,#010B1A,#021830);display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;overflow:hidden;">
+                🐶
+                <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);padding:3px;font-size:8px;font-weight:900;color:#00CFFF;text-align:center;cursor:pointer;" onclick="showToast('🐶 Changer l\'avatar — bientôt disponible !')">📷 Changer</div>
+              </div>
+              <div style="margin-top:6px;font-size:9px;color:rgba(150,200,255,0.6);">NIVEAU</div>
+              <div style="font-size:22px;font-weight:900;color:white;" id="profileLevel">1</div>
+            </div>
+
+            <!-- Infos droite -->
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                <div style="font-size:16px;font-weight:900;color:white;" id="profileName">DogMaster</div>
+                <div style="font-size:14px;cursor:pointer;" onclick="editProfileName()">✏️</div>
+              </div>
+
+              <!-- Titre actuel -->
+              <div style="background:linear-gradient(90deg,rgba(0,80,160,0.4),rgba(0,140,255,0.2));border:1px solid rgba(0,160,255,0.4);border-radius:10px;padding:6px 10px;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+                <span style="font-size:14px;">🐾</span>
+                <div>
+                  <div style="font-size:8px;color:rgba(150,200,255,0.6);letter-spacing:1px;">TITRE ACTUEL</div>
+                  <div style="font-size:13px;font-weight:900;color:#00CFFF;" id="profileTitle">FOUNDER</div>
+                </div>
+              </div>
+
+              <!-- Stats rapides -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                <div style="background:rgba(0,40,80,0.4);border-radius:8px;padding:6px 8px;">
+                  <div style="font-size:8px;color:rgba(150,200,255,0.5);">MEMBRE DEPUIS</div>
+                  <div style="font-size:10px;font-weight:900;color:#00CFFF;" id="profileSince">Saison 1</div>
+                </div>
+                <div style="background:rgba(0,40,80,0.4);border-radius:8px;padding:6px 8px;">
+                  <div style="font-size:8px;color:rgba(150,200,255,0.5);">NFT POSSÉDÉS</div>
+                  <div style="font-size:10px;font-weight:900;color:#00CFFF;" id="profileNFTCount">0 / 1014</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barre XP -->
+          <div style="padding:0 14px 14px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:9px;color:rgba(150,200,255,0.6);">XP JOUEUR</span>
+              <span style="font-size:9px;font-weight:900;color:#00CFFF;" id="profileXPLabel">0 / 1000 XP</span>
+            </div>
+            <div style="height:6px;background:rgba(0,60,120,0.4);border-radius:3px;overflow:hidden;">
+              <div id="profileXPBar" style="height:100%;width:0%;background:linear-gradient(90deg,#0066CC,#00CFFF);border-radius:3px;transition:width 0.4s;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TITRES -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">TITRES</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);">VOIR TOUT (8) ›</div>
+          </div>
+          <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;" id="profileTitres">
+            <!-- généré par JS -->
+          </div>
+        </div>
+
+        <!-- BADGES -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">BADGES</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);" id="profileBadgesCount">VOIR TOUT ›</div>
+          </div>
+          <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;" id="profileBadges">
+            <!-- généré par JS -->
+          </div>
+        </div>
+
+        <!-- STATISTIQUES -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="font-size:12px;font-weight:900;color:#00CFFF;margin-bottom:10px;">STATISTIQUES</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="profileStats">
+            <!-- généré par JS -->
+          </div>
+        </div>
+
+        <!-- COLLECTION FAVORITE -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">COLLECTION FAVORITE</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);cursor:pointer;" onclick="showToast('✏️ Éditer la collection — bientôt disponible !')">ÉDITER</div>
+          </div>
+          <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;" id="profileCollection">
+            <!-- généré par JS -->
+          </div>
+        </div>
+
+        <!-- HISTORIQUE SAISONS -->
+        <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:12px;font-weight:900;color:#00CFFF;">HISTORIQUE DES SAISONS</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);">VOIR TOUT ›</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(0,40,80,0.3);border:1px solid rgba(0,100,200,0.25);border-radius:12px;padding:12px;">
+            <div style="width:44px;height:44px;background:linear-gradient(135deg,#0066CC,#00AAFF);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:16px;font-weight:900;color:white;flex-shrink:0;">S1</div>
+            <div style="flex:1;">
+              <div style="font-size:12px;font-weight:900;color:white;margin-bottom:4px;">SAISON 1 — THE FIRST PACK</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <div style="font-size:9px;color:rgba(150,200,255,0.7);">📅 Participé · 27 mai 2026</div>
+                <div style="font-size:9px;color:#00CFFF;font-weight:900;" id="profileS1Event">⭐ Founder Event</div>
+                <div style="font-size:9px;color:rgba(150,200,255,0.7);" id="profileS1Rank">🏆 En cours</div>
+              </div>
+            </div>
+            <div style="text-align:center;flex-shrink:0;">
+              <div style="font-size:28px;">🔴</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.6);">MYTHIC</div>
+              <div style="font-size:8px;color:rgba(150,200,255,0.5);" id="profileMythicCount">0 obtenu</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div><!-- end screens -->
+
+  <!-- DOGS PANEL — global, accessible depuis tous les écrans -->
+  <div class="panel-backdrop" id="panelBackdrop" onclick="closeDogsPanel()"></div>
+  <div class="dogs-panel" id="dogsPanel">
+    <div class="dogs-panel-title">🐾 Mes Chiens <div class="dogs-panel-close" onclick="closeDogsPanel()">✕</div></div>
+    <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:10px;color:var(--text-muted);font-weight:700">Production totale</span>
+      <span style="font-size:16px;font-weight:900;color:var(--gold-light)" id="dogPanelProdTotal">🦴 0 /h</span>
+    </div>
+    <div id="dogPanelList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;">
+      <!-- généré dynamiquement -->
+    </div>
+    <div style="padding-top:10px;">
+      <button onclick="navigate('chiens');closeDogsPanel();" style="width:100%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">Voir tous mes chiens →</button>
+    </div>
+  </div>
 
   <nav class="bottom-nav">
     <div class="nav-item active" id="nav-home" onclick="navigate('home')"><span class="nav-icon">🏠</span><span class="nav-label">Accueil</span></div>
