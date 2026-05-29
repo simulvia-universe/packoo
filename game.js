@@ -1345,7 +1345,7 @@ function renderCollection() {
 
     html += `<div style="margin-bottom:20px;">
       <div style="font-size:11px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">
-        ${collName === 'Genesis' ? '⭐' : collName === 'Saison 1' ? '🏆' : '🎭'} ${collName}
+        ${collName === 'Genesis' ? '⭐' : collName === 'Saison 1' ? '🏆' : '🎭'} ${collName === 'Saison 1' ? t('pass_season') : collName}
         <span style="font-size:10px;color:var(--text-muted);font-weight:700;margin-left:6px;">${nfts.length} NFT</span>
       </div>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">`;
@@ -1361,7 +1361,7 @@ function renderCollection() {
       html += `
         <div style="background:var(--bg-card);border:2px solid ${color};border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;">
           <div style="font-size:36px;">🐶</div>
-          <div style="font-size:10px;font-weight:900;color:${color};text-align:center;">${nft.rarity.split('·')[0].trim()}</div>
+          <div style="font-size:10px;font-weight:900;color:${color};text-align:center;">${tNFTRarity(nft.rarity)}</div>
           <div style="font-size:12px;font-weight:900;text-align:center;line-height:1.3;">${nft.name}</div>
           <div style="font-size:9px;color:var(--text-muted);">${t('collection_gained')} ${nft.date}</div>
         </div>`;
@@ -1493,9 +1493,8 @@ function buyChest(type) {
   let r = Math.random(), cumul = 0, won = 'COMMON';
   for (const [rarity, prob] of Object.entries(chances[type])) { cumul += prob; if (r < cumul) { won = rarity; break; } }
   state.bones += bonusMap[won];
-  const labels = { COMMON:'Commun', UNCOMMON:'Peu Commun', RARE:'Rare', EPIC:'Épique', LEGENDARY:'Légendaire' };
   updateUI(); saveState();
-  showToast('🎲 ' + labels[won] + ' — 🦴 +' + fmt(bonusMap[won]) + ' !');
+  showToast('🎲 ' + tRarity(RARITY[won].label) + ' — 🦴 +' + fmt(bonusMap[won]) + ' !');
 }
 
 function buyBoost(type) {
@@ -1506,7 +1505,7 @@ function buyBoost(type) {
   state.boostEnd = Date.now() + (type === 'production' ? 7200000 : 3600000);
   if (type === 'chance') Object.keys(state.pityCounters).forEach(r => state.pityCounters[r] += 100);
   updateUI(); saveState();
-  showToast(type === 'production' ? '⚡ Production x2 activée 2h !' : '🍀 Chance NFT x3 activée 1h !');
+  showToast(type === 'production' ? t('toast_boost_prod') : t('toast_boost_nft'));
 }
 
 function buyBones() {
@@ -1527,7 +1526,7 @@ function buySpecialOffer() {
 }
 
 function resetGame() {
-  if (!confirm('Réinitialiser toute ta progression ? Cette action est irréversible.')) return;
+  if (!confirm(t('confirm_reset'))) return;
   localStorage.removeItem('packoo_save');
   location.reload();
 }
@@ -1641,6 +1640,25 @@ const REWARD_LABELS = {
   '🦴 300 Bones':{en:'🦴 300 Bones'},
   '🎁 Coffre Argent':{en:'🎁 Silver Chest'},
 };
+
+
+function tNFTRarity(rarity) {
+  const lang = window.PACKOO_LANG || 'fr';
+  const part = rarity.split('·')[0].trim();
+  if (lang === 'fr') return part;
+  return part
+    .replace('Légendaire', 'Legendary')
+    .replace('Épique', 'Epic')
+    .replace('Peu Commun', 'Uncommon')
+    .replace('Commun', 'Common')
+    .replace('Rare', 'Rare');
+}
+
+function tRankBadge(badge) {
+  const lang = window.PACKOO_LANG || 'fr';
+  if (lang === 'fr') return badge;
+  return badge.replace('Légende', 'Legend').replace('Maître', 'Master');
+}
 function tRarity(label) {
   const lang = window.PACKOO_LANG || 'fr';
   if (lang === 'fr') return label;
@@ -1954,7 +1972,7 @@ function renderInviter() {
   const actEl = document.getElementById('referralActivity');
   if (actEl) {
     if (!state.referralHistory || state.referralHistory.length === 0) {
-      actEl.innerHTML = '<div style="font-size:10px;color:var(--text-muted);text-align:center;padding:8px;">Aucun filleul pour l\'instant. Invite tes amis !</div>';
+      actEl.innerHTML = '<div style="font-size:10px;color:var(--text-muted);text-align:center;padding:8px;">' + t('invite_none') + '</div>';
     } else {
       actEl.innerHTML = state.referralHistory.slice(-5).reverse().map(h =>
         '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);">' +
@@ -2265,9 +2283,9 @@ function renderOsChasse() {
   if (msg) {
     const daily = state.osDailyCount || 0;
     if (daily >= 4) {
-      msg.innerHTML = '✅ Tu as récupéré tes <strong style="color:var(--gold);">4 os du jour</strong> !<br><span style="color:var(--text-muted);">Reviens demain pour continuer la série.</span>';
+      msg.innerHTML = '✅ ' + t('os_collected_max') + '<br><span style="color:var(--text-muted);">' + t('os_come_back') + '</span>';
     } else {
-      msg.innerHTML = '🦴 Un os mystérieux peut tomber à tout moment...<br><span style="color:var(--gold);font-weight:800;">Reste attentif pendant que tu joues !</span>';
+      msg.innerHTML = '🦴 ' + t('os_mysterious') + '<br><span style="color:var(--gold);font-weight:800;">' + t('os_stay_alert') + '</span>';
     }
   }
 
