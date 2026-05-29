@@ -1977,7 +1977,7 @@ function renderInviter() {
       actEl.innerHTML = state.referralHistory.slice(-5).reverse().map(h =>
         '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);">' +
         '<span style="font-size:14px;">🐾</span>' +
-        '<span style="font-size:10px;color:var(--text-muted);flex:1;">' + h.name + ' — ' + h.action + '</span>' +
+        '<span style="font-size:10px;color:var(--text-muted);flex:1;">' + h.name + ' — ' + t('invite_validated') + '</span>' +
         '<span style="font-size:9px;color:var(--text-muted);">' + h.date + '</span>' +
         '</div>'
       ).join('');
