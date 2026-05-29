@@ -157,6 +157,14 @@ const LANG = {
     invite_share_msg2:'pour démarrer avec des bonus.',
     dogs_my_dogs:'🐾 MES CHIENS', dogs_filter_all:'🐾 Tous', dogs_filter_active:'⚡ Actifs',
     dogs_prod_total:'Production totale',
+    shop_popular:'POPULAIRE', shop_best:'✨ BEST', shop_best_plain:'BEST',
+    shop_chest_bronze:'BRONZE', shop_chest_bronze_sub:'Bones · Chien Commun/Rare',
+    shop_chest_argent:'ARGENT', shop_chest_argent_sub:'Chien Rare/Épique + Bones bonus',
+    shop_chest_or:'OR', shop_chest_or_sub:'Chance NFT Épique/Légendaire',
+    shop_pack_starter:'PACK STARTER', shop_pack_progression:'PACK PROGRESSION',
+    shop_pack_diamonds:'PACK DIAMANTS', shop_pack_bones:'PACK BONES',
+    shop_pack_starter_content:'💎 500<br>🦴 100K Bones<br>📦 1 Coffre Argent<br>⭐ Boost x2 (24h)',
+    shop_pack_prog_content:'💎 1,200<br>🦴 250K Bones<br>📦 3 Coffres Argent<br>⭐ Boost x2 (2h)',
   },
   en: {
     nav_accueil:'Home', nav_chiens:'Dogs', nav_collection:'Collection', nav_classement:'Ranking',
@@ -309,6 +317,14 @@ const LANG = {
     invite_share_msg2:'to start with bonuses.',
     dogs_my_dogs:'🐾 MY DOGS', dogs_filter_all:'🐾 All', dogs_filter_active:'⚡ Active',
     dogs_prod_total:'Total production',
+    shop_popular:'POPULAR', shop_best:'✨ BEST', shop_best_plain:'BEST',
+    shop_chest_bronze:'BRONZE', shop_chest_bronze_sub:'Bones · Common/Rare Dog',
+    shop_chest_argent:'SILVER', shop_chest_argent_sub:'Rare/Epic Dog + Bones bonus',
+    shop_chest_or:'GOLD', shop_chest_or_sub:'Epic/Legendary NFT Chance',
+    shop_pack_starter:'STARTER PACK', shop_pack_progression:'PROGRESSION PACK',
+    shop_pack_diamonds:'DIAMONDS PACK', shop_pack_bones:'BONES PACK',
+    shop_pack_starter_content:'💎 500<br>🦴 100K Bones<br>📦 1 Silver Chest<br>⭐ Boost x2 (24h)',
+    shop_pack_prog_content:'💎 1,200<br>🦴 250K Bones<br>📦 3 Silver Chests<br>⭐ Boost x2 (2h)',
   }
 };
 
@@ -1370,13 +1386,13 @@ function navigate(screen) {
   document.getElementById('topbar').className = 'topbar ' + (isHome ? 'home-bar' : 'dark-bar');
   closeDogsPanel();
   // Render selon écran
-  if (screen === 'chiens')      renderDogCards();
+  if (screen === 'chiens')      { renderDogCards(); if (typeof applyLang === 'function') applyLang(); }
   if (screen === 'quetes')      renderQuests();
   if (screen === 'collection')  renderCollection();
   if (screen === 'pass')        updatePass();
   if (screen === 'classement')   renderClassement();
-  if (screen === 'evenements')   startEventCountdown();
-  if (screen === 'cadeaux')      renderCadeaux();
+  if (screen === 'evenements')   { startEventCountdown(); applyLang(); }
+  if (screen === 'cadeaux')      { renderCadeaux(); applyLang(); }
   if (screen === 'profil')       renderProfil();
   if (screen === 'shop') {
     // Mettre à jour le label Pack Bones dynamiquement
@@ -1610,13 +1626,30 @@ const REWARD_LABELS = {
   'Boost ×2 (1h)':{en:'Boost ×2 (1h)'}, 'Boost ×2 (3h)':{en:'Boost ×2 (3h)'},
   'Boost ×2 (4h)':{en:'Boost ×2 (4h)'},
   'Boost NFT +25% 1h':{en:'NFT Boost +25% 1h'}, 'Boost NFT +25% 2h':{en:'NFT Boost +25% 2h'},
+  'Coffre Bronze':{en:'Bronze Chest'}, '📦 Coffre Bronze':{en:'📦 Bronze Chest'},
+  'Coffre Argent':{en:'Silver Chest'}, '🎁 Coffre Argent':{en:'🎁 Silver Chest'},
+  'Coffre Or':{en:'Gold Chest'}, 'Coffre Founder':{en:'Founder Chest'},
+  'Coffre Rare Founder':{en:'Rare Founder Chest'},
+  '🏅 Badge "Recruteur"':{en:'🏅 "Recruiter" Badge'},
+  '🎟️ Ticket Événement':{en:'🎟️ Event Ticket'},
+  '🪄 Skin Tapis Exclusif':{en:'🪄 Exclusive Mat Skin'},
+  '👑 Coffre Or':{en:'👑 Gold Chest'},
+  '✨ Décoration Collector':{en:'✨ Collector Decoration'},
+  '👑 Titre Spécial':{en:'👑 Special Title'},
+  '🗿 Statue Packoo Légendaire':{en:'🗿 Legendary Packoo Statue'},
+  '📦 Coffre Bronze':{en:'📦 Bronze Chest'},
+  '🦴 300 Bones':{en:'🦴 300 Bones'},
+  '🎁 Coffre Argent':{en:'🎁 Silver Chest'},
 };
 function tRarity(label) {
   const lang = window.PACKOO_LANG || 'fr';
   if (lang === 'fr') return label;
   const map = {
-    'COMMUN':'COMMON', 'PEU COMMUN':'UNCOMMON', 'RARE':'RARE',
-    'ÉPIQUE':'EPIC', 'LÉGENDAIRE':'LEGENDARY'
+    'COMMUN':'COMMON', 'Commun':'Common',
+    'PEU COMMUN':'UNCOMMON', 'Peu Commun':'Uncommon',
+    'RARE':'RARE', 'Rare':'Rare',
+    'ÉPIQUE':'EPIC', 'Épique':'Epic',
+    'LÉGENDAIRE':'LEGENDARY', 'Légendaire':'Legendary'
   };
   return map[label] || label;
 }
@@ -1747,7 +1780,10 @@ function _renderDogsPanel() {
   const activeDogs = ALL_DOGS.filter(d => d.active && d.unlocked);
   const totalProd = getTotalProduction();
   const RARITY_COLORS = { COMMON:'#9D9D9D', UNCOMMON:'#27AE60', RARE:'#3498DB', EPIC:'#9B59B6', LEGENDARY:'#E67E22' };
-  const RARITY_LABELS = { COMMON:'Commun', UNCOMMON:'Peu Commun', RARE:'Rare', EPIC:'Épique', LEGENDARY:'Légendaire' };
+  const lang = window.PACKOO_LANG || 'fr';
+  const RARITY_LABELS = lang === 'fr'
+    ? { COMMON:'Commun', UNCOMMON:'Peu Commun', RARE:'Rare', EPIC:'Épique', LEGENDARY:'Légendaire' }
+    : { COMMON:'Common', UNCOMMON:'Uncommon', RARE:'Rare', EPIC:'Epic', LEGENDARY:'Legendary' };
 
   // Production totale
   const prodEl = document.getElementById('dogPanelProdTotal');
@@ -1774,7 +1810,7 @@ function _renderDogsPanel() {
       </div>
       <div class="dog-panel-info">
         <div class="dog-panel-name">${dog.name}</div>
-        <div class="dog-panel-level">Niv. ${dog.level} · ${label}</div>
+        <div class="dog-panel-level">${t('dog_lvl')}${dog.level} · ${tRarity(label)}</div>
         <div class="dog-panel-xp"><div class="dog-panel-xp-fill" style="width:${xpPct}%"></div></div>
       </div>
       <div class="dog-panel-prod">+${fmt(prod)}/h</div>
@@ -1837,6 +1873,7 @@ function devForceOs() {
 
 // ===== NAVIGATION ONGLETS CADEAUX =====
 function switchCadeauTab(tab) {
+  if (typeof applyLang === 'function') applyLang();
   ['chasse','coffres','rewards','inviter','inventaire'].forEach(t => {
     const el = document.getElementById('cadeau-' + t);
     if (el) el.style.display = t === tab ? 'block' : 'none';
@@ -1943,7 +1980,7 @@ function renderInviter() {
         (done ? 'rgba(245,166,35,0.2)' : 'rgba(255,255,255,0.05)') +
         ';display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:' +
         (done ? p.color : 'var(--text-muted)') + ';flex-shrink:0;">' + p.count + '</div>' +
-        '<span style="flex:1;font-size:11px;color:' + (done ? 'var(--gold)' : 'var(--text-muted)') + ';font-weight:' + (done ? '800' : '600') + ';">' + p.reward + '</span>' +
+        '<span style="flex:1;font-size:11px;color:' + (done ? 'var(--gold)' : 'var(--text-muted)') + ';font-weight:' + (done ? '800' : '600') + ';">' + tReward(p.reward) + '</span>' +
         (done && !claimed
           ? '<button onclick="claimReferralPalier(' + p.count + ')" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:8px;padding:6px 10px;font-size:10px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:\'Nunito\',sans-serif;">RÉCLAMER</button>'
           : claimed
