@@ -141,15 +141,15 @@
     <!-- ===== CHIENS ===== -->
     <div class="screen" id="screen-chiens">
       <div class="scroll-content">
-        <div class="page-title">🐾 MES CHIENS</div>
+        <div class="page-title" data-t="dogs_my_dogs">🐾 MES CHIENS</div>
         <div class="filter-tabs">
-          <div class="tab active" onclick="setDogFilter('all')">🐾 Tous</div><div class="tab" onclick="setDogFilter('active')">⚡ Actifs</div>
+          <div class="tab active" onclick="setDogFilter('all')" data-t="dogs_filter_all">🐾 Tous</div><div class="tab" onclick="setDogFilter('active')" data-t="dogs_filter_active">⚡ Actifs</div>
           <div class="tab" onclick="setDogFilter('rarity')" data-t="dogs_filter_rarity">⭐ Rareté</div>
         </div>
         <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.22);border-radius:14px;padding:10px 14px;display:flex;align-items:center;margin-bottom:12px;">
           <div style="flex:1"><div style="font-size:9px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;" data-t="dogs_active">Chiens actifs</div><div id="dogActiveCount" style="font-size:16px;font-weight:900;margin-top:2px;">🦴 1/6</div></div>
           <div style="width:1px;height:36px;background:rgba(245,166,35,0.15);margin:0 12px;"></div>
-          <div style="flex:1"><div style="font-size:9px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Production totale</div><div id="dogProdTotal" style="font-size:16px;font-weight:900;margin-top:2px;">🦴 0 /h</div></div>
+          <div style="flex:1"><div style="font-size:9px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;" data-t="dogs_prod_total">Production totale</div><div id="dogProdTotal" style="font-size:16px;font-weight:900;margin-top:2px;">🦴 0 /h</div></div>
           <div style="width:10px"></div>
           <button onclick="upgradeAll()" style="background:linear-gradient(135deg,#27AE60,#2ECC71);border:none;border-radius:10px;padding:8px 10px;font-size:11px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;" data-t-html="dogs_upgrade_all">Améliorer tout ⬆️</button>
         </div>
@@ -223,13 +223,13 @@
           </div>
           <div style="flex:1;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <span style="font-size:10px;color:var(--text-muted);font-weight:800;text-transform:uppercase;letter-spacing:1px;"><span data-t="pass_xp_level">XP PASS — NIVEAU</span> <span id="passLevelDisplay">1</span></span>
+              <span style="font-size:10px;color:var(--text-muted);font-weight:800;text-transform:uppercase;letter-spacing:1px;">XP PASS — NIVEAU <span id="passLevelDisplay">1</span></span>
               <span style="font-size:11px;font-weight:900;color:var(--gold);" id="passPointsDisplay">0 XP</span>
             </div>
             <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;">
               <div id="passLevelBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:4px;transition:width 0.4s;"></div>
             </div>
-            <div style="font-size:8px;color:var(--text-muted);margin-top:3px;"><span data-t="pass_xp_next">Prochain niveau dans</span> <span id="passXpNext">1000</span> XP</div>
+            <div style="font-size:8px;color:var(--text-muted);margin-top:3px;">Prochain niveau dans <span id="passXpNext">1000</span> XP</div>
           </div>
         </div>
 
@@ -935,11 +935,11 @@
             <div style="display:flex;align-items:center;gap:12px;">
               <div style="font-size:44px;">📦</div>
               <div style="flex:1;">
-                <div style="font-size:13px;font-weight:900;color:#CD7F32;margin-bottom:2px;">COFFRE BRONZE</div>
-                <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">Bones · Boosts · Petites récompenses</div>
-                <div style="font-size:11px;color:var(--gold);font-weight:900;">En possession : <span id="coffreBronzeCount">0</span></div>
+                <div style="font-size:13px;font-weight:900;color:#CD7F32;margin-bottom:2px;" data-t="chest_bronze_name">COFFRE BRONZE</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;" data-t="chest_bronze_sub">Bones · Boosts · Petites récompenses</div>
+                <div style="font-size:11px;color:var(--gold);font-weight:900;" data-t="chest_owned">En possession : <span id="coffreBronzeCount">0</span></div>
               </div>
-              <button onclick="openCoffre('bronze')" style="background:linear-gradient(135deg,#8B4513,#CD7F32);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">OUVRIR</button>
+              <button onclick="openCoffre('bronze')" style="background:linear-gradient(135deg,#8B4513,#CD7F32);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;" data-t="chest_open">OUVRIR</button>
             </div>
           </div>
 
@@ -948,11 +948,11 @@
             <div style="display:flex;align-items:center;gap:12px;">
               <div style="font-size:44px;">🎁</div>
               <div style="flex:1;">
-                <div style="font-size:13px;font-weight:900;color:#C0C0C0;margin-bottom:2px;">COFFRE ARGENT</div>
-                <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">Bones · Diamants · Boosts rares</div>
-                <div style="font-size:11px;color:var(--gold);font-weight:900;">En possession : <span id="coffreArgentCount">0</span></div>
+                <div style="font-size:13px;font-weight:900;color:#C0C0C0;margin-bottom:2px;" data-t="chest_argent_name">COFFRE ARGENT</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;" data-t="chest_argent_sub">Bones · Diamants · Boosts rares</div>
+                <div style="font-size:11px;color:var(--gold);font-weight:900;" data-t="chest_owned">En possession : <span id="coffreArgentCount">0</span></div>
               </div>
-              <button onclick="openCoffre('argent')" style="background:linear-gradient(135deg,#808080,#C0C0C0);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">OUVRIR</button>
+              <button onclick="openCoffre('argent')" style="background:linear-gradient(135deg,#808080,#C0C0C0);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;" data-t="chest_open">OUVRIR</button>
             </div>
           </div>
 
@@ -961,11 +961,11 @@
             <div style="display:flex;align-items:center;gap:12px;">
               <div style="font-size:44px;">👑</div>
               <div style="flex:1;">
-                <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:2px;">COFFRE OR</div>
-                <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">Gros bonus · Cosmétiques · Fragments NFT</div>
-                <div style="font-size:11px;color:var(--gold);font-weight:900;">En possession : <span id="coffreOrCount">0</span></div>
+                <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:2px;" data-t="chest_or_name">COFFRE OR</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;" data-t="chest_or_sub">Gros bonus · Cosmétiques · Fragments NFT</div>
+                <div style="font-size:11px;color:var(--gold);font-weight:900;" data-t="chest_owned">En possession : <span id="coffreOrCount">0</span></div>
               </div>
-              <button onclick="openCoffre('or')" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">OUVRIR</button>
+              <button onclick="openCoffre('or')" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;" data-t="chest_open">OUVRIR</button>
             </div>
           </div>
 
@@ -974,11 +974,11 @@
             <div style="display:flex;align-items:center;gap:12px;">
               <div style="font-size:44px;">🔮</div>
               <div style="flex:1;">
-                <div style="font-size:13px;font-weight:900;color:#00CFFF;margin-bottom:2px;">COFFRE ÉVÉNEMENT</div>
-                <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">Récompenses exclusives événement</div>
-                <div style="font-size:11px;color:var(--gold);font-weight:900;">En possession : <span id="coffreEventCount">0</span></div>
+                <div style="font-size:13px;font-weight:900;color:#00CFFF;margin-bottom:2px;" data-t="chest_event_name">COFFRE ÉVÉNEMENT</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;" data-t="chest_event_sub">Récompenses exclusives événement</div>
+                <div style="font-size:11px;color:var(--gold);font-weight:900;" data-t="chest_owned">En possession : <span id="coffreEventCount">0</span></div>
               </div>
-              <button onclick="openCoffre('event')" style="background:linear-gradient(135deg,#004A90,#0077CC);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">OUVRIR</button>
+              <button onclick="openCoffre('event')" style="background:linear-gradient(135deg,#004A90,#0077CC);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;" data-t="chest_open">OUVRIR</button>
             </div>
           </div>
 
@@ -1029,24 +1029,24 @@
           <!-- Bloc hero -->
           <div style="background:linear-gradient(135deg,#1A0A00,#2D1500);border:2px solid rgba(245,166,35,0.4);border-radius:16px;padding:14px;margin-bottom:12px;text-align:center;">
             <div style="font-size:40px;margin-bottom:6px;">👥</div>
-            <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);margin-bottom:4px;">INVITER DES AMIS</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);margin-bottom:4px;" data-t="invite_title">INVITER DES AMIS</div>
             <div style="font-size:10px;color:var(--text-muted);line-height:1.6;" data-t-html="invite_share_desc">Partage Packoo et débloque des récompenses exclusives.<br><span style="color:var(--gold);font-weight:800;">Toi et ton ami recevez des bonus !</span></div>
           </div>
 
           <!-- Code de parrainage -->
           <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.25);border-radius:14px;padding:14px;margin-bottom:12px;">
-            <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1.5px;margin-bottom:8px;">🔑 TON CODE DE PARRAINAGE</div>
+            <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1.5px;margin-bottom:8px;" data-t="invite_code_label">🔑 TON CODE DE PARRAINAGE</div>
             <div style="display:flex;align-items:center;gap:8px;">
               <div style="flex:1;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.3);border-radius:10px;padding:10px 14px;font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);letter-spacing:2px;" id="referralCodeDisplay">PACKOO-????</div>
-              <button onclick="copyReferralCode()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;" id="copyCodeBtn">📋 Copier</button>
+              <button onclick="copyReferralCode()" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;" id="copyCodeBtn" data-t="invite_copy">📋 Copier</button>
             </div>
-            <button onclick="shareReferral()" style="width:100%;margin-top:8px;background:rgba(39,174,96,0.15);border:1px solid rgba(39,174,96,0.4);border-radius:10px;padding:10px;font-size:12px;font-weight:900;color:#2ECC71;cursor:pointer;font-family:'Nunito',sans-serif;">📤 Partager le lien d'invitation</button>
+            <button onclick="shareReferral()" style="width:100%;margin-top:8px;background:rgba(39,174,96,0.15);border:1px solid rgba(39,174,96,0.4);border-radius:10px;padding:10px;font-size:12px;font-weight:900;color:#2ECC71;cursor:pointer;font-family:'Nunito',sans-serif;" data-t="invite_share_btn">📤 Partager le lien d'invitation</button>
           </div>
 
           <!-- Progression filleuls -->
           <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:14px;margin-bottom:12px;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-              <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1px;">👥 FILLEULS ACTIFS</div>
+              <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1px;" data-t="invite_count">👥 FILLEULS ACTIFS</div>
               <div style="font-size:22px;font-weight:900;color:var(--gold);" id="referralCountDisplay">0</div>
             </div>
             <!-- Barre prochain palier -->
@@ -1059,7 +1059,7 @@
             </div>
 
             <!-- Activité récente -->
-            <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1px;margin-bottom:8px;">📋 ACTIVITÉ RÉCENTE</div>
+            <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1px;margin-bottom:8px;" data-t="invite_activity">📋 ACTIVITÉ RÉCENTE</div>
             <div id="referralActivity" style="display:flex;flex-direction:column;gap:6px;">
               <div style="font-size:10px;color:var(--text-muted);text-align:center;padding:8px;" data-t="invite_none">Aucun filleul pour l'instant. Invite tes amis !</div>
             </div>
@@ -1067,7 +1067,7 @@
 
           <!-- Paliers -->
           <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:14px;margin-bottom:12px;">
-            <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1px;margin-bottom:10px;">🏅 PALIERS DE RÉCOMPENSES</div>
+            <div style="font-size:10px;font-weight:900;color:var(--text-muted);letter-spacing:1px;margin-bottom:10px;" data-t="invite_milestones">🏅 PALIERS DE RÉCOMPENSES</div>
             <div style="display:flex;flex-direction:column;gap:6px;" id="referralPaliers">
               <!-- généré par JS -->
             </div>
@@ -1075,7 +1075,7 @@
 
           <!-- Comment ça marche -->
           <div style="background:rgba(245,166,35,0.05);border:1px solid rgba(245,166,35,0.15);border-radius:12px;padding:12px;margin-bottom:12px;">
-            <div style="font-size:10px;font-weight:900;color:var(--gold);margin-bottom:8px;">📋 COMMENT ÇA MARCHE ?</div>
+            <div style="font-size:10px;font-weight:900;color:var(--gold);margin-bottom:8px;" data-t="invite_how">📋 COMMENT ÇA MARCHE ?</div>
             <div style="display:flex;flex-direction:column;gap:8px;">
               <div style="display:flex;align-items:flex-start;gap:8px;">
                 <span style="font-size:16px;flex-shrink:0;">1️⃣</span>
@@ -1232,7 +1232,7 @@
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="profil_badges">BADGES</div>
-            <div style="font-size:10px;color:rgba(150,200,255,0.5);" id="profileBadgesCount" data-t="profil_see_all">VOIR TOUT ›</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);" id="profileBadgesCount">VOIR TOUT ›</div>
           </div>
           <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;" id="profileBadges">
             <!-- généré par JS -->
@@ -1262,16 +1262,16 @@
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="profil_history">HISTORIQUE DES SAISONS</div>
-            <div style="font-size:10px;color:rgba(150,200,255,0.5);" data-t="profil_see_all">VOIR TOUT ›</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);">VOIR TOUT ›</div>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:rgba(0,40,80,0.3);border:1px solid rgba(0,100,200,0.25);border-radius:12px;padding:12px;">
             <div style="width:44px;height:44px;background:linear-gradient(135deg,#0066CC,#00AAFF);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:16px;font-weight:900;color:white;flex-shrink:0;">S1</div>
             <div style="flex:1;">
               <div style="font-size:12px;font-weight:900;color:white;margin-bottom:4px;">SAISON 1 — THE FIRST PACK</div>
               <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <div style="font-size:9px;color:rgba(150,200,255,0.7);"><span data-t="profil_participated">📅 Participé · 27 mai 2026</span></div>
+                <div style="font-size:9px;color:rgba(150,200,255,0.7);">📅 Participé · 27 mai 2026</div>
                 <div style="font-size:9px;color:#00CFFF;font-weight:900;" id="profileS1Event">⭐ Founder Event</div>
-                <div style="font-size:9px;color:rgba(150,200,255,0.7);" id="profileS1Rank"><span data-t="profil_in_progress">🏆 En cours</span></div>
+                <div style="font-size:9px;color:rgba(150,200,255,0.7);" id="profileS1Rank">🏆 En cours</div>
               </div>
             </div>
             <div style="text-align:center;flex-shrink:0;">
@@ -1292,7 +1292,7 @@
   <div class="dogs-panel" id="dogsPanel">
     <div class="dogs-panel-title"><span data-t="dogs_my_dogs">🐾 Mes Chiens</span> <div class="dogs-panel-close" onclick="closeDogsPanel()">✕</div></div>
     <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
-      <span style="font-size:10px;color:var(--text-muted);font-weight:700">Production totale</span>
+      <span style="font-size:10px;color:var(--text-muted);font-weight:700" data-t="dogs_prod_total">Production totale</span>
       <span style="font-size:16px;font-weight:900;color:var(--gold-light)" id="dogPanelProdTotal">🦴 0 /h</span>
     </div>
     <div id="dogPanelList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;">
