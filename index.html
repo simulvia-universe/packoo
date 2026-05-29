@@ -378,24 +378,24 @@
           <div style="display:flex;gap:8px;">
 
             <div onclick="buyChest('COMMON')" style="flex:1;background:var(--bg-card);border:1px solid rgba(157,157,157,0.4);border-radius:14px;padding:12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;">
-              <div style="font-size:11px;font-weight:900;color:#CD7F32;margin-bottom:4px;">BRONZE</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">Bones · Chien Commun/Rare</div>
+              <div style="font-size:11px;font-weight:900;color:#CD7F32;margin-bottom:4px;" data-t="shop_chest_bronze">BRONZE</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;" data-t="shop_chest_bronze_sub">Bones · Chien Commun/Rare</div>
               <div style="font-size:32px;margin-bottom:8px;">📦</div>
               <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;padding:8px;font-size:12px;font-weight:900;color:#1A0F00;margin-top:auto;">🦴 2,000</div>
             </div>
 
             <div onclick="buyChest('RARE')" style="flex:1;background:var(--bg-card);border:2px solid rgba(52,152,219,0.5);border-radius:14px;padding:12px;text-align:center;cursor:pointer;position:relative;display:flex;flex-direction:column;">
-              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#3498DB;color:white;font-size:9px;font-weight:900;padding:2px 10px;border-radius:6px;">POPULAIRE</div>
-              <div style="font-size:11px;font-weight:900;color:#C0C0C0;margin-bottom:4px;margin-top:4px;">ARGENT</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">Chien Rare/Épique + Bones bonus</div>
+              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#3498DB;color:white;font-size:9px;font-weight:900;padding:2px 10px;border-radius:6px;" data-t="shop_popular">POPULAIRE</div>
+              <div style="font-size:11px;font-weight:900;color:#C0C0C0;margin-bottom:4px;margin-top:4px;" data-t="shop_chest_argent">ARGENT</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;" data-t="shop_chest_argent_sub">Chien Rare/Épique + Bones bonus</div>
               <div style="font-size:32px;margin-bottom:8px;">🎁</div>
               <div style="background:linear-gradient(135deg,#2A7FB8,#3498DB);border-radius:10px;padding:8px;font-size:12px;font-weight:900;color:white;margin-top:auto;">💎 200</div>
             </div>
 
             <div onclick="buyChest('LEGENDARY')" style="flex:1;background:linear-gradient(135deg,rgba(60,30,0,0.9),rgba(40,20,0,0.95));border:2px solid rgba(245,166,35,0.5);border-radius:14px;padding:12px;text-align:center;cursor:pointer;position:relative;display:flex;flex-direction:column;">
-              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1A0F00;font-size:9px;font-weight:900;padding:2px 10px;border-radius:6px;">✨ BEST</div>
-              <div style="font-size:11px;font-weight:900;color:var(--gold);margin-bottom:4px;margin-top:4px;">OR</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">Chance NFT Épique/Légendaire</div>
+              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1A0F00;font-size:9px;font-weight:900;padding:2px 10px;border-radius:6px;" data-t="shop_best">✨ BEST</div>
+              <div style="font-size:11px;font-weight:900;color:var(--gold);margin-bottom:4px;margin-top:4px;" data-t="shop_chest_or">OR</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;" data-t="shop_chest_or_sub">Chance NFT Épique/Légendaire</div>
               <div style="font-size:32px;margin-bottom:8px;">👑</div>
               <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;padding:8px;font-size:12px;font-weight:900;color:#1A0F00;margin-top:auto;">💎 500</div>
             </div>
@@ -413,30 +413,30 @@
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
 
             <div onclick="buyPack('starter')" style="background:var(--bg-card);border:2px solid rgba(245,166,35,0.5);border-radius:14px;padding:12px;cursor:pointer;position:relative;display:flex;flex-direction:column;">
-              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1A0F00;font-size:9px;font-weight:900;padding:2px 10px;border-radius:6px;">BEST</div>
-              <div style="font-size:12px;font-weight:900;margin-bottom:6px;margin-top:4px;">PACK STARTER</div>
+              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1A0F00;font-size:9px;font-weight:900;padding:2px 10px;border-radius:6px;" data-t="shop_best_plain">BEST</div>
+              <div style="font-size:12px;font-weight:900;margin-bottom:6px;margin-top:4px;" data-t="shop_pack_starter">PACK STARTER</div>
               <div style="font-size:32px;margin-bottom:6px;">🏆</div>
-              <div style="font-size:9px;color:var(--text-muted);line-height:1.7;">💎 500<br>🦴 100K Bones<br>📦 1 Coffre Argent<br>⭐ Boost x2 (24h)</div>
+              <div style="font-size:9px;color:var(--text-muted);line-height:1.7;" data-t-html="shop_pack_starter_content">💎 500<br>🦴 100K Bones<br>📦 1 Coffre Argent<br>⭐ Boost x2 (24h)</div>
               <div style="background:linear-gradient(135deg,#27AE60,#2ECC71);border-radius:10px;padding:8px;margin-top:auto;font-size:13px;font-weight:900;color:white;text-align:center;">4,99 €</div>
             </div>
 
             <div onclick="buyPack('progression')" style="background:var(--bg-card);border:1px solid rgba(155,89,182,0.4);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;">
-              <div style="font-size:12px;font-weight:900;margin-bottom:6px;">PACK PROGRESSION</div>
+              <div style="font-size:12px;font-weight:900;margin-bottom:6px;" data-t="shop_pack_progression">PACK PROGRESSION</div>
               <div style="font-size:32px;margin-bottom:6px;">💜</div>
-              <div style="font-size:9px;color:var(--text-muted);line-height:1.7;">💎 1,200<br>🦴 250K Bones<br>📦 3 Coffres Argent<br>⭐ Boost x2 (2h)</div>
+              <div style="font-size:9px;color:var(--text-muted);line-height:1.7;" data-t-html="shop_pack_prog_content">💎 1,200<br>🦴 250K Bones<br>📦 3 Coffres Argent<br>⭐ Boost x2 (2h)</div>
               <div style="background:linear-gradient(135deg,#7D3C98,#9B59B6);border-radius:10px;padding:8px;margin-top:auto;font-size:13px;font-weight:900;color:white;text-align:center;">9,99 €</div>
             </div>
 
             <div onclick="buyPack('diamonds')" style="background:var(--bg-card);border:1px solid rgba(52,152,219,0.4);border-radius:14px;padding:12px;cursor:pointer;position:relative;display:flex;flex-direction:column;">
               <div style="position:absolute;top:-10px;right:10px;background:#3498DB;color:white;font-size:9px;font-weight:900;padding:2px 8px;border-radius:6px;">+40%</div>
-              <div style="font-size:12px;font-weight:900;margin-bottom:6px;margin-top:4px;">PACK DIAMANTS</div>
+              <div style="font-size:12px;font-weight:900;margin-bottom:6px;margin-top:4px;" data-t="shop_pack_diamonds">PACK DIAMANTS</div>
               <div style="font-size:32px;margin-bottom:6px;">💎</div>
               <div style="font-size:9px;color:var(--text-muted);line-height:1.7;">💎 1,750<br>+40% bonus<br><br></div>
               <div style="background:linear-gradient(135deg,#2A7FB8,#3498DB);border-radius:10px;padding:8px;margin-top:auto;font-size:13px;font-weight:900;color:white;text-align:center;">9,99 €</div>
             </div>
 
             <div onclick="buyPack('bones')" style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.25);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column;">
-              <div style="font-size:12px;font-weight:900;margin-bottom:6px;">PACK BONES</div>
+              <div style="font-size:12px;font-weight:900;margin-bottom:6px;" data-t="shop_pack_bones">PACK BONES</div>
               <div style="font-size:32px;margin-bottom:6px;">🦴</div>
               <div style="font-size:9px;color:var(--text-muted);line-height:1.7;">🦴 <span id="packBonesQty">36h de production</span><br><br><br></div>
               <div style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;padding:8px;margin-top:auto;font-size:13px;font-weight:900;color:#1A0F00;text-align:center;">4,99 €</div>
@@ -722,14 +722,14 @@
             <div style="flex:1;text-align:center;">
               <div style="background:rgba(0,60,120,0.2);border:1px solid rgba(0,120,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">⚡</div>
-                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;">boost</div>
+                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;" data-t="fdr_day_boost">boost</div>
               </div>
               <div style="font-size:8px;color:rgba(150,200,255,0.6);">J2</div>
             </div>
             <div style="flex:1;text-align:center;">
               <div style="background:rgba(0,60,120,0.2);border:1px solid rgba(0,120,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">📦</div>
-                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;">coffre</div>
+                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;" data-t="fdr_day_coffre">coffre</div>
               </div>
               <div style="font-size:8px;color:rgba(150,200,255,0.6);">J3</div>
             </div>
@@ -743,21 +743,21 @@
             <div style="flex:1;text-align:center;">
               <div style="background:rgba(0,60,120,0.2);border:1px solid rgba(0,120,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">🖼️</div>
-                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;">cadre</div>
+                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;" data-t="fdr_day_cadre">cadre</div>
               </div>
               <div style="font-size:8px;color:rgba(150,200,255,0.6);">J5</div>
             </div>
             <div style="flex:1;text-align:center;">
               <div style="background:rgba(0,60,120,0.2);border:1px solid rgba(0,120,220,0.3);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">📦</div>
-                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;">rare</div>
+                <div style="font-size:8px;color:rgba(150,200,255,0.5);margin-top:2px;" data-t="fdr_day_rare">rare</div>
               </div>
               <div style="font-size:8px;color:rgba(150,200,255,0.6);">J6</div>
             </div>
             <div style="flex:1;text-align:center;">
               <div style="background:linear-gradient(135deg,rgba(0,80,180,0.3),rgba(0,140,255,0.3));border:1px solid rgba(0,180,255,0.5);border-radius:10px;padding:8px 4px;margin-bottom:4px;">
                 <div style="font-size:18px;">🐾</div>
-                <div style="font-size:8px;color:#00CFFF;margin-top:2px;font-weight:900;">tapis</div>
+                <div style="font-size:8px;color:#00CFFF;margin-top:2px;font-weight:900;" data-t="fdr_day_tapis">tapis</div>
               </div>
               <div style="font-size:8px;color:#00CFFF;font-weight:900;">J7</div>
             </div>
@@ -798,7 +798,7 @@
                 <div style="font-size:11px;color:white;" data-t="fdr_m4">Se connecter 3 jours</div>
                 <div style="font-size:9px;color:rgba(150,200,255,0.6);margin-top:2px;">1 / 3</div>
               </div>
-              <div style="font-size:9px;font-weight:900;color:#00CFFF;">+1 📦 coffre</div>
+              <div style="font-size:9px;font-weight:900;color:#00CFFF;" data-t="fdr_reward_coffre">+1 📦 coffre</div>
             </div>
           </div>
         </div>
@@ -806,7 +806,7 @@
         <!-- FOOTER -->
         <div style="background:rgba(0,60,120,0.08);border:1px solid rgba(0,120,220,0.2);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:8px;">
           <span style="font-size:22px;">🐾</span>
-          <div style="flex:1;font-size:11px;color:rgba(150,200,255,0.6);line-height:1.6;">De nouveaux événements arriveront <span style="color:#00CFFF;font-weight:900;">bientôt</span> dans Packoo...</div>
+          <div style="flex:1;font-size:11px;color:rgba(150,200,255,0.6);line-height:1.6;" data-t-html="events_footer">De nouveaux événements arriveront <span style="color:#00CFFF;font-weight:900;">bientôt</span> dans Packoo...</div>
           <span style="font-size:18px;opacity:0.4;">✨</span>
         </div>
 
@@ -1003,9 +1003,9 @@
               </div>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:900;color:#00CFFF;margin-bottom:2px;" data-t="cadeaux_event_rewards">RÉCOMPENSES ÉVÉNEMENT</div>
-                <div style="font-size:10px;color:var(--text-muted);">Participe aux événements pour gagner des tickets !</div>
+                <div style="font-size:10px;color:var(--text-muted);" data-t="rewards_event_sub_btn">Participe aux événements pour gagner des tickets !</div>
               </div>
-              <button onclick="navigate('evenements')" style="background:linear-gradient(135deg,#004A90,#0077CC);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;">VOIR</button>
+              <button onclick="navigate('evenements')" style="background:linear-gradient(135deg,#004A90,#0077CC);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:900;color:white;cursor:pointer;font-family:'Nunito',sans-serif;" data-t="rewards_see">VOIR</button>
             </div>
           </div>
 
@@ -1079,19 +1079,19 @@
             <div style="display:flex;flex-direction:column;gap:8px;">
               <div style="display:flex;align-items:flex-start;gap:8px;">
                 <span style="font-size:16px;flex-shrink:0;">1️⃣</span>
-                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;">Partage ton code à un ami. Il l'entre au démarrage de Packoo et reçoit <strong style="color:var(--gold);">150 Bones + 1 Coffre Bronze + boost 12h</strong>.</span>
+                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;" data-t-html="invite_how1">Partage ton code à un ami. Il l'entre au démarrage de Packoo et reçoit <strong style="color:var(--gold);">150 Bones + 1 Coffre Bronze + boost 12h</strong>.</span>
               </div>
               <div style="display:flex;align-items:flex-start;gap:8px;">
                 <span style="font-size:16px;flex-shrink:0;">2️⃣</span>
-                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;">Une fois que ton ami atteint le <strong style="color:var(--gold);">niveau 5</strong> ou joue <strong style="color:var(--gold);">3 jours</strong>, il devient un filleul actif.</span>
+                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;" data-t-html="invite_how2">Une fois que ton ami atteint le <strong style="color:var(--gold);">niveau 5</strong> ou joue <strong style="color:var(--gold);">3 jours</strong>, il devient un filleul actif.</span>
               </div>
               <div style="display:flex;align-items:flex-start;gap:8px;">
                 <span style="font-size:16px;flex-shrink:0;">3️⃣</span>
-                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;">Tu reçois <strong style="color:var(--gold);">1 Coffre Argent</strong> + progression vers les paliers de prestige.</span>
+                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;" data-t-html="invite_how3">Tu reçois <strong style="color:var(--gold);">1 Coffre Argent</strong> + progression vers les paliers de prestige.</span>
               </div>
               <div style="display:flex;align-items:flex-start;gap:8px;">
                 <span style="font-size:16px;flex-shrink:0;">🤝</span>
-                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;">Jalons coopératifs : si ton ami joue encore après 7 jours ou atteint le niveau 10, vous recevez <strong style="color:var(--gold);">tous les deux</strong> un bonus !</span>
+                <span style="font-size:10px;color:var(--text-muted);line-height:1.5;" data-t-html="invite_how4">Jalons coopératifs : si ton ami joue encore après 7 jours ou atteint le niveau 10, vous recevez <strong style="color:var(--gold);">tous les deux</strong> un bonus !</span>
               </div>
             </div>
           </div>
@@ -1299,7 +1299,7 @@
       <!-- généré dynamiquement -->
     </div>
     <div style="padding-top:10px;">
-      <button onclick="navigate('chiens');closeDogsPanel();" style="width:100%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">Voir tous mes chiens →</button>
+      <button onclick="navigate('chiens');closeDogsPanel();" style="width:100%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;" data-t="dogs_see_all">Voir tous mes chiens →</button>
     </div>
   </div>
 
