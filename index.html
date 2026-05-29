@@ -223,13 +223,13 @@
           </div>
           <div style="flex:1;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <span style="font-size:10px;color:var(--text-muted);font-weight:800;text-transform:uppercase;letter-spacing:1px;">XP PASS — NIVEAU <span id="passLevelDisplay">1</span></span>
+              <span style="font-size:10px;color:var(--text-muted);font-weight:800;text-transform:uppercase;letter-spacing:1px;"><span data-t="pass_xp_level">XP PASS — NIVEAU</span> <span id="passLevelDisplay">1</span></span>
               <span style="font-size:11px;font-weight:900;color:var(--gold);" id="passPointsDisplay">0 XP</span>
             </div>
             <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;">
               <div id="passLevelBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:4px;transition:width 0.4s;"></div>
             </div>
-            <div style="font-size:8px;color:var(--text-muted);margin-top:3px;">Prochain niveau dans <span id="passXpNext">1000</span> XP</div>
+            <div style="font-size:8px;color:var(--text-muted);margin-top:3px;"><span data-t="pass_xp_next">Prochain niveau dans</span> <span id="passXpNext">1000</span> XP</div>
           </div>
         </div>
 
@@ -1232,7 +1232,7 @@
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="profil_badges">BADGES</div>
-            <div style="font-size:10px;color:rgba(150,200,255,0.5);" id="profileBadgesCount">VOIR TOUT ›</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);" id="profileBadgesCount" data-t="profil_see_all">VOIR TOUT ›</div>
           </div>
           <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;" id="profileBadges">
             <!-- généré par JS -->
@@ -1262,16 +1262,16 @@
         <div style="background:linear-gradient(135deg,#010B1A,#021525);border:1px solid rgba(0,140,255,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <div style="font-size:12px;font-weight:900;color:#00CFFF;" data-t="profil_history">HISTORIQUE DES SAISONS</div>
-            <div style="font-size:10px;color:rgba(150,200,255,0.5);">VOIR TOUT ›</div>
+            <div style="font-size:10px;color:rgba(150,200,255,0.5);" data-t="profil_see_all">VOIR TOUT ›</div>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:rgba(0,40,80,0.3);border:1px solid rgba(0,100,200,0.25);border-radius:12px;padding:12px;">
             <div style="width:44px;height:44px;background:linear-gradient(135deg,#0066CC,#00AAFF);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:16px;font-weight:900;color:white;flex-shrink:0;">S1</div>
             <div style="flex:1;">
               <div style="font-size:12px;font-weight:900;color:white;margin-bottom:4px;">SAISON 1 — THE FIRST PACK</div>
               <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <div style="font-size:9px;color:rgba(150,200,255,0.7);">📅 Participé · 27 mai 2026</div>
+                <div style="font-size:9px;color:rgba(150,200,255,0.7);"><span data-t="profil_participated">📅 Participé · 27 mai 2026</span></div>
                 <div style="font-size:9px;color:#00CFFF;font-weight:900;" id="profileS1Event">⭐ Founder Event</div>
-                <div style="font-size:9px;color:rgba(150,200,255,0.7);" id="profileS1Rank">🏆 En cours</div>
+                <div style="font-size:9px;color:rgba(150,200,255,0.7);" id="profileS1Rank"><span data-t="profil_in_progress">🏆 En cours</span></div>
               </div>
             </div>
             <div style="text-align:center;flex-shrink:0;">
