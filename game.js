@@ -1104,7 +1104,7 @@ function renderDogCards() {
       html += `
       <div class="dog-card" style="opacity:${can?1:0.7}">
         <div class="dog-card-img" style="filter:grayscale(${can?0:0.5})">
-          <div class="rarity-badge" style="background:${r.color}">${r.label}</div>
+          <div class="rarity-badge" style="background:${r.color}">${tRarity(r.label)}</div>
           <div style="display:flex;align-items:center;justify-content:center;font-size:3em;width:100%;height:100%;">🔒</div>
         </div>
         <div class="dog-card-info">
@@ -2633,10 +2633,10 @@ function showOfflinePopup(duree) {
       <!-- Icône + titre -->
       <div style="font-size:48px;margin-bottom:8px;">😴</div>
       <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);margin-bottom:4px;">
-        Absent ${duree}
+        ${t('offline_title')} ${duree}
       </div>
       <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">
-        Tes chiens ont continué à produire (max ${state._hasPack ? '3h' : '2h'}).
+        ${t('offline_dogs_produced')} (max ${state._hasPack ? '3h' : '2h'}).
       </div>
 
       <!-- Tableau 40% / 80% / 100% -->
@@ -2645,25 +2645,25 @@ function showOfflinePopup(duree) {
         <!-- 40% déjà reçu -->
         <div style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:10px;">
           <div style="font-size:18px;font-weight:900;color:#9D9D9D;">40%</div>
-          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">Récupéré</div>
+          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">${t('offline_collected')}</div>
           <div style="font-size:12px;font-weight:900;color:var(--gold-light);">🦴 ${fmt(earned40)}</div>
-          <div style="margin-top:6px;background:#27AE60;border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:white;">✅ REÇU</div>
+          <div style="margin-top:6px;background:#27AE60;border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:white;">✅ ${t('offline_received')}</div>
         </div>
 
         <!-- 80% avec pub -->
         <div style="flex:1;background:rgba(155,89,182,0.1);border:2px solid rgba(155,89,182,0.4);border-radius:12px;padding:10px;">
           <div style="font-size:18px;font-weight:900;color:#C39BD3;">80%</div>
-          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">Avec pub</div>
+          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">${t('offline_with_ad')}</div>
           <div style="font-size:12px;font-weight:900;color:var(--gold-light);">🦴 ${fmt(earned80)}</div>
-          <div style="margin-top:6px;background:linear-gradient(135deg,#7D3C98,#9B59B6);border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:white;">📺 PUB</div>
+          <div style="margin-top:6px;background:linear-gradient(135deg,#7D3C98,#9B59B6);border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:white;">📺 ${t('offline_ad')}</div>
         </div>
 
         <!-- 100% avec pub + pass -->
         <div style="flex:1;background:rgba(245,166,35,0.08);border:2px solid rgba(245,166,35,0.3);border-radius:12px;padding:10px;${hasPass ? '' : 'opacity:0.5;'}">
           <div style="font-size:18px;font-weight:900;color:var(--gold);">100%</div>
-          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">Pub + Pack</div>
+          <div style="font-size:9px;color:var(--text-muted);margin:2px 0;">${t('offline_ad_pack')}</div>
           <div style="font-size:12px;font-weight:900;color:var(--gold-light);">🦴 ${fmt(earned100)}</div>
-          <div style="margin-top:6px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:#1A0F00;">${hasPack ? '📦 PACK' : '🔒 PACK'}</div>
+          <div style="margin-top:6px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:6px;padding:3px;font-size:9px;font-weight:900;color:#1A0F00;">${hasPack ? '📦 ' : '🔒 '}${t('offline_pack')}</div>
         </div>
 
       </div>
@@ -2675,7 +2675,7 @@ function showOfflinePopup(duree) {
         font-size:14px;font-weight:900;color:white;cursor:pointer;
         font-family:'Nunito',sans-serif;margin-bottom:10px;
       ">
-        📺 Regarder une pub — récupérer ${hasPack ? '100%' : '80%'}
+        📺 ${t('offline_watch_ad')} ${hasPack ? '100%' : '80%'}
       </button>
 
       <!-- Bouton ignorer -->
@@ -2685,7 +2685,7 @@ function showOfflinePopup(duree) {
         font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;
         font-family:'Nunito',sans-serif;
       ">
-        Garder les 40% — continuer
+        ${t('offline_keep_40')}
       </button>
 
     </div>
