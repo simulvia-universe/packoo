@@ -111,17 +111,52 @@ const LANG = {
     fdr_p5:'Coffre Rare Founder', fdr_p5d:'Produire 500 000 Bones',
     fdr_m1:'Récupérer ses Bones 5 fois', fdr_m2:'Regarder 2 pubs',
     fdr_m3:'Ouvrir 1 coffre normal', fdr_m4:'Se connecter 3 jours',
+    fdr_day_boost:'boost', fdr_day_coffre:'coffre', fdr_day_cadre:'cadre',
+    fdr_day_rare:'rare', fdr_day_tapis:'tapis', fdr_reward_coffre:'+1 📦 coffre',
+    os_title:'CHASSE AUX OS', os_weekly:'SÉRIE HEBDOMADAIRE', os_progression:'🦴 Progression',
+    os_bronze:'BRONZE', os_argent:'ARGENT', os_or:'OR', os_diamant:'DIAMANT',
+    os_chest_bronze:'COFFRE BRONZE', os_chest_argent:'COFFRE ARGENT', os_chest_or:'COFFRE OR',
+    os_stay_alert:'Reste attentif pendant que tu joues !',
+    os_how_title:'📋 COMMENT ÇA MARCHE ?', os_serie_ends:'Fin de la série dans :',
+    os_mysterious:'Un os mystérieux peut tomber à tout moment...',
+    os_collected_max:'Tu as récupéré tes <strong style="color:var(--gold);">4 os du jour</strong> !',
+    os_come_back:'Reviens demain pour continuer la série.',
+    toast_os_max:'🦴 4 os récupérés aujourd\'hui — reviens demain !',
+    os_type_bronze:'🦴 Os de Bronze', os_type_argent:'🥈 Os d\'Argent',
+    os_type_or:'🥇 Os d\'Or', os_type_diamant:'💎 Os Diamant', os_opened:'ouvert !',
+    events_footer:'De nouveaux événements arriveront <span style="color:#00CFFF;font-weight:900;">bientôt</span> dans Packoo...',
     profil_edit:'ÉDITER', profil_see_all:'VOIR TOUT ›',
     profil_nft_equipped:'NFT ÉQUIPÉ', profil_fav_dog:'CHIEN FAVORI',
     profil_frame:'CADRE', profil_bg:'BACKGROUND', profil_aura:'AURA',
     profil_equipped:'Équipé', profil_in_progress:'🏆 En cours',
     profil_in_progress2:'En cours', profil_obtained:'obtenu',
     profil_participated:'📅 Participé · 27 mai 2026',
-    profil_founder_done:'⭐ Founder Event Terminé',
-    profil_top_rank:'🏆 Meilleur rang · Top 12%%',
     pass_xp_level:'XP PASS — NIVEAU', pass_xp_next:'Prochain niveau dans',
-    toast_level_up:'Niveau', toast_level_up2:'atteint !',
-    toast_claimed:'Bones réclamés !',
+    toast_level_up:'Niveau', toast_level_up2:'atteint !', toast_claimed:'Bones réclamés !',
+    chest_bronze_name:'COFFRE BRONZE', chest_argent_name:'COFFRE ARGENT',
+    chest_or_name:'COFFRE OR', chest_event_name:'COFFRE ÉVÉNEMENT',
+    chest_bronze_sub:'Bones · Boosts · Petites récompenses',
+    chest_argent_sub:'Bones · Diamants · Boosts rares',
+    chest_or_sub:'Gros bonus · Cosmétiques · Fragments NFT',
+    chest_event_sub:'Récompenses exclusives événement',
+    chest_owned:'En possession :', chest_open:'OUVRIR',
+    daily_title:'🗓️ RÉCOMPENSES JOURNALIÈRES', daily_week:'Semaine',
+    daily_day:'Jour', daily_connection:'de connexion',
+    daily_claimed:'✅ Réclamé aujourd\'hui — Reviens demain !',
+    daily_claim_btn:'Réclamer le jour', daily_streak_label:'Série actuelle :',
+    daily_days:'jours', daily_day_singular:'jour',
+    rewards_event_sub_btn:'Participe aux événements pour gagner des tickets !',
+    invite_title:'INVITER DES AMIS', invite_code_label:'🔑 TON CODE DE PARRAINAGE',
+    invite_copy:'📋 Copier', invite_copied:'✅ Copié !',
+    invite_share_btn:'📤 Partager le lien d\'invitation',
+    invite_count:'👥 FILLEULS ACTIFS', invite_activity:'📋 ACTIVITÉ RÉCENTE',
+    invite_milestones:'🏅 PALIERS DE RÉCOMPENSES', invite_how:'📋 COMMENT ÇA MARCHE ?',
+    invite_next:'Prochain :', invite_friends_count:'amis', invite_all_done:'Tous les paliers débloqués !',
+    invite_validated:'filleul validé ✅',
+    invite_share_msg:'Rejoins-moi sur Packoo ! Utilise mon code',
+    invite_share_msg2:'pour démarrer avec des bonus.',
+    dogs_my_dogs:'🐾 MES CHIENS', dogs_filter_all:'🐾 Tous', dogs_filter_active:'⚡ Actifs',
+    dogs_prod_total:'Production totale',
   },
   en: {
     nav_accueil:'Home', nav_chiens:'Dogs', nav_collection:'Collection', nav_classement:'Ranking',
@@ -228,17 +263,52 @@ const LANG = {
     fdr_p5:'Rare Founder Chest', fdr_p5d:'Produce 500,000 Bones',
     fdr_m1:'Collect your Bones 5 times', fdr_m2:'Watch 2 ads',
     fdr_m3:'Open 1 normal chest', fdr_m4:'Log in 3 days',
+    fdr_day_boost:'boost', fdr_day_coffre:'chest', fdr_day_cadre:'frame',
+    fdr_day_rare:'rare', fdr_day_tapis:'mat', fdr_reward_coffre:'+1 📦 chest',
+    os_title:'BONE HUNT', os_weekly:'WEEKLY STREAK', os_progression:'🦴 Progress',
+    os_bronze:'BRONZE', os_argent:'SILVER', os_or:'GOLD', os_diamant:'DIAMOND',
+    os_chest_bronze:'BRONZE CHEST', os_chest_argent:'SILVER CHEST', os_chest_or:'GOLD CHEST',
+    os_stay_alert:'Stay alert while you play!',
+    os_how_title:'📋 HOW DOES IT WORK?', os_serie_ends:'Streak ends in:',
+    os_mysterious:'A mysterious bone can fall at any moment...',
+    os_collected_max:'You collected your <strong style="color:var(--gold);">4 daily bones</strong>!',
+    os_come_back:'Come back tomorrow to continue the streak.',
+    toast_os_max:'🦴 4 bones collected today — come back tomorrow!',
+    os_type_bronze:'🦴 Bronze Bone', os_type_argent:'🥈 Silver Bone',
+    os_type_or:'🥇 Gold Bone', os_type_diamant:'💎 Diamond Bone', os_opened:'opened!',
+    events_footer:'New events are coming <span style="color:#00CFFF;font-weight:900;">soon</span> to Packoo...',
     profil_edit:'EDIT', profil_see_all:'SEE ALL ›',
     profil_nft_equipped:'NFT EQUIPPED', profil_fav_dog:'FAVORITE DOG',
     profil_frame:'FRAME', profil_bg:'BACKGROUND', profil_aura:'AURA',
     profil_equipped:'Equipped', profil_in_progress:'🏆 In progress',
     profil_in_progress2:'In progress', profil_obtained:'obtained',
     profil_participated:'📅 Joined · May 27, 2026',
-    profil_founder_done:'⭐ Founder Event Completed',
-    profil_top_rank:'🏆 Best rank · Top 12%%',
     pass_xp_level:'XP PASS — LEVEL', pass_xp_next:'Next level in',
-    toast_level_up:'Level', toast_level_up2:'reached!',
-    toast_claimed:'Bones claimed!',
+    toast_level_up:'Level', toast_level_up2:'reached!', toast_claimed:'Bones claimed!',
+    chest_bronze_name:'BRONZE CHEST', chest_argent_name:'SILVER CHEST',
+    chest_or_name:'GOLD CHEST', chest_event_name:'EVENT CHEST',
+    chest_bronze_sub:'Bones · Boosts · Small rewards',
+    chest_argent_sub:'Bones · Diamonds · Rare boosts',
+    chest_or_sub:'Big bonus · Cosmetics · NFT Fragments',
+    chest_event_sub:'Exclusive event rewards',
+    chest_owned:'Owned:', chest_open:'OPEN',
+    daily_title:'🗓️ DAILY REWARDS', daily_week:'Week',
+    daily_day:'Day', daily_connection:'login',
+    daily_claimed:'✅ Claimed today — Come back tomorrow!',
+    daily_claim_btn:'Claim day', daily_streak_label:'Current streak:',
+    daily_days:'days', daily_day_singular:'day',
+    rewards_event_sub_btn:'Join events to earn tickets!',
+    invite_title:'INVITE FRIENDS', invite_code_label:'🔑 YOUR REFERRAL CODE',
+    invite_copy:'📋 Copy', invite_copied:'✅ Copied!',
+    invite_share_btn:'📤 Share invitation link',
+    invite_count:'👥 ACTIVE REFERRALS', invite_activity:'📋 RECENT ACTIVITY',
+    invite_milestones:'🏅 REWARD MILESTONES', invite_how:'📋 HOW DOES IT WORK?',
+    invite_next:'Next:', invite_friends_count:'friends', invite_all_done:'All milestones unlocked!',
+    invite_validated:'referral validated ✅',
+    invite_share_msg:'Join me on Packoo! Use my code',
+    invite_share_msg2:'to start with bonuses.',
+    dogs_my_dogs:'🐾 MY DOGS', dogs_filter_all:'🐾 All', dogs_filter_active:'⚡ Active',
+    dogs_prod_total:'Total production',
   }
 };
 
@@ -536,7 +606,7 @@ function claimAllPendingRewards() {
   });
   state.bones += totalBones;
   state.pendingRewards = [];
-  showToast('🦴 +' + fmt(totalBones) + ' Bones '+t('toast_claimed'));
+  showToast('🦴 +' + fmt(totalBones) + ' Bones réclamés !');
   updateUI(); updateAllBadges(); saveState();
 }
 function getProduction(rarity, level, dogId) {
@@ -819,7 +889,7 @@ function tapPaco(e) {
   if (state.playerXP >= xpMax) {
     state.playerXP  -= xpMax;
     state.playerLevel++;
-    showToast('🎉 '+t('toast_level_up')+' '+state.playerLevel+' '+t('toast_level_up2'));
+    showToast('🎉 Niveau ' + state.playerLevel + ' atteint !');
   }
 
   // Animation float
@@ -989,8 +1059,8 @@ function renderDogCards() {
     html += `
     <div class="dog-card">
       <div class="dog-card-img">
-        <div class="rarity-badge" style="background:${r.color}">${r.label}</div>
-        <div class="niv-badge">Niv. ${dog.level}</div>
+        <div class="rarity-badge" style="background:${r.color}">${tRarity(r.label)}</div>
+        <div class="niv-badge">${t('dog_lvl')}${dog.level}</div>
         <div style="display:flex;align-items:center;justify-content:center;font-size:3em;width:100%;height:100%;">${dog.emoji}</div>
       </div>
       <div class="dog-card-info">
@@ -1036,7 +1106,7 @@ function renderDogCards() {
       html += `
       <div class="dog-card" style="opacity:0.6">
         <div class="dog-card-img" style="filter:grayscale(0.7)">
-          <div class="rarity-badge" style="background:#E67E22">LÉGENDAIRE</div>
+          <div class="rarity-badge" style="background:#E67E22">${tRarity('LÉGENDAIRE')}</div>
           <div style="display:flex;align-items:center;justify-content:center;font-size:3em;width:100%;height:100%;">❓</div>
         </div>
         <div class="dog-card-info">
@@ -1541,6 +1611,16 @@ const REWARD_LABELS = {
   'Boost ×2 (4h)':{en:'Boost ×2 (4h)'},
   'Boost NFT +25% 1h':{en:'NFT Boost +25% 1h'}, 'Boost NFT +25% 2h':{en:'NFT Boost +25% 2h'},
 };
+function tRarity(label) {
+  const lang = window.PACKOO_LANG || 'fr';
+  if (lang === 'fr') return label;
+  const map = {
+    'COMMUN':'COMMON', 'PEU COMMUN':'UNCOMMON', 'RARE':'RARE',
+    'ÉPIQUE':'EPIC', 'LÉGENDAIRE':'LEGENDARY'
+  };
+  return map[label] || label;
+}
+
 function tReward(label) {
   const lang = window.PACKOO_LANG || 'fr';
   if (lang === 'fr') return label;
@@ -1828,7 +1908,7 @@ function renderInviter() {
   if (barEl) barEl.style.width = pct + '%';
 
   const labelEl = document.getElementById('referralNextLabel');
-  if (labelEl) labelEl.textContent = next ? 'Prochain : ' + next.reward + ' (' + next.count + ' amis)' : '🎉 Tous les paliers débloqués !';
+  if (labelEl) labelEl.textContent = next ? t('invite_next') + ' ' + tReward(next.reward) + ' (' + next.count + ' ' + t('invite_friends_count') + ')' : '🎉 ' + t('invite_all_done');
 
   const progEl = document.getElementById('referralNextProgress');
   if (progEl) progEl.textContent = state.referralCount + ' / ' + nextCount;
@@ -1882,13 +1962,13 @@ function copyReferralCode() {
     navigator.clipboard.writeText(text).catch(() => {});
   }
   const btn = document.getElementById('copyCodeBtn');
-  if (btn) { btn.textContent = '✅ Copié !'; setTimeout(() => { btn.textContent = '📋 Copier'; }, 2000); }
+  if (btn) { btn.textContent = t('invite_copied'); setTimeout(() => { btn.textContent = t('invite_copy'); }, 2000); }
   showToast('✅ Code copié : ' + text);
 }
 
 function shareReferral() {
   if (!state.referralCode) return;
-  const msg = '🐾 Rejoins-moi sur Packoo ! Utilise mon code ' + state.referralCode + ' pour démarrer avec des bonus. 🦴';
+  const msg = '🐾 ' + t('invite_share_msg') + ' ' + state.referralCode + ' ' + t('invite_share_msg2') + ' 🦴';
   if (navigator.share) {
     navigator.share({ title: 'Packoo', text: msg }).catch(() => {});
   } else if (navigator.clipboard) {
@@ -1929,7 +2009,7 @@ function devAddReferral(name) {
   state.referralCount = (state.referralCount || 0) + 1;
   state.referralHistory.push({
     name: name || 'Ami #' + state.referralCount,
-    action: 'filleul validé ✅',
+    action: t('invite_validated'),
     date: new Date().toLocaleDateString('fr-FR')
   });
   saveState();
@@ -3019,8 +3099,8 @@ function renderDailyStreak() {
   const weekNum   = Math.floor((streak - 1) / 7) + 1;
 
   el.innerHTML = `
-    <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);text-align:center;margin-bottom:4px;">🗓️ RÉCOMPENSES JOURNALIÈRES</div>
-    <div style="text-align:center;font-size:10px;color:var(--text-muted);margin-bottom:14px;">Semaine ${weekNum} · Jour ${streak} de connexion</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);text-align:center;margin-bottom:4px;">${t('daily_title')}</div>
+    <div style="text-align:center;font-size:10px;color:var(--text-muted);margin-bottom:14px;">${t('daily_week')} ${weekNum} · ${t('daily_day')} ${streak} ${t('daily_connection')}</div>
 
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px;">
       ${days.map((r,i) => {
@@ -3037,20 +3117,20 @@ function renderDailyStreak() {
         ">
           <div style="font-size:8px;font-weight:900;color:${isToday ? 'var(--gold)' : 'var(--text-muted)'};margin-bottom:2px;">J${dayNum}</div>
           <div style="font-size:${r.special ? '20px' : '16px'};margin-bottom:2px;">${isPast ? '✅' : r.icon}</div>
-          <div style="font-size:7px;color:${isToday ? 'var(--gold-light)' : 'var(--text-muted)'};line-height:1.2;">${r.label}</div>
+          <div style="font-size:7px;color:${isToday ? 'var(--gold-light)' : 'var(--text-muted)'};line-height:1.2;">${tReward(r.label)}</div>
         </div>`;
       }).join('')}
     </div>
 
     ${claimed
-      ? `<div style="text-align:center;background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);border-radius:12px;padding:12px;font-size:12px;font-weight:900;color:#2ECC71;">✅ Réclamé aujourd'hui — Reviens demain !</div>`
+      ? `<div style="text-align:center;background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);border-radius:12px;padding:12px;font-size:12px;font-weight:900;color:#2ECC71;">${t('daily_claimed')}</div>`
       : `<button onclick="claimDailyStreak()" style="width:100%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">
-          🎁 Réclamer le jour ${streak} — ${(() => { const rr = DAILY_STREAK_REWARDS.find(r=>r.day===Math.min(streak,28)); if (!rr) return ''; if (rr.type==='bones' && typeof rr.value==='string' && rr.value.startsWith('prod_')) return getBonesLabel(parseFloat(rr.value.replace('prod_','').replace('h',''))); return rr.label; })()}
+          🎁 ${t('daily_claim_btn')} ${streak} — ${(() => { const rr = DAILY_STREAK_REWARDS.find(r=>r.day===Math.min(streak,28)); if (!rr) return ''; if (rr.type==='bones' && typeof rr.value==='string' && rr.value.startsWith('prod_')) return getBonesLabel(parseFloat(rr.value.replace('prod_','').replace('h',''))); return rr.label; })()}
         </button>`
     }
 
     <div style="text-align:center;margin-top:8px;font-size:9px;color:var(--text-muted);">
-      Série actuelle : <strong style="color:var(--gold);">${streak} jour${streak>1?'s':''}</strong> 🔥
+      ${t('daily_streak_label')} <strong style="color:var(--gold);">${streak} ${streak>1?t('daily_days'):t('daily_day_singular')}</strong> 🔥
     </div>
   `;
 }
@@ -3257,11 +3337,11 @@ function _renderProfileCollection() {
   const activeDog = ALL_DOGS.find(d => d.active) || ALL_DOGS[0];
 
   const COLLECTION = [
-    { label:t('profil_nft_equipped'), sub: lastNFT ? lastNFT.name : '—', sub2: lastNFT ? lastNFT.rarity : t('collection_empty_title'), icon:'🃏',  color:'#00CFFF' },
-    { label:t('profil_fav_dog'), sub: activeDog ? activeDog.name : 'Paco', sub2: t('dog_lvl')+(activeDog ? activeDog.level : 1), icon: activeDog ? activeDog.emoji : '🐶', color:'#27AE60' },
-    { label:t('profil_frame'),  sub:'Founder Frame',  sub2:t('profil_equipped'),  icon:'🖼️',  color:'#E67E22' },
-    { label:t('profil_bg'),     sub:'Neon Room',      sub2:t('profil_equipped'),  icon:'🌌',  color:'#9B59B6' },
-    { label:t('profil_aura'),   sub:'Blue Glow',      sub2:t('profil_equipped'),  icon:'✨',  color:'#00AAFF' },
+    { label:'NFT ÉQUIPÉ',     sub: lastNFT ? lastNFT.name : '—',       sub2: lastNFT ? lastNFT.rarity : 'Aucun NFT', icon:'🃏',  color:'#00CFFF' },
+    { label:'CHIEN FAVORI',   sub: activeDog ? activeDog.name : 'Paco', sub2: 'Niveau ' + (activeDog ? activeDog.level : 1), icon: activeDog ? activeDog.emoji : '🐶', color:'#27AE60' },
+    { label:'CADRE',          sub:'Founder Frame',  sub2:'Équipé',  icon:'🖼️',  color:'#E67E22' },
+    { label:'BACKGROUND',     sub:'Neon Room',      sub2:'Équipé',  icon:'🌌',  color:'#9B59B6' },
+    { label:'AURA',           sub:'Blue Glow',      sub2:'Équipé',  icon:'✨',  color:'#00AAFF' },
   ];
 
   cont.innerHTML = COLLECTION.map(c => `
@@ -3277,7 +3357,7 @@ function _renderProfileCollection() {
 function _updateProfileSeason() {
   const nfts = (state.wonNFTs || []).filter(n => n.rarity && n.rarity.toLowerCase().includes('mythic')).length;
   const el = document.getElementById('profileMythicCount');
-  if (el) el.textContent = nfts + ' ' + t('profil_obtained');
+  if (el) el.textContent = nfts + ' obtenu' + (nfts > 1 ? 's' : '');
 }
 
 
