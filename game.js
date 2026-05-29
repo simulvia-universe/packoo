@@ -101,6 +101,16 @@ const LANG = {
     assoc_soon:'Événement associatif — Bientôt disponible',
     invite_share_desc:'Partage Packoo et débloque des récompenses exclusives.<br><span style="color:var(--gold);font-weight:800;">Toi et ton ami recevez des bonus !</span>',
     invite_none:'Aucun filleul pour l\'instant. Invite tes amis !',
+    pq_daily_header:'📅 QUÊTES QUOTIDIENNES', pq_daily_xp:'~800 XP / jour',
+    pq_weekly_header:'📆 QUÊTES HEBDOMADAIRES', pq_weekly_xp:'~3 500 XP / semaine',
+    pq_level:'NIVEAU', pq_xp_total:'XP total', pq_next_level:'Prochain niveau :',
+    fdr_p1:'1 Coffre Founder', fdr_p1d:'Produire 5 000 Bones',
+    fdr_p2:'3 Founder Tickets', fdr_p2d:'Produire 25 000 Bones',
+    fdr_p3:'Badge Founder', fdr_p3d:'Produire 100 000 Bones',
+    fdr_p4:'Tapis Founder', fdr_p4d:'Produire 250 000 Bones',
+    fdr_p5:'Coffre Rare Founder', fdr_p5d:'Produire 500 000 Bones',
+    fdr_m1:'Récupérer ses Bones 5 fois', fdr_m2:'Regarder 2 pubs',
+    fdr_m3:'Ouvrir 1 coffre normal', fdr_m4:'Se connecter 3 jours',
   },
   en: {
     nav_accueil:'Home', nav_chiens:'Dogs', nav_collection:'Collection', nav_classement:'Ranking',
@@ -197,6 +207,16 @@ const LANG = {
     assoc_soon:'Charity event — Coming soon',
     invite_share_desc:'Share Packoo and unlock exclusive rewards.<br><span style="color:var(--gold);font-weight:800;">You and your friend both get bonuses!</span>',
     invite_none:'No referrals yet. Invite your friends!',
+    pq_daily_header:'📅 DAILY QUESTS', pq_daily_xp:'~800 XP / day',
+    pq_weekly_header:'📆 WEEKLY QUESTS', pq_weekly_xp:'~3,500 XP / week',
+    pq_level:'LEVEL', pq_xp_total:'total XP', pq_next_level:'Next level:',
+    fdr_p1:'1 Founder Chest', fdr_p1d:'Produce 5,000 Bones',
+    fdr_p2:'3 Founder Tickets', fdr_p2d:'Produce 25,000 Bones',
+    fdr_p3:'Founder Badge', fdr_p3d:'Produce 100,000 Bones',
+    fdr_p4:'Founder Mat', fdr_p4d:'Produce 250,000 Bones',
+    fdr_p5:'Rare Founder Chest', fdr_p5d:'Produce 500,000 Bones',
+    fdr_m1:'Collect your Bones 5 times', fdr_m2:'Watch 2 ads',
+    fdr_m3:'Open 1 normal chest', fdr_m4:'Log in 3 days',
   }
 };
 
@@ -231,6 +251,7 @@ function setLang(lang) {
   if (typeof renderInventaire === 'function') renderInventaire();
   if (typeof renderPassRewards === 'function') renderPassRewards();
   if (typeof updatePass === 'function') updatePass();
+  if (typeof renderPassQuests === 'function') renderPassQuests();
 }
 
 function updateLangButtons() {
@@ -2745,6 +2766,28 @@ function claimPassQuest(type, key) {
 }
 
 // Render onglet quêtes du Pass
+
+// Traduction quêtes du Pass
+const PASS_QUEST_TR = {
+  login:{label:{en:'Log in'},desc:{en:'Open the game today'}},
+  collect:{label:{en:'Collect passive Bones'},desc:{en:'Collect your offline or passive gains'}},
+  tap:{label:{en:'Tap 50 times'},desc:{en:'Tap Paco 50 times'}},
+  upgrade:{label:{en:'Upgrade a dog'},desc:{en:'Level up a dog by one level'}},
+  coffre:{label:{en:'Open a chest'},desc:{en:'Open any chest'}},
+  combo:{label:{en:'Complete 3 quests'},desc:{en:'Do 3 daily quests today'}},
+  connect5:{label:{en:'Log in 5 days'},desc:{en:'Log in 5 days this week'}},
+  upgrade10:{label:{en:'Upgrade dogs 10 times'},desc:{en:'Level up dogs in total this week'}},
+  coffres5:{label:{en:'Open 5 chests'},desc:{en:'Open 5 chests this week'}},
+  bones50k:{label:{en:'Produce 50,000 Bones'},desc:{en:'Accumulate 50k Bones this week'}},
+  daily5:{label:{en:'Finish 5 daily quests'},desc:{en:'Complete 5 daily quests this week'}},
+};
+function tPassQuest(key, field, fallback) {
+  const lang = window.PACKOO_LANG || 'fr';
+  if (lang === 'fr') return fallback;
+  const e = PASS_QUEST_TR[key];
+  return (e && e[field] && e[field].en) ? e[field].en : fallback;
+}
+
 function renderPassQuests() {
   const el = document.getElementById('passSection-quetes');
   if (!el || el.style.display === 'none') return;
@@ -2760,22 +2803,22 @@ function renderPassQuests() {
     <!-- XP Bar -->
     <div style="background:var(--bg-card);border:1px solid rgba(245,166,35,0.25);border-radius:14px;padding:12px;margin-bottom:14px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-        <span style="font-size:12px;font-weight:900;color:var(--gold);">👑 NIVEAU ${level} / 50</span>
-        <span style="font-size:11px;color:var(--text-muted);">${fmt(XP_TOTAL)} XP total</span>
+        <span style="font-size:12px;font-weight:900;color:var(--gold);">👑 ${t('pq_level')} ${level} / 50</span>
+        <span style="font-size:11px;color:var(--text-muted);">${fmt(XP_TOTAL)} ${t('pq_xp_total')}</span>
       </div>
       <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:4px;">
         <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--gold-dark),var(--gold));border-radius:4px;transition:width 0.3s;"></div>
       </div>
       <div style="display:flex;justify-content:space-between;">
         <span style="font-size:9px;color:var(--text-muted);">${xpInLvl} / 1000 XP</span>
-        <span style="font-size:9px;color:var(--text-muted);">Prochain niveau : ${1000 - xpInLvl} XP</span>
+        <span style="font-size:9px;color:var(--text-muted);">${t('pq_next_level')} ${1000 - xpInLvl} XP</span>
       </div>
     </div>
 
     <!-- Quêtes quotidiennes -->
     <div style="font-size:11px;font-weight:900;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px;">
-      📅 QUÊTES QUOTIDIENNES
-      <span style="font-size:9px;color:var(--text-muted);font-weight:400;">~800 XP / jour</span>
+      ${t('pq_daily_header')}
+      <span style="font-size:9px;color:var(--text-muted);font-weight:400;">${t('pq_daily_xp')}</span>
     </div>
     ${PASS_QUEST_DAILY_DEF.map(def => {
       const q    = (state.passQuestDaily || {})[def.key] || {};
@@ -2788,14 +2831,14 @@ function renderPassQuests() {
       <div style="background:${claimed ? 'rgba(39,174,96,0.05)' : done ? 'rgba(245,166,35,0.06)' : 'var(--bg-card)'};border:1px solid ${claimed ? 'rgba(39,174,96,0.2)' : done ? 'rgba(245,166,35,0.3)' : 'rgba(255,255,255,0.06)'};border-radius:12px;padding:10px;margin-bottom:6px;display:flex;align-items:center;gap:10px;">
         <span style="font-size:24px;flex-shrink:0;">${def.icon}</span>
         <div style="flex:1;">
-          <div style="font-size:11px;font-weight:900;color:${claimed ? '#2ECC71' : done ? 'var(--gold-light)' : 'var(--text-light)'};margin-bottom:2px;">${def.label}</div>
-          <div style="font-size:9px;color:var(--text-muted);margin-bottom:4px;">${def.desc}</div>
+          <div style="font-size:11px;font-weight:900;color:${claimed ? '#2ECC71' : done ? 'var(--gold-light)' : 'var(--text-light)'};margin-bottom:2px;">${tPassQuest(def.key,'label',def.label)}</div>
+          <div style="font-size:9px;color:var(--text-muted);margin-bottom:4px;">${tPassQuest(def.key,'desc',def.desc)}</div>
           ${def.target ? `<div style="height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:var(--gold);border-radius:2px;"></div></div><div style="font-size:8px;color:var(--text-muted);margin-top:2px;">${prog} / ${max}</div>` : ''}
         </div>
         <div style="text-align:right;flex-shrink:0;">
           <div style="font-size:10px;font-weight:900;color:var(--gold);margin-bottom:4px;">+${def.xp} XP</div>
           ${claimed ? '<span style="font-size:16px;color:#2ECC71;">✓</span>'
-            : done ? `<button onclick="claimPassQuest('daily','${def.key}')" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:8px;padding:5px 10px;font-size:10px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">RÉCLAMER</button>`
+            : done ? `<button onclick="claimPassQuest('daily','${def.key}')" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:8px;padding:5px 10px;font-size:10px;font-weight:900;color:#1A0F00;cursor:pointer;font-family:'Nunito',sans-serif;">${t('pass_claim')}</button>`
             : '<span style="font-size:14px;opacity:0.3;">🔒</span>'}
         </div>
       </div>`;
@@ -2803,8 +2846,8 @@ function renderPassQuests() {
 
     <!-- Quêtes hebdomadaires -->
     <div style="font-size:11px;font-weight:900;color:var(--gold);margin:14px 0 8px;display:flex;align-items:center;gap:6px;">
-      📆 QUÊTES HEBDOMADAIRES
-      <span style="font-size:9px;color:var(--text-muted);font-weight:400;">~3 500 XP / semaine</span>
+      ${t('pq_weekly_header')}
+      <span style="font-size:9px;color:var(--text-muted);font-weight:400;">${t('pq_weekly_xp')}</span>
     </div>
     ${PASS_QUEST_WEEKLY_DEF.map(def => {
       const q    = (state.passQuestWeekly || {})[def.key] || {};
@@ -2816,15 +2859,15 @@ function renderPassQuests() {
       <div style="background:${claimed ? 'rgba(39,174,96,0.05)' : done ? 'rgba(245,166,35,0.06)' : 'var(--bg-card)'};border:1px solid ${claimed ? 'rgba(39,174,96,0.2)' : done ? 'rgba(245,166,35,0.3)' : 'rgba(255,255,255,0.06)'};border-radius:12px;padding:10px;margin-bottom:6px;display:flex;align-items:center;gap:10px;">
         <span style="font-size:24px;flex-shrink:0;">${def.icon}</span>
         <div style="flex:1;">
-          <div style="font-size:11px;font-weight:900;color:${claimed ? '#2ECC71' : done ? 'var(--gold-light)' : 'var(--text-light)'};margin-bottom:2px;">${def.label}</div>
-          <div style="font-size:9px;color:var(--text-muted);margin-bottom:4px;">${def.desc}</div>
+          <div style="font-size:11px;font-weight:900;color:${claimed ? '#2ECC71' : done ? 'var(--gold-light)' : 'var(--text-light)'};margin-bottom:2px;">${tPassQuest(def.key,'label',def.label)}</div>
+          <div style="font-size:9px;color:var(--text-muted);margin-bottom:4px;">${tPassQuest(def.key,'desc',def.desc)}</div>
           <div style="height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:#7DD4FC;border-radius:2px;"></div></div>
           <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">${def.key==='bones50k' ? fmt(prog)+' / '+fmt(def.target) : prog+' / '+def.target}</div>
         </div>
         <div style="text-align:right;flex-shrink:0;">
           <div style="font-size:10px;font-weight:900;color:#7DD4FC;margin-bottom:4px;">+${def.xp} XP</div>
           ${claimed ? '<span style="font-size:16px;color:#2ECC71;">✓</span>'
-            : done ? `<button onclick="claimPassQuest('weekly','${def.key}')" style="background:linear-gradient(135deg,#1a6fd4,#7DD4FC);border:none;border-radius:8px;padding:5px 10px;font-size:10px;font-weight:900;color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;">RÉCLAMER</button>`
+            : done ? `<button onclick="claimPassQuest('weekly','${def.key}')" style="background:linear-gradient(135deg,#1a6fd4,#7DD4FC);border:none;border-radius:8px;padding:5px 10px;font-size:10px;font-weight:900;color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;">${t('pass_claim')}</button>`
             : '<span style="font-size:14px;opacity:0.3;">🔒</span>'}
         </div>
       </div>`;
