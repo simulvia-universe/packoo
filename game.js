@@ -111,6 +111,17 @@ const LANG = {
     fdr_p5:'Coffre Rare Founder', fdr_p5d:'Produire 500 000 Bones',
     fdr_m1:'Récupérer ses Bones 5 fois', fdr_m2:'Regarder 2 pubs',
     fdr_m3:'Ouvrir 1 coffre normal', fdr_m4:'Se connecter 3 jours',
+    profil_edit:'ÉDITER', profil_see_all:'VOIR TOUT ›',
+    profil_nft_equipped:'NFT ÉQUIPÉ', profil_fav_dog:'CHIEN FAVORI',
+    profil_frame:'CADRE', profil_bg:'BACKGROUND', profil_aura:'AURA',
+    profil_equipped:'Équipé', profil_in_progress:'🏆 En cours',
+    profil_in_progress2:'En cours', profil_obtained:'obtenu',
+    profil_participated:'📅 Participé · 27 mai 2026',
+    profil_founder_done:'⭐ Founder Event Terminé',
+    profil_top_rank:'🏆 Meilleur rang · Top 12%%',
+    pass_xp_level:'XP PASS — NIVEAU', pass_xp_next:'Prochain niveau dans',
+    toast_level_up:'Niveau', toast_level_up2:'atteint !',
+    toast_claimed:'Bones réclamés !',
   },
   en: {
     nav_accueil:'Home', nav_chiens:'Dogs', nav_collection:'Collection', nav_classement:'Ranking',
@@ -217,6 +228,17 @@ const LANG = {
     fdr_p5:'Rare Founder Chest', fdr_p5d:'Produce 500,000 Bones',
     fdr_m1:'Collect your Bones 5 times', fdr_m2:'Watch 2 ads',
     fdr_m3:'Open 1 normal chest', fdr_m4:'Log in 3 days',
+    profil_edit:'EDIT', profil_see_all:'SEE ALL ›',
+    profil_nft_equipped:'NFT EQUIPPED', profil_fav_dog:'FAVORITE DOG',
+    profil_frame:'FRAME', profil_bg:'BACKGROUND', profil_aura:'AURA',
+    profil_equipped:'Equipped', profil_in_progress:'🏆 In progress',
+    profil_in_progress2:'In progress', profil_obtained:'obtained',
+    profil_participated:'📅 Joined · May 27, 2026',
+    profil_founder_done:'⭐ Founder Event Completed',
+    profil_top_rank:'🏆 Best rank · Top 12%%',
+    pass_xp_level:'XP PASS — LEVEL', pass_xp_next:'Next level in',
+    toast_level_up:'Level', toast_level_up2:'reached!',
+    toast_claimed:'Bones claimed!',
   }
 };
 
@@ -514,7 +536,7 @@ function claimAllPendingRewards() {
   });
   state.bones += totalBones;
   state.pendingRewards = [];
-  showToast('🦴 +' + fmt(totalBones) + ' Bones réclamés !');
+  showToast('🦴 +' + fmt(totalBones) + ' Bones '+t('toast_claimed'));
   updateUI(); updateAllBadges(); saveState();
 }
 function getProduction(rarity, level, dogId) {
@@ -797,7 +819,7 @@ function tapPaco(e) {
   if (state.playerXP >= xpMax) {
     state.playerXP  -= xpMax;
     state.playerLevel++;
-    showToast('🎉 Niveau ' + state.playerLevel + ' atteint !');
+    showToast('🎉 '+t('toast_level_up')+' '+state.playerLevel+' '+t('toast_level_up2'));
   }
 
   // Animation float
@@ -3235,11 +3257,11 @@ function _renderProfileCollection() {
   const activeDog = ALL_DOGS.find(d => d.active) || ALL_DOGS[0];
 
   const COLLECTION = [
-    { label:'NFT ÉQUIPÉ',     sub: lastNFT ? lastNFT.name : '—',       sub2: lastNFT ? lastNFT.rarity : 'Aucun NFT', icon:'🃏',  color:'#00CFFF' },
-    { label:'CHIEN FAVORI',   sub: activeDog ? activeDog.name : 'Paco', sub2: 'Niveau ' + (activeDog ? activeDog.level : 1), icon: activeDog ? activeDog.emoji : '🐶', color:'#27AE60' },
-    { label:'CADRE',          sub:'Founder Frame',  sub2:'Équipé',  icon:'🖼️',  color:'#E67E22' },
-    { label:'BACKGROUND',     sub:'Neon Room',      sub2:'Équipé',  icon:'🌌',  color:'#9B59B6' },
-    { label:'AURA',           sub:'Blue Glow',      sub2:'Équipé',  icon:'✨',  color:'#00AAFF' },
+    { label:t('profil_nft_equipped'), sub: lastNFT ? lastNFT.name : '—', sub2: lastNFT ? lastNFT.rarity : t('collection_empty_title'), icon:'🃏',  color:'#00CFFF' },
+    { label:t('profil_fav_dog'), sub: activeDog ? activeDog.name : 'Paco', sub2: t('dog_lvl')+(activeDog ? activeDog.level : 1), icon: activeDog ? activeDog.emoji : '🐶', color:'#27AE60' },
+    { label:t('profil_frame'),  sub:'Founder Frame',  sub2:t('profil_equipped'),  icon:'🖼️',  color:'#E67E22' },
+    { label:t('profil_bg'),     sub:'Neon Room',      sub2:t('profil_equipped'),  icon:'🌌',  color:'#9B59B6' },
+    { label:t('profil_aura'),   sub:'Blue Glow',      sub2:t('profil_equipped'),  icon:'✨',  color:'#00AAFF' },
   ];
 
   cont.innerHTML = COLLECTION.map(c => `
@@ -3255,7 +3277,7 @@ function _renderProfileCollection() {
 function _updateProfileSeason() {
   const nfts = (state.wonNFTs || []).filter(n => n.rarity && n.rarity.toLowerCase().includes('mythic')).length;
   const el = document.getElementById('profileMythicCount');
-  if (el) el.textContent = nfts + ' obtenu' + (nfts > 1 ? 's' : '');
+  if (el) el.textContent = nfts + ' ' + t('profil_obtained');
 }
 
 
